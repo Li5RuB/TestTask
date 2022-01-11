@@ -1,0 +1,21 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "c6b98d76-c3fc-46b7-9b82-d14083d36c19": {
+      "ProjectGuid": "c6b98d76-c3fc-46b7-9b82-d14083d36c19",
+      "DisplayName": "Task.Web",
+      "ColorIndex": 0
+    },
+    "c97aa4bb-e21d-4cce-9655-be59c6d73e28": {
+      "ProjectGuid": "c97aa4bb-e21d-4cce-9655-be59c6d73e28",
+      "DisplayName": "Task.Repository",
+      "ColorIndex": 1
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Miscellaneous Files",
+      "ColorIndex": -1
+    }
+  },
+  "NextColorIndex": 2
+}
