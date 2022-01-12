@@ -15,7 +15,17 @@
       "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
       "DisplayName": "Miscellaneous Files",
       "ColorIndex": -1
+    },
+    "72319884-5f13-4414-bc5c-174bed41888b": {
+      "ProjectGuid": "72319884-5f13-4414-bc5c-174bed41888b",
+      "DisplayName": "Task.Repository",
+      "ColorIndex": 2
+    },
+    "ee19b5e6-1a79-4787-b604-df1b12e0e73a": {
+      "ProjectGuid": "ee19b5e6-1a79-4787-b604-df1b12e0e73a",
+      "DisplayName": "Task.Services",
+      "ColorIndex": 3
     }
   },
-  "NextColorIndex": 2
+  "NextColorIndex": 4
 }

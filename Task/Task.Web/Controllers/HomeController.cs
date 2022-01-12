@@ -1,17 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using System.Threading.Tasks;
+using Task.Services.Models;
+using Task.Services.Services;
 
 namespace Task.Web.Controllers
 {
     public class HomeController : Controller
     {
-        public HomeController()
-        {
+        private readonly IUserService userService;
 
+        public HomeController(IUserService userService)
+        {
+            this.userService = userService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            UserModel userModel = this.userService.Search("Ivan").First();
+            return View(userModel);
         }
     }
 }

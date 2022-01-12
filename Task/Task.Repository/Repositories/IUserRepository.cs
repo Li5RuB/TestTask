@@ -4,24 +4,22 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using Task.Repository.Entities;
+using Task.Repository.Items;
 
 namespace Task.Repository.Repositories
 {
     public interface IUserRepository
     {
-        public Task<IEnumerable<User>> GetUsers(Expression<Func<User, bool>> expression);
+        public IEnumerable<UserItem> GetUsers(Expression<Func<UserItem, bool>> expression);
 
-        public Task<User> GetById(int id);
+        public Task<UserItem> GetById(int id);
 
-        public Task<IEnumerable<User>> GetAll();
+        public IEnumerable<UserItem> GetAll();
 
-        public void CreateUser(User user);
+        public void CreateUser(UserItem user);
 
-        public void RemoveUser(User user);
+        public void RemoveUser(UserItem user);
 
-        public void UpdateUser(User user);
-
-        public void SaveChanges();
+        public void UpdateUser(UserItem user);
     }
 }

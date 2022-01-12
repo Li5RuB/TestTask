@@ -4,14 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Task.Repository.Entities
+namespace Task.Repository.Items
 {
-    public class Country
+    public class TitleItem
     {
         public int Id { get; set; }
 
-        public string Name { get; set; }
-
-        public IEnumerable<City> Cities { get; set; }
+        public string Name{ get; set; }
     }
 }
