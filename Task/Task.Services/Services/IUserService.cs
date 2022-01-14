@@ -19,7 +19,7 @@ namespace Task.Services.Services
 
         public void CreateUser(UserModel user);
 
-        public void RemoveUser(UserModel user);
+        public System.Threading.Tasks.Task RemoveUser(int id);
 
         public void UpdateUser(UserModel user);
 

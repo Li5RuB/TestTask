@@ -61,9 +61,9 @@ namespace Task.Services.Services
             return userMapper.MapItemToModelRange(unitOfWork.UserRepository.GetUsers(expression));
         }
 
-        public void RemoveUser(UserModel user)
+        public async System.Threading.Tasks.Task RemoveUser(int id)
         {
-            unitOfWork.UserRepository.RemoveUser(userMapper.MapModelToItem(user));
+            unitOfWork.UserRepository.RemoveUser(await unitOfWork.UserRepository.GetById(id));
         }
 
         public async System.Threading.Tasks.Task SaveChanges()

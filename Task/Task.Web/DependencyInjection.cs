@@ -22,6 +22,8 @@ namespace Task.Web
             services.AddTransient<ICountryService, CountryService>();
             services.AddTransient<ITitleService, TitleService>();
             services.AddTransient<ICityService, CityService>();
+            services.AddDbContext<ApplicationDbContext>(options =>
+               options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=TestTask;User Id=koshin;password=Qwe123!@#;MultipleActiveResultSets=true"));
         }
     }
 }

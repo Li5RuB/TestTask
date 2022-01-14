@@ -7,14 +7,19 @@ using Task.Repository.Data;
 
 namespace Task.Repository.Repositories
 {
-    public class UnitOfWork : IDisposable
+    public class UnitOfWork
     {
-        private readonly ApplicationDbContext context = new ApplicationDbContext();
+        private readonly ApplicationDbContext context;
         private UserRepository userRepository;
         private CountryRepository countryRepository;
         private CityRepository cityRepository;
         private TitleRepository titleRepository;
         private bool disposed = false;
+
+        public UnitOfWork(ApplicationDbContext context)
+        {
+            this.context = context;
+        }
 
         public TitleRepository TitleRepository
         {

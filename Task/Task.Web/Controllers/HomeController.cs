@@ -17,8 +17,7 @@ namespace Task.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            UserModel userModel = await this.userService.GetById(1);
-            return View(userModel);
+            return View();
         }
     }
 }

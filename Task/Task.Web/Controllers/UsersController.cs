@@ -34,9 +34,29 @@ namespace Task.Web.Controllers
             return View();
         }
 
-        public IActionResult Edit(int id) { return View(); }
+        public async Task<IActionResult> Edit(int id) 
+        {
+            return View(await this.userService.GetById(id)); 
+        }
 
-        public IActionResult Delete(int id) { return View(); }
+        [HttpPost]
+        public async Task<IActionResult> Edit(UserModel user)
+        {
+            if (ModelState.IsValid)
+            {
+                this.userService.UpdateUser(user);
+                await this.userService.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(user);
+        }
+
+        public async Task<IActionResult> Delete(int id, int page) 
+        {
+            await this.userService.RemoveUser(id);
+            await this.userService.SaveChanges();
+            return RedirectToAction("Index", new { page = page });
+        }
 
         public IActionResult Create()
         {

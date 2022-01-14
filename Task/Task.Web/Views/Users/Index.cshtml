@@ -8,6 +8,7 @@
 
 
 <link rel="stylesheet" href="~/css/User.css">
+<link rel="stylesheet" href="~/css/popup.css">
 
 <header>
     <a href="@Url.Action("index","Home")">Home</a> &#10148; <h7>Users</h7>
@@ -17,7 +18,7 @@
     <input class="search" placeholder="&#128269; search" type="text" />
 </div>
 <div style="min-height: 150px;">
-    <table style="text-align: center;">
+    <table class="table" style="text-align: center;">
         <thead>
             <tr>
                 <th>
@@ -46,30 +47,30 @@
         <tbody>
             @for (int i = 0; i < Model.Count; i++)
             {
-                <tr>
-                    <td class="cell_@i">
+                <tr class="" id="@i">
+                    <td class="cell_@i open-popup" id="@i">
                         <div>@Model[i].Firstname @Model[i].Lastname</div>
                     </td>
-                    <td class="cell_@i"> 
+                    <td class="cell_@i open-popup" id="@i"> 
                         @Model[i].Title.Name
                     </td>
-                    <td class="cell_@i">
+                    <td class="cell_@i open-popup" id="@i">
                         @Model[i].City.Country.Name
                     </td>
-                    <td class="cell_@i"> 
+                    <td class="cell_@i open-popup" id="@i"> 
                         @Model[i].City.Name
                     </td>
-                    <td class="cell_@i">
+                    <td class="cell_@i open-popup" id="@i">
                         @Model[i].Phone
                     </td>
-                    <td class="cell_@i">
+                    <td class="cell_@i open-popup" id="@i">
                         @Model[i].Email
                     </td>
                     <td class="cell_@i">
                          <a href="@Url.Action("Edit","Users",new {id = Model[i].Id})">
                              Edit
                          </a>
-                         <a href="@Url.Action("Delete","Users",new {id = Model[i].Id})">
+                         <a href="@Url.Action("Delete","Users",new {id = Model[i].Id,page = currentpage})" onclick="return confirm('Are you sure?')">
                              Delete
                          </a>
                     </td>
@@ -81,6 +82,7 @@
         <div class="pages">
         <a href="@Url.Action("Index",new {page=currentpage-1})">&lt;</a>
             @{
+                int cp = currentpage;
                 int k = 0;
                 if (currentpage > 1 && currentpage < pcount)
                 {
@@ -102,11 +104,25 @@
 
             } 
         }        
-        |<a href="@Url.Action("Index",new {page=currentpage+1})">&gt;</a>
+        |<a href="@Url.Action("Index",new {page=cp+1})">&gt;</a>
         </div>
     </div>
 </div>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<div class="popup-bg">
+    <div class="popup">
+        <div class="popup-head">
+            <div>User Comments</div>
+            <a class="close-popup" href="">&#10006;</a>
+        </div>
+        <div class="popup-body">
+        </div>
+    </div>
+</div>
+
+<script src="~/js/users.js"></script>
 <script>
-    $(document).
+    let model = @Html.Raw(Json.Serialize(Model));
 </script>

@@ -3,8 +3,9 @@
 
 <link rel="stylesheet" href="~/css/form.css">
 
-<form method="post" action="~/Users/Create">
+<form method="post" action="~/Users/Edit">
     <div class="column">
+        @Html.Hidden("Id",Model.Id,new {id = Model.Id, Name= Model.Id});
     <div>
         <div class="form-element form-lable">@Html.LabelFor(m=>m.Firstname)</div>
         <div class="form-element form-input">@Html.TextBoxFor(m=>m.Firstname)</div>
@@ -51,4 +52,7 @@
 </form>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="~/js/create.js"></script>
+<script src="~/js/edit.js"></script>
+<script>
+let model = @Html.Raw(Json.Serialize(Model));
+</script>
