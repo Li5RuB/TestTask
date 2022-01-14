@@ -10,6 +10,17 @@ namespace Task.Services.Mappers
 {
     public class UserMapper : IMapper<UserItem, UserModel>
     {
+        private readonly CityMapper cityMapper;
+        private readonly CountryMapper countryMapper;
+        private readonly TitleMapper titleMapper;
+
+        public UserMapper(CityMapper cityMapper, CountryMapper countryMapper, TitleMapper titleMapper)
+        {
+            this.countryMapper = countryMapper;
+            this.cityMapper = cityMapper;
+            this.titleMapper = titleMapper;
+        }
+
         public UserModel MapItemToModel(UserItem item)
         {
             return new UserModel()
@@ -18,8 +29,10 @@ namespace Task.Services.Mappers
                 Firstname = item.Firstname,
                 Lastname = item.Lastname,
                 CityId = item.CityId,
+                City = cityMapper.MapItemToModel(item.City),
                 Comments = item.Comments,
                 TitleId = item.TitleId,
+                Title = titleMapper.MapItemToModel(item.Title),
                 Email = item.Email,
                 Phone = item.Phone
             };
@@ -30,17 +43,7 @@ namespace Task.Services.Mappers
             var result = new List<UserModel>();
             foreach (var item in items)
             {
-                result.Add(new UserModel()
-                {
-                    Id = item.Id,
-                    Firstname = item.Firstname,
-                    Lastname = item.Lastname,
-                    CityId = item.CityId,
-                    Comments = item.Comments,
-                    TitleId = item.TitleId,
-                    Email = item.Email,
-                    Phone = item.Phone
-                });
+                result.Add(MapItemToModel(item));
             }
             return result;
         }
@@ -65,17 +68,7 @@ namespace Task.Services.Mappers
             var result = new List<UserItem>();
             foreach (var model in models)
             {
-                result.Add(new UserItem()
-                {
-                    Id = model.Id,
-                    Firstname = model.Firstname,
-                    Lastname = model.Lastname,
-                    CityId = model.CityId,
-                    Comments = model.Comments,
-                    TitleId = model.TitleId,
-                    Email = model.Email,
-                    Phone = model.Phone
-                });
+                result.Add(MapModelToItem(model));
             }
             return result;
         }

@@ -1,0 +1,108 @@
+﻿@using Task.Services.Models
+@model UserModel
+
+<link rel="stylesheet" href="~/css/form.css">
+
+<form method="post" action="~/Users/Create">
+    <div class="column">
+    <div>
+        <div class="form-element form-lable">@Html.LabelFor(m=>m.Firstname)</div>
+        <div class="form-element form-input">@Html.TextBoxFor(m=>m.Firstname)</div>
+    </div>
+    <div>
+        <div class="form-element form-lable">@Html.LabelFor(m=>m.Lastname)</div>
+        <div class="form-element form-input">@Html.TextBoxFor(m=>m.Lastname)</div>
+    </div>
+    <div >
+        <div class="form-element form-lable">@Html.LabelFor(m=>m.Email)</div>
+        <div class="form-element form-input">@Html.TextBoxFor(m=>m.Email)</div>
+    </div>
+    <div>
+        <div class="form-element form-lable">@Html.LabelFor(m=>m.Phone)</div>
+        <div class="form-element form-input">@Html.TextBoxFor(m=>m.Phone)</div>
+    </div>
+    <div>
+        <div class="form-element form-lable">Title</div>
+        <div class="form-element form-input">
+            <select id="TitleId" name="TitleId"><option value=""></option>
+            </select>
+        </div>
+    <div >
+    </div>
+        <div class="form-element form-lable">Country</div>
+        <div class="form-element form-input">
+            <select id="Countries" ><option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div >
+        <div class="form-element form-lable">City</div>
+        <div class="form-element form-input">
+            <select id="CityId" name="CityId"><option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div>
+        <div class="form-element form-lable">@Html.LabelFor(m=>m.Comments)</div>
+        <div class="form-element form-input">@Html.TextAreaFor(m=>m.Comments)</div>
+    </div>
+    <div><button type="submit">Save</button></div>
+    </div>
+</form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function()
+    {
+        $.ajax({
+            dataType:"json",
+            url:"/Titles/GetTitles",
+            method: "GET",
+            data: {},
+            success: SetTitles,
+        });
+
+        $.ajax({
+            dataType:"json",
+            url:"/Countries/GetCountries",
+            method: "GET",
+            data: {},
+            success: SetCountries,
+        });
+
+        $('#Countries').change(function(){
+            let value = this.value;
+            $.ajax({
+                datatype:"json",
+                url:"/Countries/GetCitiesByCountry",
+                method: "GET",
+                data: {'id': value},
+                success: SetCities,
+            })
+        });
+    });
+
+    function SetTitles(data){
+        $('#TitleId').empty();
+        $('#TitleId').append($('<option value=""></option>'));
+        for(let i in data){
+            $('#TitleId').append($('<option name="Title" value="'+data[i].id+'">'+data[i].name+'</option>'));
+        }
+    }
+
+    function SetCountries(data){
+        $('#Countries').empty();
+        $('#Countries').append($('<option value=""></option>'));
+        for(let i in data){
+            $('#Countries').append($('<option value="'+data[i].id+'">'+data[i].name+'</option>'));
+        }
+    }
+
+    function SetCities(data){
+        $('#CityId').empty();
+        $('#CityId').append($('<option value=""></option>'));
+        for(let i in data){
+            $('#CityId').append($('<option name="City" value="'+data[i].id+'">'+data[i].name+'</option>'));
+        }
+    }
+</script>

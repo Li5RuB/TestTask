@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +19,7 @@ namespace Task.Repository.Repositories
 
         public IEnumerable<CityItem> GetCities(int id)
         {
-            return this.context.Cities.Where(i=>i.Id == id);
+            return this.context.Cities.Include(i=>i.Country).Where(i=>i.CountryId == id);
         }
     }
 }

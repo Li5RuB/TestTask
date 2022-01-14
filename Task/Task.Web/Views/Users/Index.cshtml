@@ -1,0 +1,112 @@
+﻿@using Task.Services.Models
+@model List<UserModel>
+
+@{
+    int pcount = (int)ViewData["pcount"];
+    int currentpage = (int)ViewData["page"];
+}
+
+
+<link rel="stylesheet" href="~/css/User.css">
+
+<header>
+    <a href="@Url.Action("index","Home")">Home</a> &#10148; <h7>Users</h7>
+</header>
+<div class="row">
+    <button><a href="@Url.Action("Create","Users")">Create</a></button>
+    <input class="search" placeholder="&#128269; search" type="text" />
+</div>
+<div style="min-height: 150px;">
+    <table style="text-align: center;">
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Title
+                </th>
+                <th>
+                    Country
+                </th>
+                <th>
+                    City
+                </th>
+                <th>
+                    Phone
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Actions
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <tr>
+                    <td class="cell_@i">
+                        <div>@Model[i].Firstname @Model[i].Lastname</div>
+                    </td>
+                    <td class="cell_@i"> 
+                        @Model[i].Title.Name
+                    </td>
+                    <td class="cell_@i">
+                        @Model[i].City.Country.Name
+                    </td>
+                    <td class="cell_@i"> 
+                        @Model[i].City.Name
+                    </td>
+                    <td class="cell_@i">
+                        @Model[i].Phone
+                    </td>
+                    <td class="cell_@i">
+                        @Model[i].Email
+                    </td>
+                    <td class="cell_@i">
+                         <a href="@Url.Action("Edit","Users",new {id = Model[i].Id})">
+                             Edit
+                         </a>
+                         <a href="@Url.Action("Delete","Users",new {id = Model[i].Id})">
+                             Delete
+                         </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="paging">
+        <div class="pages">
+        <a href="@Url.Action("Index",new {page=currentpage-1})">&lt;</a>
+            @{
+                int k = 0;
+                if (currentpage > 1 && currentpage < pcount)
+                {
+                    currentpage--;
+                }
+                else if (currentpage == pcount&&currentpage>1)
+                {
+                    currentpage -= 2;
+                }
+            @for(int i = currentpage; i<=pcount&&k<3;i++,k++)
+            {
+                if (i > 0)
+                {
+                    <div>|</div>
+                    <a href="@Url.Action("Index",new {page=i})">
+                        @i
+                    </a>
+                }
+
+            } 
+        }        
+        |<a href="@Url.Action("Index",new {page=currentpage+1})">&gt;</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).
+</script>

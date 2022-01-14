@@ -13,7 +13,20 @@ namespace Task.Repository.Repositories
         private UserRepository userRepository;
         private CountryRepository countryRepository;
         private CityRepository cityRepository;
+        private TitleRepository titleRepository;
         private bool disposed = false;
+
+        public TitleRepository TitleRepository
+        {
+            get
+            {
+                if(titleRepository == null)
+                {
+                    this.titleRepository = new TitleRepository(context);
+                }
+                return titleRepository;
+            }
+        }
 
         public UserRepository UserRepository
         {

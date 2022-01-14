@@ -27,6 +27,8 @@ namespace Task.Services.Services
 
         public IEnumerable<UserModel> Search(string search);
 
+        public int GetPageCount();
+
         public System.Threading.Tasks.Task SaveChanges();
     }
 }

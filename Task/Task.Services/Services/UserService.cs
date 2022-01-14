@@ -39,7 +39,21 @@ namespace Task.Services.Services
 
         public IEnumerable<UserModel> GetByPage(int page)
         {
-            return userMapper.MapItemToModelRange(unitOfWork.UserRepository.GetAll().Skip(page*3-3).Take(3));
+            if (!(page>1))
+            {
+                page = 1;
+            }
+            return userMapper.MapItemToModelRange(unitOfWork.UserRepository.GetAll().Skip(page * 3 - 3).Take(3));
+        }
+
+        public int GetPageCount()
+        {
+            var count = unitOfWork.UserRepository.GetAll().Count();
+            if (count%3==0)
+            {
+                return count / 3;
+            }
+            return count / 3 + 1;
         }
 
         public IEnumerable<UserModel> GetUsers(Expression<Func<UserItem, bool>> expression)

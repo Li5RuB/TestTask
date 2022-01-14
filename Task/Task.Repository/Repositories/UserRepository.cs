@@ -39,5 +39,14 @@ namespace Task.Repository.Repositories
             this.context.Update(user);
         }
 
+        public override async Task<UserItem> GetById(int id)
+        {
+            return await context.Users.Include(i => i.City).ThenInclude(i => i.Country).Include(i => i.Title).FirstOrDefaultAsync(i=>i.Id==id);
+        }
+
+        public override IEnumerable<UserItem> GetAll()
+        {
+            return context.Users.Include(i => i.City).ThenInclude(i => i.Country).Include(i => i.Title).ToList();
+        }
     }
 }

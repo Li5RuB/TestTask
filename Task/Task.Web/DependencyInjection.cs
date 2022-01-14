@@ -14,10 +14,14 @@ namespace Task.Web
             services.AddTransient<UnitOfWork>();
 
             services.AddTransient<UserMapper>();
+            services.AddTransient<CountryMapper>();
+            services.AddTransient<CityMapper>();
+            services.AddTransient<TitleMapper>();
 
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ICountryService, CountryService>();
-
+            services.AddTransient<ITitleService, TitleService>();
+            services.AddTransient<ICityService, CityService>();
         }
     }
 }

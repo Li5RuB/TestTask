@@ -22,6 +22,6 @@ namespace Task.Repository.Data
         {
             optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=TestTask;User Id=koshin;password=Qwe123!@#;MultipleActiveResultSets=true");
         }
-        //Server=(localdb)\\mssqllocaldb;Database=TestTask;Trusted_Connection=True;MultipleActiveResultSets=true
+        
     }
 }
