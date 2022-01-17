@@ -11,15 +11,7 @@ namespace Task.Repository.Repositories
 {
     public class CountryRepository : Repository<CountryItem>, ICountryRepository
     {
-        private readonly ApplicationDbContext context;
-        public CountryRepository(ApplicationDbContext context) : base(context)
-        {
-            this.context = context;
-        }
+        public CountryRepository(ApplicationDbContext context) : base(context) { }
 
-        public IEnumerable<CityItem> GetCities(int id)
-        {
-            return this.context.Cities.Include(i=>i.Country).Where(i=>i.CountryId == id);
-        }
     }
 }

@@ -4,39 +4,48 @@ using System.Linq;
 using System.Threading.Tasks;
 using Task.Services.Models;
 using Task.Services.Services;
+using Task.Web.Models;
 
 namespace Task.Web.Controllers
 {
     public class UsersController : Controller
     {
         private readonly IUserService userService;
+        private readonly ICountryService countryService;
+        private readonly ITitleService titleService;
+        private readonly ICityService cityService;
         
-        public UsersController(IUserService userService, ITitleService titleService)
+        public UsersController(IUserService userService, ITitleService titleService, ICountryService countryService, ICityService cityService)
         {
             this.userService = userService;
+            this.countryService = countryService;
+            this.cityService = cityService;
+            this.titleService = titleService;
         }
 
-        public IActionResult Index(int page=1)
+        public async Task<IActionResult> Index(int page=1)
         {
             var pcount = this.userService.GetPageCount();
             if (pcount<page)
                 page = 1;
             else if(page<1)
                 page = pcount;
-            var users = this.userService.GetByPage(page).ToList();
             ViewData["page"] = page;
             ViewData["pcount"] = pcount;
+            var users = new List<ViewModelUser>();
+            foreach (var item in this.userService.GetByPage(page).ToList())
+            {
+                var city = await cityService.GetById(item.CityId);
+                users.Add(new ViewModelUser(item, await titleService.GetById(item.TitleId), city, await countryService.GetById(city.CountryId)));
+            }
             return View(users);
-        }
-
-        public IActionResult Details()
-        {
-            return View();
         }
 
         public async Task<IActionResult> Edit(int id) 
         {
-            return View(await this.userService.GetById(id)); 
+            var user = await this.userService.GetById(id);
+            user.City = await this.cityService.GetById(user.CityId);
+            return View(user); 
         }
 
         [HttpPost]

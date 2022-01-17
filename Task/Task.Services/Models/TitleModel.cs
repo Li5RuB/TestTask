@@ -8,7 +8,7 @@ namespace Task.Services.Models
 {
     public class TitleModel
     {
-        public int Id { get; set; }
+        public int TitleId { get; set; }
 
         public string Name { get; set; }
     }

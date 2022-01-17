@@ -5,7 +5,7 @@
 
 <form method="post" action="~/Users/Edit">
     <div class="column">
-        @Html.Hidden("Id",Model.Id,new {id = Model.Id, Name= Model.Id});
+        @Html.Hidden("UserId",Model.UserId,new {id = Model.UserId, Name= Model.UserId})
     <div>
         <div class="form-element form-lable">@Html.LabelFor(m=>m.Firstname)</div>
         <div class="form-element form-input">@Html.TextBoxFor(m=>m.Firstname)</div>

@@ -8,37 +8,24 @@ using Task.Services.Models;
 
 namespace Task.Services.Mappers
 {
-    public class UserMapper : IMapper<UserItem, UserModel>
+    public static class UserMapper
     {
-        private readonly CityMapper cityMapper;
-        private readonly CountryMapper countryMapper;
-        private readonly TitleMapper titleMapper;
-
-        public UserMapper(CityMapper cityMapper, CountryMapper countryMapper, TitleMapper titleMapper)
-        {
-            this.countryMapper = countryMapper;
-            this.cityMapper = cityMapper;
-            this.titleMapper = titleMapper;
-        }
-
-        public UserModel MapItemToModel(UserItem item)
+        public static UserModel MapItemToModel(UserItem item)
         {
             return new UserModel()
             {
-                Id = item.Id,
+                UserId = item.UserId,
                 Firstname = item.Firstname,
                 Lastname = item.Lastname,
                 CityId = item.CityId,
-                City = cityMapper.MapItemToModel(item.City),
                 Comments = item.Comments,
                 TitleId = item.TitleId,
-                Title = titleMapper.MapItemToModel(item.Title),
                 Email = item.Email,
                 Phone = item.Phone
             };
         }
 
-        public IEnumerable<UserModel> MapItemToModelRange(IEnumerable<UserItem> items)
+        public static IEnumerable<UserModel> MapItemToModelRange(IEnumerable<UserItem> items)
         {
             var result = new List<UserModel>();
             foreach (var item in items)
@@ -48,11 +35,11 @@ namespace Task.Services.Mappers
             return result;
         }
 
-        public UserItem MapModelToItem(UserModel model)
+        public static UserItem MapModelToItem(UserModel model)
         {
             return new UserItem()
             {
-                Id = model.Id,
+                UserId = model.UserId,
                 Firstname = model.Firstname,
                 Lastname = model.Lastname,
                 CityId = model.CityId,
@@ -63,7 +50,7 @@ namespace Task.Services.Mappers
             };
         }
 
-        public IEnumerable<UserItem> MapItemToModelRange(IEnumerable<UserModel> models)
+        public static IEnumerable<UserItem> MapItemToModelRange(IEnumerable<UserModel> models)
         {
             var result = new List<UserItem>();
             foreach (var model in models)

@@ -12,21 +12,11 @@ namespace Task.Repository.Repositories
 {
     public class UserRepository : Repository<UserItem>, IUserRepository
     {
-        private readonly ApplicationDbContext context;
-
-        public UserRepository(ApplicationDbContext context) : base(context)
-        {
-            this.context = context;
-        }
+        public UserRepository(ApplicationDbContext context) : base(context){ }
 
         public void CreateUser(UserItem user)
         {
             this.context.Users.Add(user);
-        }
-
-        public IEnumerable<UserItem> GetUsers(Expression<Func<UserItem, bool>> expression)
-        {
-            return this.context.Users.Include(i=>i.City).ThenInclude(i=>i.Country).Include(i=>i.Title).Where(expression);
         }
 
         public void RemoveUser(UserItem user)
@@ -41,12 +31,12 @@ namespace Task.Repository.Repositories
 
         public override async Task<UserItem> GetById(int id)
         {
-            return await context.Users.Include(i => i.City).ThenInclude(i => i.Country).Include(i => i.Title).FirstOrDefaultAsync(i=>i.Id==id);
+            return await context.Users.FindAsync(id);
         }
 
-        public override IEnumerable<UserItem> GetAll()
+        public async System.Threading.Tasks.Task Save()
         {
-            return context.Users.Include(i => i.City).ThenInclude(i => i.Country).Include(i => i.Title).ToList();
+            await context.SaveChangesAsync();
         }
     }
 }

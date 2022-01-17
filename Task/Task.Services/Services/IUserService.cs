@@ -11,8 +11,6 @@ namespace Task.Services.Services
 {
     public interface IUserService
     {
-        public IEnumerable<UserModel> GetUsers(Expression<Func<UserItem, bool>> expression);
-
         public Task<UserModel> GetById(int id);
 
         public IEnumerable<UserModel> GetAll();

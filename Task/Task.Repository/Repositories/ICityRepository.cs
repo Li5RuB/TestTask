@@ -14,6 +14,6 @@ namespace Task.Repository.Repositories
 
         public Task<CityItem> GetById(int id);
 
-        public IEnumerable<CityItem> GetUsers(Expression<Func<CityItem, bool>> expression);
+        public IEnumerable<CityItem> GetCitiesByCountryId(int id);
     }
 }

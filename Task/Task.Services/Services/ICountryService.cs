@@ -13,7 +13,5 @@ namespace Task.Services.Services
         public IEnumerable<CountryModel> GetAll();
 
         public Task<CountryModel> GetById(int id);
-
-        public IEnumerable<CityModel> GetCities(int id);
     }
 }

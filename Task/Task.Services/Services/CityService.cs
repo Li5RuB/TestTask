@@ -13,28 +13,26 @@ namespace Task.Services.Services
 {
     public class CityService : ICityService
     {
-        private readonly UnitOfWork unitOfWork;
-        private readonly CityMapper cityMapper;
+        private readonly ICityRepository cityRepository;
 
-        public CityService(UnitOfWork unitOfWork, CityMapper cityMapper)
+        public CityService(ICityRepository cityRepository)
         {
-            this.unitOfWork = unitOfWork;
-            this.cityMapper = cityMapper;
+            this.cityRepository = cityRepository;
         }
 
         public IEnumerable<CityModel> GetAll()
         {
-            return this.cityMapper.MapItemToModelRange(this.unitOfWork.CityRepository.GetAll());
+            return CityMapper.MapItemToModelRange(this.cityRepository.GetAll());
         }
 
         public async Task<CityModel> GetById(int id)
         {
-            return this.cityMapper.MapItemToModel(await this.unitOfWork.CityRepository.GetById(id));
+            return CityMapper.MapItemToModel(await cityRepository.GetById(id));
         }
 
-        public IEnumerable<CityModel> GetUsers(Expression<Func<CityItem, bool>> expression)
+        public IEnumerable<CityModel> GetCitiesByCountryId(int CountryId)
         {
-            return this.cityMapper.MapItemToModelRange(this.unitOfWork.CityRepository.GetUsers(expression));
+            return CityMapper.MapItemToModelRange(cityRepository.GetCitiesByCountryId(CountryId));
         }
     }
 }

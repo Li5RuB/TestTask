@@ -9,6 +9,13 @@ header {
     background-color: lightgray;
 }
 
+input[class=search]{
+    border-radius:7px;
+    border: 2px solid black;
+    padding:3px;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
 th {
     background-color: #cfcfcf;
 }
@@ -27,9 +34,10 @@ table {
     border-collapse: collapse;
 }
 
-button{
-    
+button {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
+
 
 td,th {
     padding-top: 5px;
@@ -44,6 +52,7 @@ td,th {
     margin-bottom: 10px;
     display: flex;
     justify-content: space-between;
+
 }
 
 .paging{

@@ -8,14 +8,12 @@ namespace Task.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IUserService userService;
-
-        public HomeController(IUserService userService)
+        public HomeController()
         {
-            this.userService = userService;
+
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             return View();
         }

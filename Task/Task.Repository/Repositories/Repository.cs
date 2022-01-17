@@ -9,7 +9,7 @@ namespace Task.Repository.Repositories
 {
     public abstract class Repository<T> where T : class
     {
-        private readonly ApplicationDbContext context;
+        protected readonly ApplicationDbContext context;
         public Repository(ApplicationDbContext context)
         {
             this.context = context;

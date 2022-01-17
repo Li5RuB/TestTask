@@ -17,11 +17,5 @@ namespace Task.Web.Controllers
         {
             return Json(this.countryService.GetAll());
         }
-
-        [HttpGet]
-        public JsonResult GetCitiesByCountry(int id)
-        {
-            return Json(this.countryService.GetCities(id));
-        }
     }
 }

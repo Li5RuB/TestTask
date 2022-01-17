@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,7 +9,8 @@ namespace Task.Repository.Items
 {
     public class UserItem
     {
-        public int Id { get; set; }
+        [Key]
+        public int UserId { get; set; }
 
         public string Firstname { get; set; }
 
@@ -20,12 +22,8 @@ namespace Task.Repository.Items
 
         public int TitleId { get; set; }
 
-        public TitleItem Title { get;set; }
-
         public string Comments { get; set; }
 
         public int CityId { get; set; }
-
-        public CityItem City { get; set; }
     }
 }

@@ -10,8 +10,6 @@ namespace Task.Repository.Repositories
 {
     public interface IUserRepository
     {
-        public IEnumerable<UserItem> GetUsers(Expression<Func<UserItem, bool>> expression);
-
         public Task<UserItem> GetById(int id);
 
         public IEnumerable<UserItem> GetAll();
@@ -21,5 +19,7 @@ namespace Task.Repository.Repositories
         public void RemoveUser(UserItem user);
 
         public void UpdateUser(UserItem user);
+
+        public System.Threading.Tasks.Task Save();
     }
 }

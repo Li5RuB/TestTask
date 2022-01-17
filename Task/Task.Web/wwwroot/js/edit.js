@@ -18,17 +18,17 @@
     $('#Countries').change(GetSities);
 
 
-    $('#TitleId option[value=' + model['title'].id + ']').prop('selected', true);
+    $('#TitleId option[value=' + model.titleId + ']').prop('selected', true);
     $('#Countries option[value=' + model['city'].countryId + ']').prop('selected', true);
     await GetSities(model['city'].countryId);
-    $('#CityId option[value=' + model['city'].id + ']').prop('selected', true);
+    $('#CityId option[value=' + model['city'].cityId + ']').prop('selected', true);
 });
 
 function SetTitles(data) {
     $('#TitleId').empty();
     $('#TitleId').append($('<option value=""></option>'));
     for (let i in data) {
-        $('#TitleId').append($('<option name="Title" value="' + data[i].id + '">' + data[i].name + '</option>'));
+        $('#TitleId').append($('<option name="Title" value="' + data[i].titleId + '">' + data[i].name + '</option>'));
     }
 }
 
@@ -36,7 +36,7 @@ function SetCountries(data) {
     $('#Countries').empty();
     $('#Countries').append($('<option value=""></option>'));
     for (let i in data) {
-        $('#Countries').append($('<option value="' + data[i].id + '">' + data[i].name + '</option>'));
+        $('#Countries').append($('<option value="' + data[i].countryId + '">' + data[i].name + '</option>'));
     }
 }
 
@@ -44,7 +44,7 @@ async function GetSities(v) {
     let value = this.value || v;
     await $.ajax({
         datatype: "json",
-        url: "/Countries/GetCitiesByCountry",
+        url: "/Cities/GetCitiesByCountryId",
         method: "GET",
         data: { 'id': value },
         success: SetCities,
@@ -55,6 +55,6 @@ function SetCities(data) {
     $('#CityId').empty();
     $('#CityId').append($('<option value=""></option>'));
     for (let i in data) {
-        $('#CityId').append($('<option name="City" value="' + data[i].id + '">' + data[i].name + '</option>'));
+        $('#CityId').append($('<option name="City" value="' + data[i].cityId + '">' + data[i].name + '</option>'));
     }
 }

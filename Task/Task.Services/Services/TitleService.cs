@@ -11,23 +11,21 @@ namespace Task.Services.Services
 {
     public class TitleService : ITitleService
     {
-        private readonly UnitOfWork unitOfWork;
-        private readonly TitleMapper titleMapper;
+        private readonly ITitleRepository titleRepository;
 
-        public TitleService(UnitOfWork unitOfWork, TitleMapper titleMapper)
+        public TitleService(ITitleRepository titleRepository)
         {
-            this.unitOfWork = unitOfWork;
-            this.titleMapper = titleMapper;
+            this.titleRepository = titleRepository;
         }
 
         public IEnumerable<TitleModel> GetAll()
         {
-            return this.titleMapper.MapItemToModelRange(this.unitOfWork.TitleRepository.GetAll());
+            return TitleMapper.MapItemToModelRange(titleRepository.GetAll());
         }
 
         public async Task<TitleModel> GetById(int id)
         {
-            return titleMapper.MapItemToModel(await this.unitOfWork.TitleRepository.GetById(id));
+            return TitleMapper.MapItemToModel(await titleRepository.GetById(id));
         }
     }
 }

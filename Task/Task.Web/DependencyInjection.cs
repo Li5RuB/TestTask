@@ -11,19 +11,18 @@ namespace Task.Web
     {
         public static void AddDependencies(this IServiceCollection services)
         {
-            services.AddTransient<UnitOfWork>();
+            services.AddDbContext<ApplicationDbContext>(options =>
+   options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=TestTask;User Id=koshin;password=Qwe123!@#;MultipleActiveResultSets=true"));
 
-            services.AddTransient<UserMapper>();
-            services.AddTransient<CountryMapper>();
-            services.AddTransient<CityMapper>();
-            services.AddTransient<TitleMapper>();
+            services.AddTransient<ICityRepository, CityRepository>();
+            services.AddTransient<ICountryRepository, CountryRepository>();
+            services.AddTransient<ITitleRepository, TitleRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
 
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ICountryService, CountryService>();
             services.AddTransient<ITitleService, TitleService>();
             services.AddTransient<ICityService, CityService>();
-            services.AddDbContext<ApplicationDbContext>(options =>
-               options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=TestTask;User Id=koshin;password=Qwe123!@#;MultipleActiveResultSets=true"));
         }
     }
 }

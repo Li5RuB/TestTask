@@ -13,28 +13,26 @@ namespace Task.Services.Services
 {
     public class UserService : IUserService
     {
-        private readonly UnitOfWork unitOfWork;
-        private readonly UserMapper userMapper; 
+        private readonly IUserRepository userRepository;
         
-        public UserService(UnitOfWork unitOfWork, UserMapper userMapper)
+        public UserService(IUserRepository userRepository)
         {
-            this.unitOfWork = unitOfWork;
-            this.userMapper = userMapper;
+            this.userRepository = userRepository;
         }
 
         public void CreateUser(UserModel user)
         {
-            this.unitOfWork.UserRepository.CreateUser(userMapper.MapModelToItem(user));
+            userRepository.CreateUser(UserMapper.MapModelToItem(user));
         }
 
         public IEnumerable<UserModel> GetAll()
         {
-            return userMapper.MapItemToModelRange(unitOfWork.UserRepository.GetAll());
+            return UserMapper.MapItemToModelRange(userRepository.GetAll());
         }
 
         public async Task<UserModel> GetById(int id)
         {
-            return userMapper.MapItemToModel(await unitOfWork.UserRepository.GetById(id));
+            return UserMapper.MapItemToModel(await userRepository.GetById(id));
         }
 
         public IEnumerable<UserModel> GetByPage(int page)
@@ -43,12 +41,12 @@ namespace Task.Services.Services
             {
                 page = 1;
             }
-            return userMapper.MapItemToModelRange(unitOfWork.UserRepository.GetAll().Skip(page * 3 - 3).Take(3));
+            return UserMapper.MapItemToModelRange(userRepository.GetAll().Skip(page * 3 - 3).Take(3));
         }
 
         public int GetPageCount()
         {
-            var count = unitOfWork.UserRepository.GetAll().Count();
+            var count = userRepository.GetAll().Count();
             if (count%3==0)
             {
                 return count / 3;
@@ -56,30 +54,25 @@ namespace Task.Services.Services
             return count / 3 + 1;
         }
 
-        public IEnumerable<UserModel> GetUsers(Expression<Func<UserItem, bool>> expression)
-        {
-            return userMapper.MapItemToModelRange(unitOfWork.UserRepository.GetUsers(expression));
-        }
-
         public async System.Threading.Tasks.Task RemoveUser(int id)
         {
-            unitOfWork.UserRepository.RemoveUser(await unitOfWork.UserRepository.GetById(id));
+            userRepository.RemoveUser(await userRepository.GetById(id));
         }
 
         public async System.Threading.Tasks.Task SaveChanges()
         {
-            await unitOfWork.Save();
+            await userRepository.Save();
         }
 
         public IEnumerable<UserModel> Search(string search)
         {
-            return userMapper.MapItemToModelRange(unitOfWork.UserRepository.GetUsers(i=>i.Firstname.Contains(search)||i.Lastname.Contains(search)
+            return UserMapper.MapItemToModelRange(userRepository.GetAll().Where(i=>i.Firstname.Contains(search)||i.Lastname.Contains(search)
             ||i.Email.Contains(search)||i.Phone.Contains(search)));
         }
 
         public void UpdateUser(UserModel user)
         {
-            unitOfWork.UserRepository.UpdateUser(userMapper.MapModelToItem(user));
+            userRepository.UpdateUser(UserMapper.MapModelToItem(user));
         }
     }
 }

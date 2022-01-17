@@ -12,7 +12,5 @@ namespace Task.Repository.Repositories
         public IEnumerable<CountryItem> GetAll();
 
         public Task<CountryItem> GetById(int id);
-
-        public IEnumerable<CityItem> GetCities(int id);
     }
 }

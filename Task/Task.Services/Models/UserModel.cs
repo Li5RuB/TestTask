@@ -10,7 +10,7 @@ namespace Task.Services.Models
 {
     public class UserModel
     {
-        public int Id { get; set; }
+        public int UserId { get; set; }
 
         [Required]
         [StringLength(255)]
@@ -35,8 +35,6 @@ namespace Task.Services.Models
         [Required]
         [Range(1,int.MaxValue)]
         public int TitleId { get; set; }
-
-        public TitleModel Title { get; set; }
 
         [Required]
         [Range(1, int.MaxValue)]

@@ -11,16 +11,11 @@ namespace Task.Repository.Repositories
 {
     public class CityRepository : Repository<CityItem>, ICityRepository
     {
-        private readonly ApplicationDbContext context;
+        public CityRepository(ApplicationDbContext context) : base(context) { }
 
-        public CityRepository(ApplicationDbContext context) : base(context)
+        public IEnumerable<CityItem> GetCitiesByCountryId(int id)
         {
-            this.context = context;
-        }
-
-        public IEnumerable<CityItem> GetUsers(Expression<Func<CityItem, bool>> expression)
-        {
-            return this.context.Cities.Where(expression);
+            return this.context.Cities.Where(i => i.CountryId == id);
         }
     }
 }

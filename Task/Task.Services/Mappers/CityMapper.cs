@@ -8,27 +8,19 @@ using Task.Services.Models;
 
 namespace Task.Services.Mappers
 {
-    public class CityMapper : IMapper<CityItem, CityModel>
+    public static class CityMapper
     {
-        private readonly CountryMapper countryMapper;
-
-        public CityMapper(CountryMapper countryMapper)
-        {
-            this.countryMapper = countryMapper;
-        }
-
-        public CityModel MapItemToModel(CityItem item)
+        public static CityModel MapItemToModel(CityItem item)
         {
             return new CityModel()
             {
-                Id = item.Id,
+                CityId = item.CityId,
                 Name = item.Name,
                 CountryId = item.CountryId,
-                Country = countryMapper.MapItemToModel(item.Country)
             };
         }
 
-        public IEnumerable<CityModel> MapItemToModelRange(IEnumerable<CityItem> items)
+        public static IEnumerable<CityModel> MapItemToModelRange(IEnumerable<CityItem> items)
         {
             var result = new List<CityModel>();
             foreach(var item in items)
@@ -37,11 +29,11 @@ namespace Task.Services.Mappers
             }
             return result;
         }
-        public CityItem MapModelToItem(CityModel model)
+        public static CityItem MapModelToItem(CityModel model)
         {
             return new CityItem()
             {
-                Id = model.Id,
+                CityId = model.CityId,
                 Name = model.Name,
                 CountryId = model.CountryId,
             };

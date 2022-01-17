@@ -15,6 +15,6 @@ namespace Task.Services.Services
 
         public Task<CityModel> GetById(int id);
 
-        public IEnumerable<CityModel> GetUsers(Expression<Func<CityItem, bool>> expression);
+        public IEnumerable<CityModel> GetCitiesByCountryId(int CountryId);
     }
 }

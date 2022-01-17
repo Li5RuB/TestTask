@@ -8,18 +8,18 @@ using Task.Services.Models;
 
 namespace Task.Services.Mappers
 {
-    public class CountryMapper : IMapper<CountryItem, CountryModel>
+    public static class CountryMapper
     {
-        public CountryModel MapItemToModel(CountryItem item)
+        public static CountryModel MapItemToModel(CountryItem item)
         {
             return new CountryModel()
             {
-                Id = item.Id,
+                CountryId = item.CountryId,
                 Name = item.Name,
             };
         }
 
-        public IEnumerable<CountryModel> MapItemToModelRange(IEnumerable<CountryItem> items)
+        public static IEnumerable<CountryModel> MapItemToModelRange(IEnumerable<CountryItem> items)
         {
             var result = new List<CountryModel>();
             foreach (var item in items)
@@ -29,11 +29,11 @@ namespace Task.Services.Mappers
             return result;
         }
 
-        public CountryItem MapModelToItem(CountryModel model)
+        public static CountryItem MapModelToItem(CountryModel model)
         {
             return new CountryItem()
             {
-                Id = model.Id,
+                CountryId = model.CountryId,
                 Name = model.Name,
             };
         }
