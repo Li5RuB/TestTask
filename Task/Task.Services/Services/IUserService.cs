@@ -21,11 +21,13 @@ namespace Task.Services.Services
 
         public void UpdateUser(UserModel user);
 
-        public IEnumerable<UserModel> GetByPage(int page);
+        public Task<IEnumerable<UserModel>> GetByPage(int page);
 
         public IEnumerable<UserModel> Search(string search);
 
-        public int GetPageCount();
+        public int GetPageCount(IEnumerable<UserModel> users);
+
+        public Task<IEnumerable<UserModel>> GetAllUserFields(List<UserModel> userModels);
 
         public System.Threading.Tasks.Task SaveChanges();
     }

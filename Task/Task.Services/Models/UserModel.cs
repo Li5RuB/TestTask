@@ -36,6 +36,8 @@ namespace Task.Services.Models
         [Range(1,int.MaxValue)]
         public int TitleId { get; set; }
 
+        public TitleModel Title { get; set; }
+
         [Required]
         [Range(1, int.MaxValue)]
         public int CityId { get; set; }

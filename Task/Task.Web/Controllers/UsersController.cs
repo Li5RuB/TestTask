@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Task.Services.Models;
 using Task.Services.Services;
-using Task.Web.Models;
 
 namespace Task.Web.Controllers
 {
@@ -23,22 +22,18 @@ namespace Task.Web.Controllers
             this.titleService = titleService;
         }
 
-        public async Task<IActionResult> Index(int page=1)
+        public async Task<IActionResult> Index(int page = 1, string search = null)
         {
-            var pcount = this.userService.GetPageCount();
-            if (pcount<page)
+            var users = search==null?userService.GetAll():userService.Search(search);
+            var pageCount = userService.GetPageCount(users);
+            if (pageCount < page)
                 page = 1;
-            else if(page<1)
-                page = pcount;
+            else if (page < 1)
+                page = pageCount;
             ViewData["page"] = page;
-            ViewData["pcount"] = pcount;
-            var users = new List<ViewModelUser>();
-            foreach (var item in this.userService.GetByPage(page).ToList())
-            {
-                var city = await cityService.GetById(item.CityId);
-                users.Add(new ViewModelUser(item, await titleService.GetById(item.TitleId), city, await countryService.GetById(city.CountryId)));
-            }
-            return View(users);
+            ViewData["pcount"] = pageCount;
+            ViewData["search"] = search;
+            return View(await userService.GetAllUserFields(users.Skip(page * 3 - 3).Take(3).ToList()));
         }
 
         public async Task<IActionResult> Edit(int id) 
@@ -82,6 +77,11 @@ namespace Task.Web.Controllers
                 return RedirectToAction("Index");
             }
             return View();
+        }
+
+        public IActionResult Search(int page, string search)
+        {
+            return RedirectToAction("Index", new {page=page, search = search});
         }
     }
 }

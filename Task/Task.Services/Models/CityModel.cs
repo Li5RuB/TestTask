@@ -13,5 +13,7 @@ namespace Task.Services.Models
         public string Name { get; set; }
 
         public int CountryId { get; set; }
+
+        public CountryModel Country { get; set; }
     }
 }

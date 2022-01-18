@@ -16,4 +16,12 @@
         $('.popup-bg').fadeIn(800);
         $('html').addClass('no-scroll');
     });
+
+    $("#search").keyup(function (event) {
+        event.preventDefault();
+        console.log(event.keyCode);
+        if (event.keyCode === 13) {
+            location.href = searchUrl.replace('__s__',this.value);
+        }
+    });
 });

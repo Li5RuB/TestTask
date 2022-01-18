@@ -14,10 +14,16 @@ namespace Task.Services.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository userRepository;
+        private readonly ICityRepository cityRepository;
+        private readonly ICountryRepository countryRepository;
+        private readonly ITitleRepository titleRepository;
         
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository, ICityRepository cityRepository, ICountryRepository countryRepository, ITitleRepository titleRepository)
         {
             this.userRepository = userRepository;
+            this.cityRepository = cityRepository;
+            this.countryRepository = countryRepository;
+            this.titleRepository = titleRepository;
         }
 
         public void CreateUser(UserModel user)
@@ -35,18 +41,19 @@ namespace Task.Services.Services
             return UserMapper.MapItemToModel(await userRepository.GetById(id));
         }
 
-        public IEnumerable<UserModel> GetByPage(int page)
+        public async Task<IEnumerable<UserModel>> GetByPage(int page)
         {
             if (!(page>1))
             {
                 page = 1;
             }
-            return UserMapper.MapItemToModelRange(userRepository.GetAll().Skip(page * 3 - 3).Take(3));
+            var usersmodel = UserMapper.MapItemToModelRange(userRepository.GetAll().Skip(page * 3 - 3).Take(3)).ToList();
+            return await GetAllUserFields(usersmodel);
         }
 
-        public int GetPageCount()
+        public int GetPageCount(IEnumerable<UserModel> users)
         {
-            var count = userRepository.GetAll().Count();
+            var count = users.Count();
             if (count%3==0)
             {
                 return count / 3;
@@ -66,13 +73,25 @@ namespace Task.Services.Services
 
         public IEnumerable<UserModel> Search(string search)
         {
-            return UserMapper.MapItemToModelRange(userRepository.GetAll().Where(i=>i.Firstname.Contains(search)||i.Lastname.Contains(search)
-            ||i.Email.Contains(search)||i.Phone.Contains(search)));
+            var userModels = UserMapper.MapItemToModelRange(userRepository.GetAll().Where(i=>i.Firstname.ToUpper().Contains(search.ToUpper())||i.Lastname.ToUpper().Contains(search.ToUpper())
+            ||i.Email.ToUpper().Contains(search.ToUpper()) ||i.Phone.ToUpper().Contains(search.ToUpper())));
+            return userModels.ToList();
         }
 
         public void UpdateUser(UserModel user)
         {
             userRepository.UpdateUser(UserMapper.MapModelToItem(user));
+        }
+
+        public async Task<IEnumerable<UserModel>> GetAllUserFields(List<UserModel> userModels)
+        {
+            for (int i = 0; i < userModels.Count(); i++)
+            {
+                userModels[i].City = CityMapper.MapItemToModel(await cityRepository.GetById(userModels[i].CityId));
+                userModels[i].City.Country = CountryMapper.MapItemToModel(await countryRepository.GetById(userModels[i].City.CountryId));
+                userModels[i].Title = TitleMapper.MapItemToModel(await titleRepository.GetById(userModels[i].TitleId));
+            }
+            return userModels;
         }
     }
 }
