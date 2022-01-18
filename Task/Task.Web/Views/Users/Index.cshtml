@@ -83,7 +83,10 @@
     <div class="paging">
         <div class="pages">
         @{url=search==null?Url.Action("Index",new {page=currentpage-1}):Url.Action("Search",new {page=currentpage-1,search=search});}
-        <a href="@url">&lt;</a>
+            @if (currentpage!=1)
+            {
+                <a href="@url">&lt;</a>
+            }
             @{
                 int cp = currentpage;
                 int k = 0;
@@ -101,7 +104,7 @@
                 {
                         <div>|</div>
                         url = search == null ? Url.Action("Index", new { page = i }) : Url.Action("Search", new { page = i, search = search });
-                        <a href="@url)">
+                        <a href="@url">
                         @if(i==cp){
                             <b>@i</b>
                         }else
@@ -111,7 +114,10 @@
 
             } 
             }        
-            |@{url=search==null?Url.Action("Index",new {page=cp+1}):Url.Action("Search",new {page=cp+1,search=search});}<a href="@url">&gt;</a>
+            |@{url=search==null?Url.Action("Index",new {page=cp+1}):Url.Action("Search",new {page=cp+1,search=search});}
+            @if(cp != pcount){
+                <a href="@url">&gt;</a>    
+            }
         </div>
     </div>
 </div>
