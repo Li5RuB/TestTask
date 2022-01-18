@@ -17,10 +17,12 @@
     <div >
         <div class="form-element form-lable">@Html.LabelFor(m=>m.Email)</div>
         <div class="form-element form-input">@Html.TextBoxFor(m=>m.Email)</div>
+        <span asp-validation-for="Email"></span>
     </div>
     <div>
         <div class="form-element form-lable">@Html.LabelFor(m=>m.Phone)</div>
         <div class="form-element form-input">@Html.TextBoxFor(m=>m.Phone)</div>
+        <span asp-validation-for="Phone"></span>
     </div>
     <div>
         <div class="form-element form-lable">Title</div>

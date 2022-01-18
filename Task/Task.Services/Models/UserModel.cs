@@ -19,14 +19,14 @@ namespace Task.Services.Models
 
         [Required]
         [StringLength(255)]
-        [Display(Name = "Last Name")]
+        [Display(Name = "Last name")]
         public string Lastname { get; set;}
 
         [Required]
-        [EmailAddress]
+        [EmailAddress(ErrorMessage = "invalid email") ]
         public string Email { get; set; }
 
-        [Phone]
+        [Phone(ErrorMessage = "invalid phone")]
         public string Phone { get; set; }
 
         [StringLength(255)]

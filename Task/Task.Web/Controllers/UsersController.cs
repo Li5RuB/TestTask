@@ -76,7 +76,7 @@ namespace Task.Web.Controllers
                 await this.userService.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View();
+            return View(userModel);
         }
 
         public IActionResult Search(int page, string search)
