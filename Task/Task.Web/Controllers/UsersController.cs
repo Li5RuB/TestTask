@@ -65,7 +65,7 @@ namespace TestTask.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                _userService.CreateUser(userModel);
+                await _userService.CreateUser(userModel);
                 return RedirectToAction("Index");
             }
             return View();

@@ -26,10 +26,10 @@ namespace TestTask.Services.Services
             _titleRepository = titleRepository;
         }
 
-        public void CreateUser(UserModel user)
+        public async Task CreateUser(UserModel user)
         {
             _userRepository.Create(UserMapper.MapModelToItem(user));
-            _userRepository.Save();
+            await _userRepository.Save();
         }
 
         public async Task<UserModel> GetById(int id)
@@ -78,7 +78,7 @@ namespace TestTask.Services.Services
             return result;
         }
 
-        public async void UpdateUser(UserModel user)
+        public async Task UpdateUser(UserModel user)
         {
             _userRepository.Update(UserMapper.MapModelToItem(user));
             await _userRepository.Save();

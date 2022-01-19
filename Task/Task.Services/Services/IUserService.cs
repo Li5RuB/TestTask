@@ -13,11 +13,11 @@ namespace TestTask.Services.Services
     {
         public Task<UserModel> GetById(int id);
 
-        public void CreateUser(UserModel user);
+        public Task CreateUser(UserModel user);
 
         public Task RemoveUser(int id);
 
-        public void UpdateUser(UserModel user);
+        public Task UpdateUser(UserModel user);
 
         public List<UserModel> GetByPage(int page);
 

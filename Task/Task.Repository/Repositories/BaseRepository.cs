@@ -41,7 +41,7 @@ namespace TestTask.Repository.Repositories
             GetContext().Update(item);
         }
 
-        public virtual async System.Threading.Tasks.Task Save()
+        public virtual async Task Save()
         {
             await _context.SaveChangesAsync();
         }
