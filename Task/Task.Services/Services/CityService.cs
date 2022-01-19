@@ -13,28 +13,28 @@ namespace TestTask.Services.Services
 {
     public class CityService : ICityService
     {
-        private readonly ICityRepository cityRepository;
+        private readonly ICityRepository _cityRepository;
 
         public CityService(ICityRepository cityRepository)
         {
-            this.cityRepository = cityRepository;
+            _cityRepository = cityRepository;
         }
 
-        public IEnumerable<CityModel> GetAll()
+        public List<CityModel> GetAll()
         {
-            var cities = cityRepository.GetAllCities();
+            var cities = _cityRepository.GetAllCities();
             var result = cities.Select(x => CityMapper.MapItemToModel(x)).ToList();
             return result;
         }
 
         public async Task<CityModel> GetById(int id)
         {
-            return CityMapper.MapItemToModel(await cityRepository.GetById(id));
+            return CityMapper.MapItemToModel(await _cityRepository.GetById(id));
         }
 
-        public IEnumerable<CityModel> GetCitiesByCountryId(int CountryId)
+        public List<CityModel> GetCitiesByCountryId(int CountryId)
         {
-            var cities = cityRepository.GetCitiesByCountryId(CountryId);
+            var cities = _cityRepository.GetCitiesByCountryId(CountryId);
             var result = cities.Select(x=>CityMapper.MapItemToModel(x)).ToList(); 
             return result;
         }

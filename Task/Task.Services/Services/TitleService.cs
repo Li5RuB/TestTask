@@ -11,23 +11,23 @@ namespace TestTask.Services.Services
 {
     public class TitleService : ITitleService
     {
-        private readonly ITitleRepository titleRepository;
+        private readonly ITitleRepository _titleRepository;
 
         public TitleService(ITitleRepository titleRepository)
         {
-            this.titleRepository = titleRepository;
+            _titleRepository = titleRepository;
         }
 
-        public IEnumerable<TitleModel> GetAll()
+        public List<TitleModel> GetAll()
         {
-            var titles = titleRepository.GetAllTitles();
+            var titles = _titleRepository.GetAllTitles();
             var result = titles.Select(x => TitleMapper.MapItemToModel(x)).ToList();
             return result;
         }
 
         public async Task<TitleModel> GetById(int id)
         {
-            return TitleMapper.MapItemToModel(await titleRepository.GetById(id));
+            return TitleMapper.MapItemToModel(await _titleRepository.GetById(id));
         }
     }
 }

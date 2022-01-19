@@ -9,42 +9,41 @@ namespace TestTask.Web.Controllers
 {
     public class UsersController : Controller
     {
-        private readonly IUserService userService;
-        private readonly ICountryService countryService;
-        private readonly ITitleService titleService;
-        private readonly ICityService cityService;
+        private readonly IUserService _userService;
+        private readonly ICountryService _countryService;
+        private readonly ITitleService _titleService;
+        private readonly ICityService _cityService;
         
         public UsersController(IUserService userService, ITitleService titleService, ICountryService countryService, ICityService cityService)
         {
-            this.userService = userService;
-            this.countryService = countryService;
-            this.cityService = cityService;
-            this.titleService = titleService;
+            _userService = userService;
+            _countryService = countryService;
+            _cityService = cityService;
+            _titleService = titleService;
         }
 
         public async Task<IActionResult> Index(int page = 1, string search = null)
         {
-            var userPageModel = userService.GetUserPageModel(page, search);
+            var userPageModel = _userService.GetUserPageModel(page, search);
             ViewData["page"] = userPageModel.currentPage;
             ViewData["pcount"] = userPageModel.pageCount;
             ViewData["search"] = search;
-            return View(await userService.GetAllUserFields(userPageModel.UserModels));
+            return View(await _userService.GetAllUserFields(userPageModel.UserModels));
         }
 
         public async Task<IActionResult> Edit(int id) 
         {
-            var user = await this.userService.GetById(id);
-            user.City = await this.cityService.GetById(user.CityId);
+            var user = await _userService.GetById(id);
+            user.City = await _cityService.GetById(user.CityId);
             return View(user); 
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(UserModel user)
+        public IActionResult Edit(UserModel user)
         {
             if (ModelState.IsValid)
             {
-                this.userService.UpdateUser(user);
-                await this.userService.SaveChanges();
+                _userService.UpdateUser(user);
                 return RedirectToAction("Index");
             }
             return View(user);
@@ -52,8 +51,7 @@ namespace TestTask.Web.Controllers
 
         public async Task<IActionResult> Delete(int id, int page) 
         {
-            await this.userService.RemoveUser(id);
-            await this.userService.SaveChanges();
+            await _userService.RemoveUser(id);
             return RedirectToAction("Index", new { page = page });
         }
 
@@ -67,8 +65,7 @@ namespace TestTask.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                this.userService.CreateUser(userModel);
-                await this.userService.SaveChanges();
+                _userService.CreateUser(userModel);
                 return RedirectToAction("Index");
             }
             return View();

@@ -13,43 +13,44 @@ namespace TestTask.Services.Services
 {
     public class UserService : IUserService
     {
-        private readonly IUserRepository userRepository;
-        private readonly ICityRepository cityRepository;
-        private readonly ICountryRepository countryRepository;
-        private readonly ITitleRepository titleRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly ICityRepository _cityRepository;
+        private readonly ICountryRepository _countryRepository;
+        private readonly ITitleRepository _titleRepository;
         
         public UserService(IUserRepository userRepository, ICityRepository cityRepository, ICountryRepository countryRepository, ITitleRepository titleRepository)
         {
-            this.userRepository = userRepository;
-            this.cityRepository = cityRepository;
-            this.countryRepository = countryRepository;
-            this.titleRepository = titleRepository;
+            _userRepository = userRepository;
+            _cityRepository = cityRepository;
+            _countryRepository = countryRepository;
+            _titleRepository = titleRepository;
         }
 
         public void CreateUser(UserModel user)
         {
-            userRepository.Create(UserMapper.MapModelToItem(user));
+            _userRepository.Create(UserMapper.MapModelToItem(user));
+            _userRepository.Save();
         }
 
         public async Task<UserModel> GetById(int id)
         {
-            return UserMapper.MapItemToModel(await userRepository.GetById(id));
+            return UserMapper.MapItemToModel(await _userRepository.GetById(id));
         }
 
-        public IEnumerable<UserModel> GetByPage(int page)
+        public List<UserModel> GetByPage(int page)
         {
             if (!(page>1))
             {
                 page = 1;
             }
-            var users = userRepository.GetUsersToPage(page);
-            var result = users.Select(x=>UserMapper.MapItemToModel(x));
+            var users = _userRepository.GetUsersToPage(page);
+            var result = users.Select(x=>UserMapper.MapItemToModel(x)).ToList();
             return result;
         }
 
         public int GetPageCount(string search = null)
         {
-            var count = search==null?userRepository.GetCount():GetSearchCount(search);
+            var count = search==null?_userRepository.GetCount():GetSearchCount(search);
             if (count%3==0)
             {
                 return count / 3;
@@ -59,40 +60,37 @@ namespace TestTask.Services.Services
 
         private int GetSearchCount(string search)
         {
-            return userRepository.GetSearchCount(i => i.Firstname.ToUpper().Contains(search.ToUpper()) || i.Lastname.ToUpper().Contains(search.ToUpper())
+            return _userRepository.GetSearchCount(i => i.Firstname.ToUpper().Contains(search.ToUpper()) || i.Lastname.ToUpper().Contains(search.ToUpper())
             || i.Email.ToUpper().Contains(search.ToUpper()) || i.Phone.ToUpper().Contains(search.ToUpper()));
         }
 
-        public async System.Threading.Tasks.Task RemoveUser(int id)
+        public async Task RemoveUser(int id)
         {
-            userRepository.Remove(await userRepository.GetById(id));
+            _userRepository.Remove(await _userRepository.GetById(id));
+            await _userRepository.Save();
         }
 
-        public async System.Threading.Tasks.Task SaveChanges()
+        public List<UserModel> Search(string search, int page)
         {
-            await userRepository.Save();
-        }
-
-        public IEnumerable<UserModel> Search(string search, int page)
-        {
-            var users = userRepository.Search(i => i.Firstname.ToUpper().Contains(search.ToUpper()) || i.Lastname.ToUpper().Contains(search.ToUpper())
+            var users = _userRepository.Search(i => i.Firstname.ToUpper().Contains(search.ToUpper()) || i.Lastname.ToUpper().Contains(search.ToUpper())
             || i.Email.ToUpper().Contains(search.ToUpper()) || i.Phone.ToUpper().Contains(search.ToUpper()), page);
             var result = users.Select(x=>UserMapper.MapItemToModel(x)).ToList();
             return result;
         }
 
-        public void UpdateUser(UserModel user)
+        public async void UpdateUser(UserModel user)
         {
-            userRepository.Update(UserMapper.MapModelToItem(user));
+            _userRepository.Update(UserMapper.MapModelToItem(user));
+            await _userRepository.Save();
         }
 
-        public async Task<IEnumerable<UserModel>> GetAllUserFields(List<UserModel> userModels)
+        public async Task<List<UserModel>> GetAllUserFields(List<UserModel> userModels)
         {
             for (int i = 0; i < userModels.Count(); i++)
             {
-                userModels[i].City = CityMapper.MapItemToModel(await cityRepository.GetById(userModels[i].CityId));
-                userModels[i].City.Country = CountryMapper.MapItemToModel(await countryRepository.GetById(userModels[i].City.CountryId));
-                userModels[i].Title = TitleMapper.MapItemToModel(await titleRepository.GetById(userModels[i].TitleId));
+                userModels[i].City = CityMapper.MapItemToModel(await _cityRepository.GetById(userModels[i].CityId));
+                userModels[i].City.Country = CountryMapper.MapItemToModel(await _countryRepository.GetById(userModels[i].City.CountryId));
+                userModels[i].Title = TitleMapper.MapItemToModel(await _titleRepository.GetById(userModels[i].TitleId));
             }
             return userModels;
         }

@@ -15,19 +15,17 @@ namespace TestTask.Services.Services
 
         public void CreateUser(UserModel user);
 
-        public System.Threading.Tasks.Task RemoveUser(int id);
+        public Task RemoveUser(int id);
 
         public void UpdateUser(UserModel user);
 
-        public IEnumerable<UserModel> GetByPage(int page);
+        public List<UserModel> GetByPage(int page);
 
-        public IEnumerable<UserModel> Search(string search, int page);
+        public List<UserModel> Search(string search, int page);
 
         public int GetPageCount(string search = null);
 
-        public Task<IEnumerable<UserModel>> GetAllUserFields(List<UserModel> userModels);
-
-        public System.Threading.Tasks.Task SaveChanges();
+        public Task<List<UserModel>> GetAllUserFields(List<UserModel> userModels);
 
         public UserPageModel GetUserPageModel(int page, string search);
     }

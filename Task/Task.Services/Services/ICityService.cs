@@ -11,10 +11,10 @@ namespace TestTask.Services.Services
 {
     public interface ICityService
     {
-        public IEnumerable<CityModel> GetAll();
+        public List<CityModel> GetAll();
 
         public Task<CityModel> GetById(int id);
 
-        public IEnumerable<CityModel> GetCitiesByCountryId(int CountryId);
+        public List<CityModel> GetCitiesByCountryId(int CountryId);
     }
 }

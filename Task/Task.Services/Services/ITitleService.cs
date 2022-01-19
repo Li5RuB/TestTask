@@ -11,6 +11,6 @@ namespace TestTask.Services.Services
     {
         public Task<TitleModel> GetById(int id);
 
-        public IEnumerable<TitleModel> GetAll();
+        public List<TitleModel> GetAll();
     }
 }

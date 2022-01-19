@@ -10,7 +10,7 @@ namespace TestTask.Services.Services
 {
     public interface ICountryService
     {
-        public IEnumerable<CountryModel> GetAll();
+        public List<CountryModel> GetAll();
 
         public Task<CountryModel> GetById(int id);
     }
