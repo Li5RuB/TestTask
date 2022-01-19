@@ -19,16 +19,6 @@ namespace Task.Services.Mappers
             };
         }
 
-        public static IEnumerable<CountryModel> MapItemToModelRange(IEnumerable<CountryItem> items)
-        {
-            var result = new List<CountryModel>();
-            foreach (var item in items)
-            {
-                result.Add(MapItemToModel(item));
-            }
-            return result;
-        }
-
         public static CountryItem MapModelToItem(CountryModel model)
         {
             return new CountryItem()

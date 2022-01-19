@@ -14,5 +14,29 @@ namespace Task.Repository.Repositories
     {
         public UserRepository(ApplicationDbContext context) : base(context){ }
 
+        public IEnumerable<UserItem> GetUsersToPage(int page)
+        {
+            const int numberOfUsersPerPage = 3;
+            IQueryable<UserItem> users = context.Users;
+            return users.Skip(page * numberOfUsersPerPage - numberOfUsersPerPage).Take(numberOfUsersPerPage);
+        }
+
+        public IEnumerable<UserItem> Search(Expression<Func<UserItem,bool>> expression, int page)
+        {
+            const int numberOfUsersPerPage = 3;
+            IQueryable<UserItem> users = context.Users;
+            return users.Where(expression).Skip(page * numberOfUsersPerPage - numberOfUsersPerPage).Take(numberOfUsersPerPage);
+
+        }
+
+        public int GetCount()
+        {
+            return context.Users.Count();
+        }
+
+        public int GetSearchCount(Expression<Func<UserItem, bool>> expression)
+        {
+            return context.Users.Count(expression);
+        }
     }
 }
