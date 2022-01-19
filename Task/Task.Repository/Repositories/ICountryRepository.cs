@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Task.Repository.Items;
+using TestTask.Repository.Items;
 
-namespace Task.Repository.Repositories
+namespace TestTask.Repository.Repositories
 {
     public interface ICountryRepository
     {
-        public IEnumerable<CountryItem> GetAll();
+        public List<CountryItem> GetAllCountries();
 
         public Task<CountryItem> GetById(int id);
     }

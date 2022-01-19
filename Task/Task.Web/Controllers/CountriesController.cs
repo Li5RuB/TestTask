@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Task.Services.Services;
+using TestTask.Services.Services;
 
-namespace Task.Web.Controllers
+namespace TestTask.Web.Controllers
 {
     public class CountriesController : Controller
     {

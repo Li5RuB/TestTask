@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Task.Repository.Repositories;
-using Task.Services.Mappers;
-using Task.Services.Models;
+using TestTask.Repository.Repositories;
+using TestTask.Services.Mappers;
+using TestTask.Services.Models;
 
-namespace Task.Services.Services
+namespace TestTask.Services.Services
 {
     public class TitleService : ITitleService
     {
@@ -20,12 +20,9 @@ namespace Task.Services.Services
 
         public IEnumerable<TitleModel> GetAll()
         {
-            List<TitleModel> titleModels = new List<TitleModel>();
-            foreach (var item in titleRepository.GetAll())
-            {
-                titleModels.Add(TitleMapper.MapItemToModel(item));
-            }
-            return titleModels;
+            var titles = titleRepository.GetAllTitles();
+            var result = titles.Select(x => TitleMapper.MapItemToModel(x)).ToList();
+            return result;
         }
 
         public async Task<TitleModel> GetById(int id)

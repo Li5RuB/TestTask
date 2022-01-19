@@ -4,18 +4,23 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using Task.Repository.Data;
-using Task.Repository.Items;
+using TestTask.Repository.Data;
+using TestTask.Repository.Items;
 
-namespace Task.Repository.Repositories
+namespace TestTask.Repository.Repositories
 {
-    public class CityRepository : Repository<CityItem>, ICityRepository
+    public class CityRepository : BaseRepository<CityItem>, ICityRepository
     {
         public CityRepository(ApplicationDbContext context) : base(context) { }
 
-        public IEnumerable<CityItem> GetCitiesByCountryId(int id)
+        public List<CityItem> GetCitiesByCountryId(int id)
         {
-            return this.context.Cities.Where(i => i.CountryId == id);
+            return GetAll().Where(i => i.CountryId == id).ToList();
+        }
+
+        public List<CityItem> GetAllCities()
+        {
+            return GetAll().ToList();
         }
     }
 }

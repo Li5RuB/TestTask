@@ -4,12 +4,12 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using Task.Repository.Items;
-using Task.Repository.Repositories;
-using Task.Services.Mappers;
-using Task.Services.Models;
+using TestTask.Repository.Items;
+using TestTask.Repository.Repositories;
+using TestTask.Services.Mappers;
+using TestTask.Services.Models;
 
-namespace Task.Services.Services
+namespace TestTask.Services.Services
 {
     public class UserService : IUserService
     {
@@ -42,12 +42,9 @@ namespace Task.Services.Services
             {
                 page = 1;
             }
-            var userModels = new List<UserModel>();
-            foreach (var item in userRepository.GetUsersToPage(page))
-            {
-                userModels.Add(UserMapper.MapItemToModel(item));
-            }  
-            return userModels;
+            var users = userRepository.GetUsersToPage(page);
+            var result = users.Select(x=>UserMapper.MapItemToModel(x));
+            return result;
         }
 
         public int GetPageCount(string search = null)
@@ -78,13 +75,10 @@ namespace Task.Services.Services
 
         public IEnumerable<UserModel> Search(string search, int page)
         {
-            var userModels = new List<UserModel>();
-            foreach (var item in userRepository.Search(i => i.Firstname.ToUpper().Contains(search.ToUpper()) || i.Lastname.ToUpper().Contains(search.ToUpper())
-            || i.Email.ToUpper().Contains(search.ToUpper()) || i.Phone.ToUpper().Contains(search.ToUpper()), page)) 
-            {
-                userModels.Add(UserMapper.MapItemToModel(item));
-            }
-            return userModels;
+            var users = userRepository.Search(i => i.Firstname.ToUpper().Contains(search.ToUpper()) || i.Lastname.ToUpper().Contains(search.ToUpper())
+            || i.Email.ToUpper().Contains(search.ToUpper()) || i.Phone.ToUpper().Contains(search.ToUpper()), page);
+            var result = users.Select(x=>UserMapper.MapItemToModel(x)).ToList();
+            return result;
         }
 
         public void UpdateUser(UserModel user)
@@ -101,6 +95,17 @@ namespace Task.Services.Services
                 userModels[i].Title = TitleMapper.MapItemToModel(await titleRepository.GetById(userModels[i].TitleId));
             }
             return userModels;
+        }
+
+        public UserPageModel GetUserPageModel(int page, string search)
+        {
+            var users = search == null ? GetByPage(page).ToList() : Search(search, page).ToList();
+            var pageCount = GetPageCount(search);
+            if (pageCount < page)
+                page = 1;
+            else if (page < 1)
+                page = pageCount;
+            return new UserPageModel(users, pageCount, page);
         }
     }
 }

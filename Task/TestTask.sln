@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Task.Web", "Task.Web\Task.Web.csproj", "{C6B98D76-C3FC-46B7-9B82-D14083D36C19}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestTask.Web", "Task.Web\TestTask.Web.csproj", "{C6B98D76-C3FC-46B7-9B82-D14083D36C19}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task.Repository", "Task.Repository\Task.Repository.csproj", "{72319884-5F13-4414-BC5C-174BED41888B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestTask.Repository", "Task.Repository\TestTask.Repository.csproj", "{72319884-5F13-4414-BC5C-174BED41888B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task.Services", "Task.Services\Task.Services.csproj", "{EE19B5E6-1A79-4787-B604-DF1B12E0E73A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestTask.Services", "Task.Services\TestTask.Services.csproj", "{EE19B5E6-1A79-4787-B604-DF1B12E0E73A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

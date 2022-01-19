@@ -3,13 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Task.Repository.Data;
-using Task.Repository.Items;
+using TestTask.Repository.Data;
+using TestTask.Repository.Items;
 
-namespace Task.Repository.Repositories
+namespace TestTask.Repository.Repositories
 {
-    public class TitleRepository : Repository<TitleItem>, ITitleRepository
+    public class TitleRepository : BaseRepository<TitleItem>, ITitleRepository
     {
         public TitleRepository(ApplicationDbContext context) : base(context) { }
+
+        public List<TitleItem> GetAllTitles()
+        {
+            return GetAll().ToList();
+        }
     }
 }

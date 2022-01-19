@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Task.Services.Models;
-using Task.Services.Services;
+using TestTask.Services.Models;
+using TestTask.Services.Services;
 
-namespace Task.Web.Controllers
+namespace TestTask.Web.Controllers
 {
     public class UsersController : Controller
     {
@@ -24,16 +24,11 @@ namespace Task.Web.Controllers
 
         public async Task<IActionResult> Index(int page = 1, string search = null)
         {
-            var users = search == null ? userService.GetByPage(page) : userService.Search(search , page);
-            var pageCount = userService.GetPageCount(search);
-            if (pageCount < page)
-                page = 1;
-            else if (page < 1)
-                page = pageCount;
-            ViewData["page"] = page;
-            ViewData["pcount"] = pageCount;
+            var userPageModel = userService.GetUserPageModel(page, search);
+            ViewData["page"] = userPageModel.currentPage;
+            ViewData["pcount"] = userPageModel.pageCount;
             ViewData["search"] = search;
-            return View(await userService.GetAllUserFields(users.ToList()));
+            return View(await userService.GetAllUserFields(userPageModel.UserModels));
         }
 
         public async Task<IActionResult> Edit(int id) 

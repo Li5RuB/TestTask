@@ -4,12 +4,12 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using Task.Repository.Items;
-using Task.Repository.Repositories;
-using Task.Services.Mappers;
-using Task.Services.Models;
+using TestTask.Repository.Items;
+using TestTask.Repository.Repositories;
+using TestTask.Services.Mappers;
+using TestTask.Services.Models;
 
-namespace Task.Services.Services
+namespace TestTask.Services.Services
 {
     public class CityService : ICityService
     {
@@ -22,12 +22,9 @@ namespace Task.Services.Services
 
         public IEnumerable<CityModel> GetAll()
         {
-            var cityModels = new List<CityModel>();
-            foreach (var item in this.cityRepository.GetAll())
-            {
-                cityModels.Add(CityMapper.MapItemToModel(item));
-            }
-            return cityModels;
+            var cities = cityRepository.GetAllCities();
+            var result = cities.Select(x => CityMapper.MapItemToModel(x)).ToList();
+            return result;
         }
 
         public async Task<CityModel> GetById(int id)
@@ -37,12 +34,9 @@ namespace Task.Services.Services
 
         public IEnumerable<CityModel> GetCitiesByCountryId(int CountryId)
         {
-            var cityModels = new List<CityModel>();
-            foreach (var item in cityRepository.GetCitiesByCountryId(CountryId))
-            {
-                cityModels.Add(CityMapper.MapItemToModel(item));
-            }
-            return cityModels;
+            var cities = cityRepository.GetCitiesByCountryId(CountryId);
+            var result = cities.Select(x=>CityMapper.MapItemToModel(x)).ToList(); 
+            return result;
         }
     }
 }

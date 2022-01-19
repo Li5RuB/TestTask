@@ -4,10 +4,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using Task.Repository.Items;
-using Task.Services.Models;
+using TestTask.Repository.Items;
+using TestTask.Services.Models;
 
-namespace Task.Services.Services
+namespace TestTask.Services.Services
 {
     public interface IUserService
     {
@@ -28,5 +28,7 @@ namespace Task.Services.Services
         public Task<IEnumerable<UserModel>> GetAllUserFields(List<UserModel> userModels);
 
         public System.Threading.Tasks.Task SaveChanges();
+
+        public UserPageModel GetUserPageModel(int page, string search);
     }
 }

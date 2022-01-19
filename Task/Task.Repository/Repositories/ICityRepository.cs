@@ -4,16 +4,16 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using Task.Repository.Items;
+using TestTask.Repository.Items;
 
-namespace Task.Repository.Repositories
+namespace TestTask.Repository.Repositories
 {
     public interface ICityRepository
     {
-        public IEnumerable<CityItem> GetAll();
+        public List<CityItem> GetAllCities();
 
         public Task<CityItem> GetById(int id);
 
-        public IEnumerable<CityItem> GetCitiesByCountryId(int id);
+        public List<CityItem> GetCitiesByCountryId(int id);
     }
 }
