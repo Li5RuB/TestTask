@@ -1,0 +1,15 @@
+D:\Task\Task\Task.Repository\bin\Release\net5.0\Task.Repository.deps.json
+D:\Task\Task\Task.Repository\bin\Release\net5.0\Task.Repository.runtimeconfig.json
+D:\Task\Task\Task.Repository\bin\Release\net5.0\Task.Repository.runtimeconfig.dev.json
+D:\Task\Task\Task.Repository\bin\Release\net5.0\Task.Repository.dll
+D:\Task\Task\Task.Repository\bin\Release\net5.0\ref\Task.Repository.dll
+D:\Task\Task\Task.Repository\bin\Release\net5.0\Task.Repository.pdb
+D:\Task\Task\Task.Repository\obj\Release\net5.0\Task.Repository.csproj.AssemblyReference.cache
+D:\Task\Task\Task.Repository\obj\Release\net5.0\Task.Repository.GeneratedMSBuildEditorConfig.editorconfig
+D:\Task\Task\Task.Repository\obj\Release\net5.0\Task.Repository.AssemblyInfoInputs.cache
+D:\Task\Task\Task.Repository\obj\Release\net5.0\Task.Repository.AssemblyInfo.cs
+D:\Task\Task\Task.Repository\obj\Release\net5.0\Task.Repository.csproj.CoreCompileInputs.cache
+D:\Task\Task\Task.Repository\obj\Release\net5.0\Task.Repository.dll
+D:\Task\Task\Task.Repository\obj\Release\net5.0\ref\Task.Repository.dll
+D:\Task\Task\Task.Repository\obj\Release\net5.0\Task.Repository.pdb
+D:\Task\Task\Task.Repository\obj\Release\net5.0\Task.Repository.genruntimeconfig.cache

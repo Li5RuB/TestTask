@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_PublishTargetUrl>D:\TaskSite</_PublishTargetUrl>
+    <History>True|2022-01-18T12:22:04.1999333Z;True|2022-01-18T15:10:47.1832265+03:00;True|2022-01-18T15:03:29.2258746+03:00;</History>
+  </PropertyGroup>
+</Project>

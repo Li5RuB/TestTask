@@ -24,6 +24,14 @@ namespace Task.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<IISServerOptions>(options =>
+            {
+                options.AutomaticAuthentication = false;
+            });
+            services.Configure<IISOptions>(options =>
+            {
+                options.ForwardClientCertificate = false;
+            });
             services.AddControllersWithViews();
             services.AddDependencies();
             services.AddMvc();
@@ -35,7 +43,7 @@ namespace Task.Web
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-            }
+            }            
 
             app.UseStaticFiles();
 
