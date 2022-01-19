@@ -14,29 +14,5 @@ namespace Task.Repository.Repositories
     {
         public UserRepository(ApplicationDbContext context) : base(context){ }
 
-        public void CreateUser(UserItem user)
-        {
-            this.context.Users.Add(user);
-        }
-
-        public void RemoveUser(UserItem user)
-        {
-            this.context.Users.Remove(user);
-        }
-
-        public void UpdateUser(UserItem user)
-        {
-            this.context.Update(user);
-        }
-
-        public override async Task<UserItem> GetById(int id)
-        {
-            return await context.Users.FindAsync(id);
-        }
-
-        public async System.Threading.Tasks.Task Save()
-        {
-            await context.SaveChangesAsync();
-        }
     }
 }

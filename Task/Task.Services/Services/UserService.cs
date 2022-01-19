@@ -28,7 +28,7 @@ namespace Task.Services.Services
 
         public void CreateUser(UserModel user)
         {
-            userRepository.CreateUser(UserMapper.MapModelToItem(user));
+            userRepository.Create(UserMapper.MapModelToItem(user));
         }
 
         public IEnumerable<UserModel> GetAll()
@@ -63,7 +63,7 @@ namespace Task.Services.Services
 
         public async System.Threading.Tasks.Task RemoveUser(int id)
         {
-            userRepository.RemoveUser(await userRepository.GetById(id));
+            userRepository.Remove(await userRepository.GetById(id));
         }
 
         public async System.Threading.Tasks.Task SaveChanges()
@@ -80,7 +80,7 @@ namespace Task.Services.Services
 
         public void UpdateUser(UserModel user)
         {
-            userRepository.UpdateUser(UserMapper.MapModelToItem(user));
+            userRepository.Update(UserMapper.MapModelToItem(user));
         }
 
         public async Task<IEnumerable<UserModel>> GetAllUserFields(List<UserModel> userModels)

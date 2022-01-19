@@ -14,11 +14,11 @@ namespace Task.Repository.Repositories
 
         public IEnumerable<UserItem> GetAll();
 
-        public void CreateUser(UserItem user);
+        public void Create(UserItem user);
 
-        public void RemoveUser(UserItem user);
+        public void Remove(UserItem user);
 
-        public void UpdateUser(UserItem user);
+        public void Update(UserItem user);
 
         public System.Threading.Tasks.Task Save();
     }
