@@ -5,38 +5,35 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using Task.Repository.Data;
-using Task.Repository.Items;
+using TestTask.Repository.Data;
+using TestTask.Repository.Items;
 
-namespace Task.Repository.Repositories
+namespace TestTask.Repository.Repositories
 {
-    public class UserRepository : Repository<UserItem>, IUserRepository
+    public class UserRepository : BaseRepository<UserItem>, IUserRepository
     {
+        private const int numberOfUsersPerPage = 3;
         public UserRepository(ApplicationDbContext context) : base(context){ }
 
-        public IEnumerable<UserItem> GetUsersToPage(int page)
+        public List<UserItem> GetUsersToPage(int page)
         {
-            const int numberOfUsersPerPage = 3;
-            IQueryable<UserItem> users = context.Users;
-            return users.Skip(page * numberOfUsersPerPage - numberOfUsersPerPage).Take(numberOfUsersPerPage);
+            return GetAll().Skip(page * numberOfUsersPerPage - numberOfUsersPerPage).Take(numberOfUsersPerPage).ToList();
         }
 
-        public IEnumerable<UserItem> Search(Expression<Func<UserItem,bool>> expression, int page)
+        public List<UserItem> Search(Expression<Func<UserItem,bool>> expression, int page)
         {
-            const int numberOfUsersPerPage = 3;
-            IQueryable<UserItem> users = context.Users;
-            return users.Where(expression).Skip(page * numberOfUsersPerPage - numberOfUsersPerPage).Take(numberOfUsersPerPage);
+            return GetAll().Where(expression).Skip(page * numberOfUsersPerPage - numberOfUsersPerPage).Take(numberOfUsersPerPage).ToList();
 
         }
 
         public int GetCount()
         {
-            return context.Users.Count();
+            return GetAll().Count();
         }
 
         public int GetSearchCount(Expression<Func<UserItem, bool>> expression)
         {
-            return context.Users.Count(expression);
+            return GetAll().Count(expression);
         }
     }
 }

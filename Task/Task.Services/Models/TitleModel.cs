@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Task.Services.Models
+namespace TestTask.Services.Models
 {
     public class TitleModel
     {

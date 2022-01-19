@@ -3,34 +3,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Task.Repository.Items;
-using Task.Repository.Repositories;
-using Task.Services.Mappers;
-using Task.Services.Models;
+using TestTask.Repository.Items;
+using TestTask.Repository.Repositories;
+using TestTask.Services.Mappers;
+using TestTask.Services.Models;
 
-namespace Task.Services.Services
+namespace TestTask.Services.Services
 {
     public class CountryService : ICountryService
     {
-        private readonly ICountryRepository countryRepository; 
+        private readonly ICountryRepository _countryRepository; 
         public CountryService(ICountryRepository countryRepository)
         {
-            this.countryRepository = countryRepository;
+            _countryRepository = countryRepository;
         }
 
-        public IEnumerable<CountryModel> GetAll()
+        public List<CountryModel> GetAll()
         {
-            var countryModels = new List<CountryModel>();
-            foreach (var item in countryRepository.GetAll())
-            {
-                countryModels.Add(CountryMapper.MapItemToModel(item));
-            }
-            return countryModels;
+            var countries = _countryRepository.GetAllCountries();
+            var result = countries.Select(x => CountryMapper.MapItemToModel(x)).ToList();
+            return result;
         }
 
         public async Task<CountryModel> GetById(int id)
         {
-            return CountryMapper.MapItemToModel(await countryRepository.GetById(id));
+            return CountryMapper.MapItemToModel(await _countryRepository.GetById(id));
         }
 
     }

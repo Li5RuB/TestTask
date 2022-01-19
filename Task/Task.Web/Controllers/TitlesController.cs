@@ -1,21 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Task.Services.Services;
+using TestTask.Services.Services;
 
-namespace Task.Web.Controllers
+namespace TestTask.Web.Controllers
 {
     public class TitlesController : Controller
     {
-        private readonly ITitleService titleService;
+        private readonly ITitleService _titleService;
 
         public TitlesController(ITitleService titleService)
         {
-            this.titleService = titleService;
+            _titleService = titleService;
         }
 
         [HttpGet]
         public JsonResult GetTitles()
         {
-            return Json(this.titleService.GetAll());
+            return Json(_titleService.GetAll());
         }
     }
 }

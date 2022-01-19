@@ -4,17 +4,17 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using Task.Repository.Items;
-using Task.Services.Models;
+using TestTask.Repository.Items;
+using TestTask.Services.Models;
 
-namespace Task.Services.Services
+namespace TestTask.Services.Services
 {
     public interface ICityService
     {
-        public IEnumerable<CityModel> GetAll();
+        public List<CityModel> GetAll();
 
         public Task<CityModel> GetById(int id);
 
-        public IEnumerable<CityModel> GetCitiesByCountryId(int CountryId);
+        public List<CityModel> GetCitiesByCountryId(int CountryId);
     }
 }

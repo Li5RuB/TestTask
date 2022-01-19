@@ -4,29 +4,29 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using Task.Repository.Items;
-using Task.Services.Models;
+using TestTask.Repository.Items;
+using TestTask.Services.Models;
 
-namespace Task.Services.Services
+namespace TestTask.Services.Services
 {
     public interface IUserService
     {
         public Task<UserModel> GetById(int id);
 
-        public void CreateUser(UserModel user);
+        public Task CreateUser(UserModel user);
 
-        public System.Threading.Tasks.Task RemoveUser(int id);
+        public Task RemoveUser(int id);
 
-        public void UpdateUser(UserModel user);
+        public Task UpdateUser(UserModel user);
 
-        public IEnumerable<UserModel> GetByPage(int page);
+        public List<UserModel> GetByPage(int page);
 
-        public IEnumerable<UserModel> Search(string search, int page);
+        public List<UserModel> Search(string search, int page);
 
         public int GetPageCount(string search = null);
 
-        public Task<IEnumerable<UserModel>> GetAllUserFields(List<UserModel> userModels);
+        public Task<List<UserModel>> GetAllUserFields(List<UserModel> userModels);
 
-        public System.Threading.Tasks.Task SaveChanges();
+        public UserPageModel GetUserPageModel(int page, string search);
     }
 }

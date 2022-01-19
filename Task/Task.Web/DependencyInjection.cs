@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Task.Repository.Data;
-using Task.Repository.Repositories;
-using Task.Services.Mappers;
-using Task.Services.Services;
+using TestTask.Repository.Data;
+using TestTask.Repository.Repositories;
+using TestTask.Services.Mappers;
+using TestTask.Services.Services;
 
-namespace Task.Web
+namespace TestTask.Web
 {
     public static class DependencyInjection
     {

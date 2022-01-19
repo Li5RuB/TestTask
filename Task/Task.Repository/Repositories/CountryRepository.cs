@@ -4,14 +4,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Task.Repository.Data;
-using Task.Repository.Items;
+using TestTask.Repository.Data;
+using TestTask.Repository.Items;
 
-namespace Task.Repository.Repositories
+namespace TestTask.Repository.Repositories
 {
-    public class CountryRepository : Repository<CountryItem>, ICountryRepository
+    public class CountryRepository : BaseRepository<CountryItem>, ICountryRepository
     {
         public CountryRepository(ApplicationDbContext context) : base(context) { }
 
+        public List<CountryItem> GetAllCountries()
+        {
+            return GetAll().ToList();
+        }
     }
 }

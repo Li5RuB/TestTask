@@ -1,21 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Task.Services.Services;
+using TestTask.Services.Services;
 
-namespace Task.Web.Controllers
+namespace TestTask.Web.Controllers
 {
     public class CountriesController : Controller
     {
-        private readonly ICountryService countryService;
+        private readonly ICountryService _countryService;
 
         public CountriesController(ICountryService countryService)
         {
-            this.countryService = countryService;
+            _countryService = countryService;
         }
 
         [HttpGet]
         public JsonResult GetCountries()
         {
-            return Json(this.countryService.GetAll());
+            return Json(_countryService.GetAll());
         }
     }
 }

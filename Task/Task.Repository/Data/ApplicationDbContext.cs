@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Task.Repository.Items;
+using TestTask.Repository.Items;
 
-namespace Task.Repository.Data
+namespace TestTask.Repository.Data
 {
     public class ApplicationDbContext : DbContext
     {

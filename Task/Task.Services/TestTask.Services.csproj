@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Task.Repository\Task.Repository.csproj" />
+    <ProjectReference Include="..\Task.Repository\TestTask.Repository.csproj" />
   </ItemGroup>
 
 </Project>

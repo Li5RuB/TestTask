@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Task.Repository.Items;
+using TestTask.Repository.Items;
 
-namespace Task.Services.Models
+namespace TestTask.Services.Models
 {
     public class UserModel
     {

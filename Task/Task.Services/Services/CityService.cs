@@ -4,45 +4,39 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using Task.Repository.Items;
-using Task.Repository.Repositories;
-using Task.Services.Mappers;
-using Task.Services.Models;
+using TestTask.Repository.Items;
+using TestTask.Repository.Repositories;
+using TestTask.Services.Mappers;
+using TestTask.Services.Models;
 
-namespace Task.Services.Services
+namespace TestTask.Services.Services
 {
     public class CityService : ICityService
     {
-        private readonly ICityRepository cityRepository;
+        private readonly ICityRepository _cityRepository;
 
         public CityService(ICityRepository cityRepository)
         {
-            this.cityRepository = cityRepository;
+            _cityRepository = cityRepository;
         }
 
-        public IEnumerable<CityModel> GetAll()
+        public List<CityModel> GetAll()
         {
-            var cityModels = new List<CityModel>();
-            foreach (var item in this.cityRepository.GetAll())
-            {
-                cityModels.Add(CityMapper.MapItemToModel(item));
-            }
-            return cityModels;
+            var cities = _cityRepository.GetAllCities();
+            var result = cities.Select(x => CityMapper.MapItemToModel(x)).ToList();
+            return result;
         }
 
         public async Task<CityModel> GetById(int id)
         {
-            return CityMapper.MapItemToModel(await cityRepository.GetById(id));
+            return CityMapper.MapItemToModel(await _cityRepository.GetById(id));
         }
 
-        public IEnumerable<CityModel> GetCitiesByCountryId(int CountryId)
+        public List<CityModel> GetCitiesByCountryId(int CountryId)
         {
-            var cityModels = new List<CityModel>();
-            foreach (var item in cityRepository.GetCitiesByCountryId(CountryId))
-            {
-                cityModels.Add(CityMapper.MapItemToModel(item));
-            }
-            return cityModels;
+            var cities = _cityRepository.GetCitiesByCountryId(CountryId);
+            var result = cities.Select(x=>CityMapper.MapItemToModel(x)).ToList(); 
+            return result;
         }
     }
 }

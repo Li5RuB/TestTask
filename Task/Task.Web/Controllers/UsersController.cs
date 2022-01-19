@@ -1,54 +1,48 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
-using Task.Services.Models;
-using Task.Services.Services;
+using TestTask.Services.Models;
+using TestTask.Services.Services;
 
-namespace Task.Web.Controllers
+namespace TestTask.Web.Controllers
 {
     public class UsersController : Controller
     {
-        private readonly IUserService userService;
-        private readonly ICountryService countryService;
-        private readonly ITitleService titleService;
-        private readonly ICityService cityService;
+        private readonly IUserService _userService;
+        private readonly ICountryService _countryService;
+        private readonly ITitleService _titleService;
+        private readonly ICityService _cityService;
         
         public UsersController(IUserService userService, ITitleService titleService, ICountryService countryService, ICityService cityService)
         {
-            this.userService = userService;
-            this.countryService = countryService;
-            this.cityService = cityService;
-            this.titleService = titleService;
+            _userService = userService;
+            _countryService = countryService;
+            _cityService = cityService;
+            _titleService = titleService;
         }
 
         public async Task<IActionResult> Index(int page = 1, string search = null)
         {
-            var users = search == null ? userService.GetByPage(page) : userService.Search(search , page);
-            var pageCount = userService.GetPageCount(search);
-            if (pageCount < page)
-                page = 1;
-            else if (page < 1)
-                page = pageCount;
-            ViewData["page"] = page;
-            ViewData["pcount"] = pageCount;
+            var userPageModel = _userService.GetUserPageModel(page, search);
+            ViewData["page"] = userPageModel.currentPage;
+            ViewData["pcount"] = userPageModel.pageCount;
             ViewData["search"] = search;
-            return View(await userService.GetAllUserFields(users.ToList()));
+            return View(await _userService.GetAllUserFields(userPageModel.UserModels));
         }
 
         public async Task<IActionResult> Edit(int id) 
         {
-            var user = await this.userService.GetById(id);
-            user.City = await this.cityService.GetById(user.CityId);
+            var user = await _userService.GetById(id);
+            user.City = await _cityService.GetById(user.CityId);
             return View(user); 
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(UserModel user)
+        public IActionResult Edit(UserModel user)
         {
             if (ModelState.IsValid)
             {
-                this.userService.UpdateUser(user);
-                await this.userService.SaveChanges();
+                _userService.UpdateUser(user);
                 return RedirectToAction("Index");
             }
             return View(user);
@@ -56,8 +50,7 @@ namespace Task.Web.Controllers
 
         public async Task<IActionResult> Delete(int id, int page) 
         {
-            await this.userService.RemoveUser(id);
-            await this.userService.SaveChanges();
+            await _userService.RemoveUser(id);
             return RedirectToAction("Index", new { page = page });
         }
 
@@ -71,8 +64,7 @@ namespace Task.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                this.userService.CreateUser(userModel);
-                await this.userService.SaveChanges();
+                await _userService.CreateUser(userModel);
                 return RedirectToAction("Index");
             }
             return View(userModel);

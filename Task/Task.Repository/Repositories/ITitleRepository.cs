@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Task.Repository.Items;
+using TestTask.Repository.Items;
 
-namespace Task.Repository.Repositories
+namespace TestTask.Repository.Repositories
 {
     public interface ITitleRepository
     {
         public Task<TitleItem> GetById(int id);
 
-        public IEnumerable<TitleItem> GetAll();
+        public List<TitleItem> GetAllTitles();
     }
 }

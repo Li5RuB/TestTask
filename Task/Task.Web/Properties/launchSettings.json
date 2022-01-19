@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Task.Web": {
+    "TestTask.Web": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

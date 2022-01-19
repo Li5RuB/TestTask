@@ -1,20 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Task.Services.Services;
+using TestTask.Services.Services;
 
-namespace Task.Web.Controllers
+namespace TestTask.Web.Controllers
 {
     public class CitiesController : Controller
     {
-        private readonly ICityService cityService;
+        private readonly ICityService _cityService;
         public CitiesController(ICityService cityService)
         {
-            this.cityService = cityService;
+            _cityService = cityService;
         }
 
         [HttpGet]
         public JsonResult GetCitiesByCountryId(int id)
         {
-            return Json(this.cityService.GetCitiesByCountryId(id));
+            return Json(_cityService.GetCitiesByCountryId(id));
         }
     }
 }

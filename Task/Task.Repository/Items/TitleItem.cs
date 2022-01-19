@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Task.Repository.Items
+namespace TestTask.Repository.Items
 {
     public class TitleItem
     {
