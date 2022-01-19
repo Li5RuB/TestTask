@@ -9,20 +9,22 @@
     <div>
         <div class="form-element form-lable">@Html.LabelFor(m=>m.Firstname)</div>
         <div class="form-element form-input">@Html.TextBoxFor(m=>m.Firstname)</div>
+        <div class="form-element form-error">@Html.ValidationMessageFor(m=>m.Firstname)</div>
     </div>
     <div>
         <div class="form-element form-lable">@Html.LabelFor(m=>m.Lastname)</div>
         <div class="form-element form-input">@Html.TextBoxFor(m=>m.Lastname)</div>
+        <div class="form-element form-error">@Html.ValidationMessageFor(m=>m.Lastname)</div>
     </div>
     <div >
         <div class="form-element form-lable">@Html.LabelFor(m=>m.Email)</div>
         <div class="form-element form-input">@Html.TextBoxFor(m=>m.Email)</div>
-        <span asp-validation-for="Email"></span>
+        <div class="form-element form-error">@Html.ValidationMessageFor(m=>m.Email)</div> 
     </div>
     <div>
         <div class="form-element form-lable">@Html.LabelFor(m=>m.Phone)</div>
         <div class="form-element form-input">@Html.TextBoxFor(m=>m.Phone)</div>
-        <span asp-validation-for="Phone"></span>
+        <div class="form-element form-error">@Html.ValidationMessageFor(m=>m.Phone)</div>
     </div>
     <div>
         <div class="form-element form-lable">Title</div>
@@ -30,6 +32,7 @@
             <select id="TitleId" name="TitleId"><option value=""></option>
             </select>
         </div>
+        <div class="form-element form-error">@Html.ValidationMessageFor(m=>m.TitleId)</div>
     <div >
     </div>
         <div class="form-element form-lable">Country</div>
@@ -44,6 +47,7 @@
             <select id="CityId" name="CityId"><option value=""></option>
             </select>
         </div>
+        <div class="form-element form-error">@Html.ValidationMessageFor(m=>m.CityId)</div>
     </div>
     <div>
         <div class="form-element form-lable">@Html.LabelFor(m=>m.Comments)</div>

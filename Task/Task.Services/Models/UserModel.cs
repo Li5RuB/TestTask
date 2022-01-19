@@ -23,10 +23,10 @@ namespace TestTask.Services.Models
         public string Lastname { get; set;}
 
         [Required]
-        [EmailAddress(ErrorMessage = "invalid email") ]
+        [EmailAddress]
         public string Email { get; set; }
 
-        [Phone(ErrorMessage = "invalid phone")]
+        [Phone]
         public string Phone { get; set; }
 
         [StringLength(255)]
