@@ -12,13 +12,19 @@ namespace Task.Repository.Repositories
     {
         public Task<UserItem> GetById(int id);
 
-        public IEnumerable<UserItem> GetAll();
+        public IEnumerable<UserItem> GetUsersToPage(int page);
 
-        public void CreateUser(UserItem user);
+        public int GetCount();
 
-        public void RemoveUser(UserItem user);
+        public void Create(UserItem user);
 
-        public void UpdateUser(UserItem user);
+        public void Remove(UserItem user);
+
+        public void Update(UserItem user);
+
+        public IEnumerable<UserItem> Search(Expression<Func<UserItem, bool>> expression, int page);
+
+        public int GetSearchCount(Expression<Func<UserItem, bool>> expression);
 
         public System.Threading.Tasks.Task Save();
     }

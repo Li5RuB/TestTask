@@ -25,16 +25,6 @@ namespace Task.Services.Mappers
             };
         }
 
-        public static IEnumerable<UserModel> MapItemToModelRange(IEnumerable<UserItem> items)
-        {
-            var result = new List<UserModel>();
-            foreach (var item in items)
-            {
-                result.Add(MapItemToModel(item));
-            }
-            return result;
-        }
-
         public static UserItem MapModelToItem(UserModel model)
         {
             return new UserItem()
@@ -48,16 +38,6 @@ namespace Task.Services.Mappers
                 Email = model.Email,
                 Phone = model.Phone
             };
-        }
-
-        public static IEnumerable<UserItem> MapItemToModelRange(IEnumerable<UserModel> models)
-        {
-            var result = new List<UserItem>();
-            foreach (var model in models)
-            {
-                result.Add(MapModelToItem(model));
-            }
-            return result;
         }
     }
 }

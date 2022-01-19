@@ -14,29 +14,29 @@ namespace Task.Repository.Repositories
     {
         public UserRepository(ApplicationDbContext context) : base(context){ }
 
-        public void CreateUser(UserItem user)
+        public IEnumerable<UserItem> GetUsersToPage(int page)
         {
-            this.context.Users.Add(user);
+            const int numberOfUsersPerPage = 3;
+            IQueryable<UserItem> users = context.Users;
+            return users.Skip(page * numberOfUsersPerPage - numberOfUsersPerPage).Take(numberOfUsersPerPage);
         }
 
-        public void RemoveUser(UserItem user)
+        public IEnumerable<UserItem> Search(Expression<Func<UserItem,bool>> expression, int page)
         {
-            this.context.Users.Remove(user);
+            const int numberOfUsersPerPage = 3;
+            IQueryable<UserItem> users = context.Users;
+            return users.Where(expression).Skip(page * numberOfUsersPerPage - numberOfUsersPerPage).Take(numberOfUsersPerPage);
+
         }
 
-        public void UpdateUser(UserItem user)
+        public int GetCount()
         {
-            this.context.Update(user);
+            return context.Users.Count();
         }
 
-        public override async Task<UserItem> GetById(int id)
+        public int GetSearchCount(Expression<Func<UserItem, bool>> expression)
         {
-            return await context.Users.FindAsync(id);
-        }
-
-        public async System.Threading.Tasks.Task Save()
-        {
-            await context.SaveChangesAsync();
+            return context.Users.Count(expression);
         }
     }
 }

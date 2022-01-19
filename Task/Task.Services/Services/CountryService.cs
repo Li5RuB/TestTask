@@ -20,7 +20,12 @@ namespace Task.Services.Services
 
         public IEnumerable<CountryModel> GetAll()
         {
-            return CountryMapper.MapItemToModelRange(countryRepository.GetAll());
+            var countryModels = new List<CountryModel>();
+            foreach (var item in countryRepository.GetAll())
+            {
+                countryModels.Add(CountryMapper.MapItemToModel(item));
+            }
+            return countryModels;
         }
 
         public async Task<CountryModel> GetById(int id)

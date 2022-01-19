@@ -13,19 +13,17 @@ namespace Task.Services.Services
     {
         public Task<UserModel> GetById(int id);
 
-        public IEnumerable<UserModel> GetAll();
-
         public void CreateUser(UserModel user);
 
         public System.Threading.Tasks.Task RemoveUser(int id);
 
         public void UpdateUser(UserModel user);
 
-        public Task<IEnumerable<UserModel>> GetByPage(int page);
+        public IEnumerable<UserModel> GetByPage(int page);
 
-        public IEnumerable<UserModel> Search(string search);
+        public IEnumerable<UserModel> Search(string search, int page);
 
-        public int GetPageCount(IEnumerable<UserModel> users);
+        public int GetPageCount(string search = null);
 
         public Task<IEnumerable<UserModel>> GetAllUserFields(List<UserModel> userModels);
 

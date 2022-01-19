@@ -22,7 +22,12 @@ namespace Task.Services.Services
 
         public IEnumerable<CityModel> GetAll()
         {
-            return CityMapper.MapItemToModelRange(this.cityRepository.GetAll());
+            var cityModels = new List<CityModel>();
+            foreach (var item in this.cityRepository.GetAll())
+            {
+                cityModels.Add(CityMapper.MapItemToModel(item));
+            }
+            return cityModels;
         }
 
         public async Task<CityModel> GetById(int id)
@@ -32,7 +37,12 @@ namespace Task.Services.Services
 
         public IEnumerable<CityModel> GetCitiesByCountryId(int CountryId)
         {
-            return CityMapper.MapItemToModelRange(cityRepository.GetCitiesByCountryId(CountryId));
+            var cityModels = new List<CityModel>();
+            foreach (var item in cityRepository.GetCitiesByCountryId(CountryId))
+            {
+                cityModels.Add(CityMapper.MapItemToModel(item));
+            }
+            return cityModels;
         }
     }
 }

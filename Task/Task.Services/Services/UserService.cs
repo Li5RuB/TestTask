@@ -28,12 +28,7 @@ namespace Task.Services.Services
 
         public void CreateUser(UserModel user)
         {
-            userRepository.CreateUser(UserMapper.MapModelToItem(user));
-        }
-
-        public IEnumerable<UserModel> GetAll()
-        {
-            return UserMapper.MapItemToModelRange(userRepository.GetAll());
+            userRepository.Create(UserMapper.MapModelToItem(user));
         }
 
         public async Task<UserModel> GetById(int id)
@@ -41,19 +36,23 @@ namespace Task.Services.Services
             return UserMapper.MapItemToModel(await userRepository.GetById(id));
         }
 
-        public async Task<IEnumerable<UserModel>> GetByPage(int page)
+        public IEnumerable<UserModel> GetByPage(int page)
         {
             if (!(page>1))
             {
                 page = 1;
             }
-            var usersmodel = UserMapper.MapItemToModelRange(userRepository.GetAll().Skip(page * 3 - 3).Take(3)).ToList();
-            return await GetAllUserFields(usersmodel);
+            var userModels = new List<UserModel>();
+            foreach (var item in userRepository.GetUsersToPage(page))
+            {
+                userModels.Add(UserMapper.MapItemToModel(item));
+            }  
+            return userModels;
         }
 
-        public int GetPageCount(IEnumerable<UserModel> users)
+        public int GetPageCount(string search = null)
         {
-            var count = users.Count();
+            var count = search==null?userRepository.GetCount():GetSearchCount(search);
             if (count%3==0)
             {
                 return count / 3;
@@ -61,9 +60,15 @@ namespace Task.Services.Services
             return count / 3 + 1;
         }
 
+        private int GetSearchCount(string search)
+        {
+            return userRepository.GetSearchCount(i => i.Firstname.ToUpper().Contains(search.ToUpper()) || i.Lastname.ToUpper().Contains(search.ToUpper())
+            || i.Email.ToUpper().Contains(search.ToUpper()) || i.Phone.ToUpper().Contains(search.ToUpper()));
+        }
+
         public async System.Threading.Tasks.Task RemoveUser(int id)
         {
-            userRepository.RemoveUser(await userRepository.GetById(id));
+            userRepository.Remove(await userRepository.GetById(id));
         }
 
         public async System.Threading.Tasks.Task SaveChanges()
@@ -71,16 +76,20 @@ namespace Task.Services.Services
             await userRepository.Save();
         }
 
-        public IEnumerable<UserModel> Search(string search)
+        public IEnumerable<UserModel> Search(string search, int page)
         {
-            var userModels = UserMapper.MapItemToModelRange(userRepository.GetAll().Where(i=>i.Firstname.ToUpper().Contains(search.ToUpper())||i.Lastname.ToUpper().Contains(search.ToUpper())
-            ||i.Email.ToUpper().Contains(search.ToUpper()) ||i.Phone.ToUpper().Contains(search.ToUpper())));
-            return userModels.ToList();
+            var userModels = new List<UserModel>();
+            foreach (var item in userRepository.Search(i => i.Firstname.ToUpper().Contains(search.ToUpper()) || i.Lastname.ToUpper().Contains(search.ToUpper())
+            || i.Email.ToUpper().Contains(search.ToUpper()) || i.Phone.ToUpper().Contains(search.ToUpper()), page)) 
+            {
+                userModels.Add(UserMapper.MapItemToModel(item));
+            }
+            return userModels;
         }
 
         public void UpdateUser(UserModel user)
         {
-            userRepository.UpdateUser(UserMapper.MapModelToItem(user));
+            userRepository.Update(UserMapper.MapModelToItem(user));
         }
 
         public async Task<IEnumerable<UserModel>> GetAllUserFields(List<UserModel> userModels)

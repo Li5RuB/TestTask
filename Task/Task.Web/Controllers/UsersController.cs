@@ -24,8 +24,8 @@ namespace Task.Web.Controllers
 
         public async Task<IActionResult> Index(int page = 1, string search = null)
         {
-            var users = search==null?userService.GetAll():userService.Search(search);
-            var pageCount = userService.GetPageCount(users);
+            var users = search == null ? userService.GetByPage(page) : userService.Search(search , page);
+            var pageCount = userService.GetPageCount(search);
             if (pageCount < page)
                 page = 1;
             else if (page < 1)
@@ -33,7 +33,7 @@ namespace Task.Web.Controllers
             ViewData["page"] = page;
             ViewData["pcount"] = pageCount;
             ViewData["search"] = search;
-            return View(await userService.GetAllUserFields(users.Skip(page * 3 - 3).Take(3).ToList()));
+            return View(await userService.GetAllUserFields(users.ToList()));
         }
 
         public async Task<IActionResult> Edit(int id) 

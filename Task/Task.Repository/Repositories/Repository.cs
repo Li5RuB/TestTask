@@ -24,5 +24,25 @@ namespace Task.Repository.Repositories
         {
             return context.Set<T>().ToList();
         }
+
+        public virtual void Create(T item)
+        {
+            this.context.Set<T>().Add(item);
+        }
+
+        public virtual void Remove(T item)
+        {
+            this.context.Set<T>().Remove(item);
+        }
+
+        public virtual void Update(T item)
+        {
+            this.context.Set<T>().Update(item);
+        }
+
+        public virtual async System.Threading.Tasks.Task Save()
+        {
+            await context.SaveChangesAsync();
+        }
     }
 }

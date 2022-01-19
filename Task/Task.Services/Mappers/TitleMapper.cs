@@ -19,16 +19,6 @@ namespace Task.Services.Mappers
             };
         }
 
-        public static IEnumerable<TitleModel> MapItemToModelRange(IEnumerable<TitleItem> items)
-        {
-            var result = new List<TitleModel>();
-            foreach (var item in items)
-            {
-                result.Add(MapItemToModel(item));
-            }
-            return result;
-        }
-
         public static TitleItem MapModelToItem(TitleModel model)
         {
             return new TitleItem()

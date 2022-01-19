@@ -20,15 +20,6 @@ namespace Task.Services.Mappers
             };
         }
 
-        public static IEnumerable<CityModel> MapItemToModelRange(IEnumerable<CityItem> items)
-        {
-            var result = new List<CityModel>();
-            foreach(var item in items)
-            {
-                result.Add(MapItemToModel(item));
-            }
-            return result;
-        }
         public static CityItem MapModelToItem(CityModel model)
         {
             return new CityItem()

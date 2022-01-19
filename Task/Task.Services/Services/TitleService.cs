@@ -20,7 +20,12 @@ namespace Task.Services.Services
 
         public IEnumerable<TitleModel> GetAll()
         {
-            return TitleMapper.MapItemToModelRange(titleRepository.GetAll());
+            List<TitleModel> titleModels = new List<TitleModel>();
+            foreach (var item in titleRepository.GetAll())
+            {
+                titleModels.Add(TitleMapper.MapItemToModel(item));
+            }
+            return titleModels;
         }
 
         public async Task<TitleModel> GetById(int id)
