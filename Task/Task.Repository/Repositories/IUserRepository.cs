@@ -26,6 +26,6 @@ namespace TestTask.Repository.Repositories
 
         public int GetSearchCount(Expression<Func<UserItem, bool>> expression);
 
-        public System.Threading.Tasks.Task Save();
+        public Task Save();
     }
 }
