@@ -1,1 +1,12 @@
-﻿Hello World
+﻿@using TestTask.Services.Models
+@model UserModel
+
+<link rel="stylesheet" href="~/css/User.css">
+
+<header>
+    <h7>Home</h7> &#10148; <a href="@Url.Action("Index","Users")">Users</a>
+</header>
+
+<script>
+    var model = @Html.Raw(Json.Serialize(@Model));
+</script>
