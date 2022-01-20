@@ -23,7 +23,7 @@ namespace TestTask.Repository.Repositories
 
         protected virtual IQueryable<T> GetAll()
         {
-            return _context.Set<T>();
+            return GetContext();
         }
 
         public virtual void Create(T item)

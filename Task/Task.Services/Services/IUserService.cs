@@ -19,12 +19,6 @@ namespace TestTask.Services.Services
 
         public Task UpdateUser(UserModel user);
 
-        public List<UserModel> GetByPage(int page);
-
-        public List<UserModel> Search(string search, int page);
-
-        public int GetPageCount(string search = null);
-
         public Task<List<UserModel>> GetAllUserFields(List<UserModel> userModels);
 
         public UserPageModel GetUserPageModel(int page, string search);

@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using TestTask.Repository.Items;
+using TestTask.Repository.Models;
 using TestTask.Repository.Repositories;
 using TestTask.Services.Mappers;
 using TestTask.Services.Models;
@@ -13,6 +14,8 @@ namespace TestTask.Services.Services
 {
     public class UserService : IUserService
     {
+        private const int numberOfUsersPerPage = 3;
+        private const int defaultPage = 1;
         private readonly IUserRepository _userRepository;
         private readonly ICityRepository _cityRepository;
         private readonly ICountryRepository _countryRepository;
@@ -37,45 +40,10 @@ namespace TestTask.Services.Services
             return UserMapper.MapItemToModel(await _userRepository.GetById(id));
         }
 
-        public List<UserModel> GetByPage(int page)
-        {
-            if (!(page>1))
-            {
-                page = 1;
-            }
-            var users = _userRepository.GetUsersToPage(page);
-            var result = users.Select(x=>UserMapper.MapItemToModel(x)).ToList();
-            return result;
-        }
-
-        public int GetPageCount(string search = null)
-        {
-            var count = search==null?_userRepository.GetCount():GetSearchCount(search);
-            if (count%3==0)
-            {
-                return count / 3;
-            }
-            return count / 3 + 1;
-        }
-
-        private int GetSearchCount(string search)
-        {
-            return _userRepository.GetSearchCount(i => i.Firstname.ToUpper().Contains(search.ToUpper()) || i.Lastname.ToUpper().Contains(search.ToUpper())
-            || i.Email.ToUpper().Contains(search.ToUpper()) || i.Phone.ToUpper().Contains(search.ToUpper()));
-        }
-
         public async Task RemoveUser(int id)
         {
             _userRepository.Remove(await _userRepository.GetById(id));
             await _userRepository.Save();
-        }
-
-        public List<UserModel> Search(string search, int page)
-        {
-            var users = _userRepository.Search(i => i.Firstname.ToUpper().Contains(search.ToUpper()) || i.Lastname.ToUpper().Contains(search.ToUpper())
-            || i.Email.ToUpper().Contains(search.ToUpper()) || i.Phone.ToUpper().Contains(search.ToUpper()), page);
-            var result = users.Select(x=>UserMapper.MapItemToModel(x)).ToList();
-            return result;
         }
 
         public async Task UpdateUser(UserModel user)
@@ -97,13 +65,35 @@ namespace TestTask.Services.Services
 
         public UserPageModel GetUserPageModel(int page, string search)
         {
-            var users = search == null ? GetByPage(page).ToList() : Search(search, page).ToList();
-            var pageCount = GetPageCount(search);
-            if (pageCount < page)
-                page = 1;
-            else if (page < 1)
-                page = pageCount;
-            return new UserPageModel(users, pageCount, page);
+            var userPageModel = search == null ? GetByPage(page): Search(search, page);
+            return userPageModel;
+        }
+
+        private UserPageModel GetByPage(int page)
+        {
+            if (!(page > defaultPage))
+            {
+                page = defaultPage;
+            }
+            var users = _userRepository.GetUsersToPage(page * numberOfUsersPerPage - numberOfUsersPerPage, numberOfUsersPerPage);
+            UserPageModel result = new UserPageModel(users.UserItems.Select(x => UserMapper.MapItemToModel(x)).ToList(), GetCountPage(users.TotalUsers), page);
+            return result;
+        }
+
+        private UserPageModel Search(string search, int page)
+        {
+            var users = _userRepository.Search(search, page * numberOfUsersPerPage - numberOfUsersPerPage, numberOfUsersPerPage);
+            UserPageModel result = new UserPageModel(users.UserItems.Select(x => UserMapper.MapItemToModel(x)).ToList(), GetCountPage(users.TotalUsers), page);
+            return result;
+        }
+
+        private int GetCountPage(int total)
+        {
+            if (total % numberOfUsersPerPage == 0)
+            {
+                return total / numberOfUsersPerPage;
+            }
+            return total / numberOfUsersPerPage + defaultPage;
         }
     }
 }
