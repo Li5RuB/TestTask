@@ -11,9 +11,6 @@ namespace TestTask.Web
     {
         public static void AddDependencies(this IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-   options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=TestTask;User Id=koshin;password=Qwe123!@#;MultipleActiveResultSets=true"));
-
             services.AddTransient<ICityRepository, CityRepository>();
             services.AddTransient<ICountryRepository, CountryRepository>();
             services.AddTransient<ITitleRepository, TitleRepository>();
@@ -23,6 +20,11 @@ namespace TestTask.Web
             services.AddTransient<ICountryService, CountryService>();
             services.AddTransient<ITitleService, TitleService>();
             services.AddTransient<ICityService, CityService>();
+        }
+
+        public static void AddDatabase(this IServiceCollection services, string connectionString)
+        {
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
         }
     }
 }

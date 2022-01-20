@@ -24,16 +24,10 @@ namespace TestTask.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<IISServerOptions>(options =>
-            {
-                options.AutomaticAuthentication = false;
-            });
-            services.Configure<IISOptions>(options =>
-            {
-                options.ForwardClientCertificate = false;
-            });
+            services.AddDatabase(this.Configuration.GetConnectionString("DefaultConnection"));
+
             services.AddControllersWithViews();
-            services.AddDependencies();
+            services.AddDependencies();            
             services.AddMvc();
         }
 
