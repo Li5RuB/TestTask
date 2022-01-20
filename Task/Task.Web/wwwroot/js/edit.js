@@ -17,11 +17,12 @@
 
     $('#Countries').change(GetSities);
 
-
-    $('#TitleId option[value=' + model.titleId + ']').prop('selected', true);
-    $('#Countries option[value=' + model['city'].countryId + ']').prop('selected', true);
-    await GetSities(model['city'].countryId);
-    $('#CityId option[value=' + model['city'].cityId + ']').prop('selected', true);
+    if (model != null) {
+        $('#TitleId option[value=' + model.titleId + ']').prop('selected', true);
+        $('#Countries option[value=' + model['city'].countryId + ']').prop('selected', true);
+        await GetSities(model['city'].countryId);
+        $('#CityId option[value=' + model['city'].cityId + ']').prop('selected', true);
+    }
 });
 
 function SetTitles(data) {

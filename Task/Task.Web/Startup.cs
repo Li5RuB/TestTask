@@ -24,8 +24,10 @@ namespace TestTask.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDatabase(this.Configuration.GetConnectionString("DefaultConnection"));
+
             services.AddControllersWithViews();
-            services.AddDependencies();
+            services.AddDependencies();            
             services.AddMvc();
         }
 
@@ -35,7 +37,7 @@ namespace TestTask.Web
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-            }
+            }            
 
             app.UseStaticFiles();
 

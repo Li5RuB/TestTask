@@ -32,6 +32,7 @@ table {
     margin-left: 3%;
     border: 2px solid black;
     border-collapse: collapse;
+    min-width: 800px;
 }
 
 button {

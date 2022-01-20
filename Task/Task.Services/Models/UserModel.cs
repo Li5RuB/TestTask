@@ -19,7 +19,7 @@ namespace TestTask.Services.Models
 
         [Required]
         [StringLength(255)]
-        [Display(Name = "Last Name")]
+        [Display(Name = "Last name")]
         public string Lastname { get; set;}
 
         [Required]

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TestTask.Services.Models;
@@ -68,7 +67,7 @@ namespace TestTask.Web.Controllers
                 await _userService.CreateUser(userModel);
                 return RedirectToAction("Index");
             }
-            return View();
+            return View(userModel);
         }
 
         public IActionResult Search(int page, string search)
