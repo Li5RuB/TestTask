@@ -7,33 +7,30 @@ using System.Text;
 using System.Threading.Tasks;
 using TestTask.Repository.Data;
 using TestTask.Repository.Items;
+using TestTask.Repository.Models;
 
 namespace TestTask.Repository.Repositories
 {
     public class UserRepository : BaseRepository<UserItem>, IUserRepository
     {
-        private const int numberOfUsersPerPage = 3;
+        
         public UserRepository(ApplicationDbContext context) : base(context){ }
 
-        public List<UserItem> GetUsersToPage(int page)
+        public UsersAndTotalUsersModel GetUsersToPage(int page, int skip, int take)
         {
-            return GetAll().Skip(page * numberOfUsersPerPage - numberOfUsersPerPage).Take(numberOfUsersPerPage).ToList();
+            var a = GetAll();
+            var totalUsers = a.Count();
+            var userItems = a.Skip(skip).Take(take).ToList();
+            return new UsersAndTotalUsersModel(userItems, totalUsers); ;
         }
 
-        public List<UserItem> Search(Expression<Func<UserItem,bool>> expression, int page)
+        public UsersAndTotalUsersModel Search(string search, int page, int skip, int take)
         {
-            return GetAll().Where(expression).Skip(page * numberOfUsersPerPage - numberOfUsersPerPage).Take(numberOfUsersPerPage).ToList();
-
-        }
-
-        public int GetCount()
-        {
-            return GetAll().Count();
-        }
-
-        public int GetSearchCount(Expression<Func<UserItem, bool>> expression)
-        {
-            return GetAll().Count(expression);
+            var a = GetAll().Where(i => i.Firstname.ToUpper().Contains(search.ToUpper()) || i.Lastname.ToUpper().Contains(search.ToUpper())
+            || i.Email.ToUpper().Contains(search.ToUpper()) || i.Phone.ToUpper().Contains(search.ToUpper()));
+            var totalUsers = a.Count();
+            var userItems = a.Skip(skip).Take(take).ToList();
+            return new UsersAndTotalUsersModel(userItems, totalUsers);
         }
     }
 }

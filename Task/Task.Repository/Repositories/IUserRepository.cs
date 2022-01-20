@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using TestTask.Repository.Items;
+using TestTask.Repository.Models;
 
 namespace TestTask.Repository.Repositories
 {
@@ -12,9 +13,7 @@ namespace TestTask.Repository.Repositories
     {
         public Task<UserItem> GetById(int id);
 
-        public List<UserItem> GetUsersToPage(int page);
-
-        public int GetCount();
+        public UsersAndTotalUsersModel GetUsersToPage(int page, int skip, int take);
 
         public void Create(UserItem user);
 
@@ -22,9 +21,7 @@ namespace TestTask.Repository.Repositories
 
         public void Update(UserItem user);
 
-        public List<UserItem> Search(Expression<Func<UserItem, bool>> expression, int page);
-
-        public int GetSearchCount(Expression<Func<UserItem, bool>> expression);
+        public UsersAndTotalUsersModel Search(string search, int page, int skip, int take);
 
         public Task Save();
     }
