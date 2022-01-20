@@ -7,9 +7,9 @@ using TestTask.Repository.Items;
 
 namespace TestTask.Repository.Models
 {
-    public class UsersAndTotalUsersModel
+    public class UsersSearchResultModel
     {
-        public UsersAndTotalUsersModel(List<UserItem> userItems, int totalUsers)
+        public UsersSearchResultModel(List<UserItem> userItems, int totalUsers)
         {
             UserItems = userItems;
             TotalUsers = totalUsers;

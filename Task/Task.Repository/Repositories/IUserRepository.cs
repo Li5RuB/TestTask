@@ -13,7 +13,7 @@ namespace TestTask.Repository.Repositories
     {
         public Task<UserItem> GetById(int id);
 
-        public UsersAndTotalUsersModel GetUsersToPage(int page, int skip, int take);
+        public UsersSearchResultModel GetUsersToPage(int skip, int take);
 
         public void Create(UserItem user);
 
@@ -21,7 +21,7 @@ namespace TestTask.Repository.Repositories
 
         public void Update(UserItem user);
 
-        public UsersAndTotalUsersModel Search(string search, int page, int skip, int take);
+        public UsersSearchResultModel Search(string search, int skip, int take);
 
         public Task Save();
     }

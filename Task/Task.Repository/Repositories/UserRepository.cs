@@ -16,21 +16,21 @@ namespace TestTask.Repository.Repositories
         
         public UserRepository(ApplicationDbContext context) : base(context){ }
 
-        public UsersAndTotalUsersModel GetUsersToPage(int page, int skip, int take)
+        public UsersSearchResultModel GetUsersToPage(int skip, int take)
         {
-            var a = GetAll();
-            var totalUsers = a.Count();
-            var userItems = a.Skip(skip).Take(take).ToList();
-            return new UsersAndTotalUsersModel(userItems, totalUsers); ;
+            var allUsers = GetAll();
+            var totalUsers = allUsers.Count();
+            var userItems = allUsers.Skip(skip).Take(take).ToList();
+            return new UsersSearchResultModel(userItems, totalUsers); ;
         }
 
-        public UsersAndTotalUsersModel Search(string search, int page, int skip, int take)
+        public UsersSearchResultModel Search(string search, int skip, int take)
         {
-            var a = GetAll().Where(i => i.Firstname.ToUpper().Contains(search.ToUpper()) || i.Lastname.ToUpper().Contains(search.ToUpper())
+            var searchResult = GetAll().Where(i => i.Firstname.ToUpper().Contains(search.ToUpper()) || i.Lastname.ToUpper().Contains(search.ToUpper())
             || i.Email.ToUpper().Contains(search.ToUpper()) || i.Phone.ToUpper().Contains(search.ToUpper()));
-            var totalUsers = a.Count();
-            var userItems = a.Skip(skip).Take(take).ToList();
-            return new UsersAndTotalUsersModel(userItems, totalUsers);
+            var totalUsers = searchResult.Count();
+            var userItems = searchResult.Skip(skip).Take(take).ToList();
+            return new UsersSearchResultModel(userItems, totalUsers);
         }
     }
 }

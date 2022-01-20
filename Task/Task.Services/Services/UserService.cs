@@ -75,14 +75,14 @@ namespace TestTask.Services.Services
             {
                 page = defaultPage;
             }
-            var users = _userRepository.GetUsersToPage(page, page * numberOfUsersPerPage - numberOfUsersPerPage, numberOfUsersPerPage);
+            var users = _userRepository.GetUsersToPage(page * numberOfUsersPerPage - numberOfUsersPerPage, numberOfUsersPerPage);
             UserPageModel result = new UserPageModel(users.UserItems.Select(x => UserMapper.MapItemToModel(x)).ToList(), GetCountPage(users.TotalUsers), page);
             return result;
         }
 
         private UserPageModel Search(string search, int page)
         {
-            var users = _userRepository.Search(search, page, page * numberOfUsersPerPage - numberOfUsersPerPage, numberOfUsersPerPage);
+            var users = _userRepository.Search(search, page * numberOfUsersPerPage - numberOfUsersPerPage, numberOfUsersPerPage);
             UserPageModel result = new UserPageModel(users.UserItems.Select(x => UserMapper.MapItemToModel(x)).ToList(), GetCountPage(users.TotalUsers), page);
             return result;
         }
