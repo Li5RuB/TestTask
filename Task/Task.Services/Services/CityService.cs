@@ -14,10 +14,18 @@ namespace TestTask.Services.Services
     public class CityService : ICityService
     {
         private readonly ICityRepository _cityRepository;
+        private const int defaultCityPage = 1;
+        private const int numberOfCityPerPage = 8;
 
         public CityService(ICityRepository cityRepository)
         {
             _cityRepository = cityRepository;
+        }
+
+        public async Task CreateCity(CityModel user)
+        {
+            _cityRepository.Create(CityMapper.MapModelToItem(user));
+            await _cityRepository.Save();
         }
 
         public List<CityModel> GetAll()
@@ -36,6 +44,50 @@ namespace TestTask.Services.Services
         {
             var cities = _cityRepository.GetCitiesByCountryId(CountryId);
             var result = cities.Select(x=>CityMapper.MapItemToModel(x)).ToList(); 
+            return result;
+        }
+
+        public CityPageModel GetCityPageModel(int page, string search)
+        {
+            var cityPageModel = search == null ? GetByPage(page) : Search(search, page);
+            return cityPageModel;
+        }
+
+        public async Task RemoveCity(int id)
+        {
+            _cityRepository.Remove(await _cityRepository.GetById(id));
+            await _cityRepository.Save();
+        }
+
+        public async Task UpdateCity(CityModel city)
+        {
+            _cityRepository.Update(CityMapper.MapModelToItem(city));
+            await _cityRepository.Save();
+        }
+        private int GetCountPage(int total)
+        {
+            if (total % numberOfCityPerPage == 0)
+            {
+                return total / numberOfCityPerPage;
+            }
+            return total / numberOfCityPerPage + defaultCityPage;
+        }
+
+        private CityPageModel Search(string search, int page)
+        {
+            var cities = _cityRepository.Search(search, page * numberOfCityPerPage - numberOfCityPerPage, numberOfCityPerPage);
+            CityPageModel result = new CityPageModel(cities.CityItems.Select(x => CityMapper.MapItemToModel(x)).ToList(), GetCountPage(cities.TotalCities), page);
+            return result;
+        }
+
+        private CityPageModel GetByPage(int page)
+        {
+            if (!(page > defaultCityPage))
+            {
+                page = defaultCityPage;
+            }
+            var cities = _cityRepository.GetCitiesToPage(page * numberOfCityPerPage - numberOfCityPerPage, numberOfCityPerPage);
+            CityPageModel result = new CityPageModel(cities.CityItems.Select(x => CityMapper.MapItemToModel(x)).ToList(), GetCountPage(cities.TotalCities), page);
             return result;
         }
     }

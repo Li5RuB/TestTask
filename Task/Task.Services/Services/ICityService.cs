@@ -16,5 +16,13 @@ namespace TestTask.Services.Services
         public Task<CityModel> GetById(int id);
 
         public List<CityModel> GetCitiesByCountryId(int CountryId);
+
+        public Task CreateCity(CityModel user);
+
+        public Task RemoveCity(int id);
+
+        public Task UpdateCity(CityModel user);
+
+        public CityPageModel GetCityPageModel(int page, string search);
     }
 }
