@@ -29,7 +29,7 @@ namespace TestTask.Repository.Repositories
 
         public CountriesSearchResultModel Search(string search, int skip, int take)
         {
-            var countries = GetAll().Where(i => i.Descriptions.ToUpper().Contains(search.ToUpper()) || i.Name.ToUpper().Contains(search.ToUpper()));
+            var countries = GetAll().Where(i => i.Description.ToUpper().Contains(search.ToUpper()) || i.Name.ToUpper().Contains(search.ToUpper()));
             var totalCountries = countries.Count();
             var countriesPerPage = countries.Skip(skip).Take(take).ToList();
             return new CountriesSearchResultModel(countriesPerPage, totalCountries);

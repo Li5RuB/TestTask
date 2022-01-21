@@ -1,5 +1,5 @@
 ﻿@using TestTask.Services.Models
-@model List<UserModel>
+@model List<CountryModel>
 
 @{
     int pcount = (int)ViewData["pcount"];
@@ -13,10 +13,14 @@
 <link rel="stylesheet" href="~/css/popup.css">
 
 <header>
-    <a href="@Url.Action("index","Home")">Home</a> &#10148; <h7>Users</h7>
+    <a href="@Url.Action("index","Home")">Home</a> 
+    &#10148; 
+    <a href="@Url.Action("index","Users")">Users</a>
+    &#10148; 
+    <h7>Countries</h7>
 </header>
 <div class="row">
-    <a href="@Url.Action("Create","Users")"><button>Create</button></a>
+    <a href="@Url.Action("Create","Countries")"><button>Create</button></a>
     <input id="search" class="search" placeholder="&#128269; search" type="text" />
 </div>
 <div style="min-height: 150px;">
@@ -27,19 +31,7 @@
                     Name
                 </th>
                 <th>
-                    Title
-                </th>
-                <th>
-                    Country
-                </th>
-                <th>
-                    City
-                </th>
-                <th>
-                    Phone
-                </th>
-                <th>
-                    Email
+                    Description
                 </th>
                 <th>
                     Actions
@@ -51,29 +43,20 @@
             {
                 <tr class="" id="@i">
                     <td class="cell_@i open-popup" id="@i">
-                        <div>@Model[i].Firstname @Model[i].Lastname</div>
+                        <div>@Model[i].Name</div>
                     </td>
                     <td class="cell_@i open-popup" id="@i"> 
-                        @Model[i].Title.Name
-                    </td>
-                    <td class="cell_@i open-popup" id="@i">
-                        @Model[i].City.Country.Name
-                    </td>
-                    <td class="cell_@i open-popup" id="@i"> 
-                        @Model[i].City.Name
-                    </td>
-                    <td class="cell_@i open-popup" id="@i">
-                        @Model[i].Phone
-                    </td>
-                    <td class="cell_@i open-popup" id="@i">
-                        @Model[i].Email
+                        @Model[i].Description
                     </td>
                     <td class="cell_@i">
-                         <a href="@Url.Action("Edit","Users",new {id = Model[i].UserId})">
+                         <a href="@Url.Action("Edit","Countries",new {id = Model[i].CountryId})">
                              Edit
                          </a>
-                         <a href="@Url.Action("Delete","Users",new {id = Model[i].UserId,page = currentpage})" onclick="return confirm('Are you sure?')">
+                         <a href="@Url.Action("Delete","Countries",new {id = Model[i].CountryId,page = currentpage})" onclick="return confirm('Are you sure?')">
                              Delete
+                         </a>
+                         <a href="@Url.Action("Index","Cities",new {id = Model[i].CountryId})">
+                             Cities
                          </a>
                     </td>
                 </tr>
@@ -121,23 +104,8 @@
         </div>
     </div>
 </div>
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
-<div class="popup-bg">
-    <div class="popup">
-        <div class="popup-head">
-            <div>User Comments</div>
-            <a class="close-popup" href="">&#10006;</a>
-        </div>
-        <div class="popup-body">
-        </div>
-    </div>
-</div>
-
 <script src="~/js/table.js"></script>
-<script src="~/js/popup.js"></script>
 <script>
     let searchUrl = "@Html.Raw(Url.Action("Search",new {page=1,search="__s__"}))";
     let model = @Html.Raw(Json.Serialize(Model));
