@@ -18,6 +18,9 @@
     <a href="@Url.Action("index","Users")">Users</a>
     &#10148; 
     <h7>Countries</h7>
+    &#10148; 
+    <a href="@Url.Action("index","Cities")">Cities</a>
+
 </header>
 <div class="row">
     <a href="@Url.Action("Create","Countries")"><button>Create</button></a>
@@ -41,22 +44,20 @@
         <tbody>
             @for (int i = 0; i < Model.Count; i++)
             {
+                int j = i % 2 == 0 ? 0 : 1;
                 <tr class="" id="@i">
-                    <td class="cell_@i open-popup" id="@i">
+                    <td class="cell_@j  open-popup" id="@i">
                         <div>@Model[i].Name</div>
                     </td>
-                    <td class="cell_@i open-popup" id="@i"> 
+                    <td class="cell_@j open-popup" id="@i"> 
                         @Model[i].Description
                     </td>
-                    <td class="cell_@i">
+                    <td class="cell_@j">
                          <a href="@Url.Action("Edit","Countries",new {id = Model[i].CountryId})">
                              Edit
                          </a>
                          <a href="@Url.Action("Delete","Countries",new {id = Model[i].CountryId,page = currentpage})" onclick="return confirm('Are you sure?')">
                              Delete
-                         </a>
-                         <a href="@Url.Action("Index","Cities",new {id = Model[i].CountryId})">
-                             Cities
                          </a>
                     </td>
                 </tr>

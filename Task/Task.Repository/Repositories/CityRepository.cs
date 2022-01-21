@@ -24,7 +24,7 @@ namespace TestTask.Repository.Repositories
             return GetAll().ToList();
         }
 
-        public CitiesSearchResultModel GetCountriesToPage(int skip, int take)
+        public CitiesSearchResultModel GetCitiesToPage(int skip, int take)
         {
             var cities = GetAll();
             var totalCities = cities.Count();

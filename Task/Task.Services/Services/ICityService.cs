@@ -24,5 +24,7 @@ namespace TestTask.Services.Services
         public Task UpdateCity(CityModel user);
 
         public CityPageModel GetCityPageModel(int page, string search);
+
+        public Task<List<CityModel>> GetCountryForCities(List<CityModel> cityModels);
     }
 }

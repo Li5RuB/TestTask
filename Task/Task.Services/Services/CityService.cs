@@ -14,12 +14,14 @@ namespace TestTask.Services.Services
     public class CityService : ICityService
     {
         private readonly ICityRepository _cityRepository;
+        private readonly ICountryRepository _countryRepository;
         private const int defaultCityPage = 1;
         private const int numberOfCityPerPage = 8;
 
-        public CityService(ICityRepository cityRepository)
+        public CityService(ICityRepository cityRepository, ICountryRepository countryRepository)
         {
             _cityRepository = cityRepository;
+            _countryRepository = countryRepository;
         }
 
         public async Task CreateCity(CityModel user)
@@ -64,6 +66,21 @@ namespace TestTask.Services.Services
             _cityRepository.Update(CityMapper.MapModelToItem(city));
             await _cityRepository.Save();
         }
+
+        public async Task<List<CityModel>> GetCountryForCities(List<CityModel> cityModels)
+        {
+            for (int i = 0; i < cityModels.Count; i++)
+            {
+                cityModels[i].Country = await GetCountry(cityModels[i].CountryId);
+            }
+            return cityModels;
+        }
+
+        private async Task<CountryModel> GetCountry(int CountryId)
+        {
+            return CountryMapper.MapItemToModel(await _countryRepository.GetById(CountryId));
+        }
+
         private int GetCountPage(int total)
         {
             if (total % numberOfCityPerPage == 0)
