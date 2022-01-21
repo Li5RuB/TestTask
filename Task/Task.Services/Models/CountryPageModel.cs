@@ -3,20 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TestTask.Services.Models;
 
 namespace TestTask.Services.Models
 {
-    public class UserPageModel
+    public class CountryPageModel
     {
-        public UserPageModel(List<UserModel> userModel, int pageCount, int currentPage)
+        public CountryPageModel(List<CountryModel> userModel, int pageCount, int currentPage)
         {
-            UserModels = userModel;
+            CountryModels = userModel;
             PageCount = pageCount;
             CurrentPage = currentPage;
         }
 
-        public List<UserModel> UserModels { get; set; }
+        public List<CountryModel> CountryModels { get; set; }
 
         public int PageCount { get; set; }
 

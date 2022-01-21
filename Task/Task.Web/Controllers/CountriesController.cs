@@ -12,6 +12,11 @@ namespace TestTask.Web.Controllers
             _countryService = countryService;
         }
 
+        public IActionResult Index()
+        {
+            return View();
+        }
+
         [HttpGet]
         public JsonResult GetCountries()
         {
