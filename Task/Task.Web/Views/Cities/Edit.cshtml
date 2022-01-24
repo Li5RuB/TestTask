@@ -1,5 +1,30 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@using TestTask.Services.Models
+@model CityModel
+
+<link rel="stylesheet" href="~/css/form.css">
+
+<form method="post" action="~/Cities/Edit">
+    <div class="column">
+        @Html.Hidden("CityId",Model.CityId,new {id = Model.CityId, Name= Model.CityId})
+    <div>
+        <div class="form-element form-lable">@Html.LabelFor(m=>m.Name)</div>
+        <div class="form-element form-input">@Html.TextBoxFor(m=>m.Name)</div>
+        <div class="form-element form-error">@Html.ValidationMessageFor(m=>m.Name)</div>
+    </div>
+    <div>
+        <div class="form-element form-lable">Country</div>
+        <div class="form-element form-input">
+            <select id="CountryId" name="CountryId" ><option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div>
+        <button type="submit">Save</button></div>
+    </div>
+</form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="~/js/editCity.js"></script>
+<script>
+let model = @Html.Raw(Json.Serialize(Model));
+</script>

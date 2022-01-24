@@ -56,10 +56,10 @@ namespace TestTask.Web.Controllers
             return View(cityModel);
         }
 
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id, int page)
         {
             await _cityService.RemoveCity(id);
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { page = page });
         }
 
         public IActionResult Search(int page, string search)
