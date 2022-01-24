@@ -11,8 +11,6 @@ namespace TestTask.Services.Services
 {
     public interface ICityService
     {
-        public List<CityModel> GetAll();
-
         public Task<CityModel> GetById(int id);
 
         public List<CityModel> GetCitiesByCountryId(int CountryId);

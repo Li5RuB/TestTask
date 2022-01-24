@@ -19,11 +19,6 @@ namespace TestTask.Repository.Repositories
             return GetAll().Where(i => i.CountryId == id).ToList();
         }
 
-        public List<CityItem> GetAllCities()
-        {
-            return GetAll().ToList();
-        }
-
         public CitiesSearchResultModel GetCitiesToPage(int skip, int take)
         {
             var cities = GetAll();

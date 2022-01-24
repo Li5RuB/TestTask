@@ -11,8 +11,6 @@ namespace TestTask.Repository.Repositories
 {
     public interface ICityRepository
     {
-        public List<CityItem> GetAllCities();
-
         public Task<CityItem> GetById(int id);
 
         public List<CityItem> GetCitiesByCountryId(int id);

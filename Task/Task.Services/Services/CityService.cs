@@ -30,13 +30,6 @@ namespace TestTask.Services.Services
             await _cityRepository.Save();
         }
 
-        public List<CityModel> GetAll()
-        {
-            var cities = _cityRepository.GetAllCities();
-            var result = cities.Select(x => CityMapper.MapItemToModel(x)).ToList();
-            return result;
-        }
-
         public async Task<CityModel> GetById(int id)
         {
             return CityMapper.MapItemToModel(await _cityRepository.GetById(id));
