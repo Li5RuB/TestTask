@@ -24,8 +24,8 @@ namespace TestTask.Web.Controllers
         public async Task<IActionResult> Index(int page = 1, string search = null)
         {
             var userPageModel = _userService.GetUserPageModel(page, search);
-            ViewData["page"] = userPageModel.currentPage;
-            ViewData["pcount"] = userPageModel.pageCount;
+            ViewData["page"] = userPageModel.CurrentPage;
+            ViewData["pcount"] = userPageModel.PageCount;
             ViewData["search"] = search;
             return View(await _userService.GetAllUserFields(userPageModel.UserModels));
         }

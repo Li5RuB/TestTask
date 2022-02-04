@@ -15,7 +15,7 @@ namespace TestTask.Services.Services
     public class UserService : IUserService
     {
         private const int numberOfUsersPerPage = 3;
-        private const int defaultPage = 1;
+        private const int defaultUserPage = 1;
         private readonly IUserRepository _userRepository;
         private readonly ICityRepository _cityRepository;
         private readonly ICountryRepository _countryRepository;
@@ -71,9 +71,9 @@ namespace TestTask.Services.Services
 
         private UserPageModel GetByPage(int page)
         {
-            if (!(page > defaultPage))
+            if (!(page > defaultUserPage))
             {
-                page = defaultPage;
+                page = defaultUserPage;
             }
             var users = _userRepository.GetUsersToPage(page * numberOfUsersPerPage - numberOfUsersPerPage, numberOfUsersPerPage);
             UserPageModel result = new UserPageModel(users.UserItems.Select(x => UserMapper.MapItemToModel(x)).ToList(), GetCountPage(users.TotalUsers), page);
@@ -93,7 +93,7 @@ namespace TestTask.Services.Services
             {
                 return total / numberOfUsersPerPage;
             }
-            return total / numberOfUsersPerPage + defaultPage;
+            return total / numberOfUsersPerPage + defaultUserPage;
         }
     }
 }

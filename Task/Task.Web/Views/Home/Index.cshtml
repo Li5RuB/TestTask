@@ -1,10 +1,16 @@
 ﻿@using TestTask.Services.Models
 @model UserModel
 
-<link rel="stylesheet" href="~/css/User.css">
+<link rel="stylesheet" href="~/css/table.css">
 
 <header>
-    <h7>Home</h7> &#10148; <a href="@Url.Action("Index","Users")">Users</a>
+    <h7>Home</h7> 
+    &#10148; 
+    <a href="@Url.Action("Index","Users")">Users</a>
+    &#10148;
+    <a href="@Url.Action("Index", "Countries")">Countries</a>
+    &#10148;
+    <a href="@Url.Action("Index", "Cities")">Cities</a>
 </header>
 
 <script>

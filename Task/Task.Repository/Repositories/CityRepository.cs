@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TestTask.Repository.Data;
 using TestTask.Repository.Items;
+using TestTask.Repository.Models;
 
 namespace TestTask.Repository.Repositories
 {
@@ -18,9 +19,20 @@ namespace TestTask.Repository.Repositories
             return GetAll().Where(i => i.CountryId == id).ToList();
         }
 
-        public List<CityItem> GetAllCities()
+        public CitiesSearchResultModel GetCitiesToPage(int skip, int take)
         {
-            return GetAll().ToList();
+            var cities = GetAll();
+            var totalCities = cities.Count();
+            var citiesPerPage = cities.Skip(skip).Take(take).ToList();
+            return new CitiesSearchResultModel(citiesPerPage, totalCities);
+        }
+
+        public CitiesSearchResultModel Search(string search, int skip, int take)
+        {
+            var cities = GetAll().Where(i => i.Name.ToUpper().Contains(search.ToUpper()));
+            var totalCities = cities.Count();
+            var citiesPerPage = cities.Skip(skip).Take(take).ToList();
+            return new CitiesSearchResultModel(citiesPerPage, totalCities);
         }
     }
 }
