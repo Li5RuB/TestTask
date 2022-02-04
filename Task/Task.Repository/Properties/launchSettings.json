@@ -1,0 +1,7 @@
+{
+  "profiles": {
+    "TestTask.Repository": {
+      "commandName": "Project"
+    }
+  }
+}
