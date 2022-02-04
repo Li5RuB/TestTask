@@ -55,3 +55,13 @@ select{
 body {
     background-color: #b3b3b3;
 }
+
+.row{
+    display: flex;
+    justify-content: space-between;
+    min-width: 25%;
+    max-width: 150px;
+    margin-bottom: 15px;
+    margin-left: auto;
+    margin-right: 10%;
+}

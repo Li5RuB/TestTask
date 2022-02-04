@@ -9,17 +9,26 @@ namespace TestTask.Services.Models
 {
     public class UserPageModel
     {
+        public UserPageModel()
+        {
+            
+        }
+        
         public UserPageModel(List<UserModel> userModel, int pageCount, int currentPage)
         {
-            this.UserModels = userModel;
-            this.pageCount = pageCount;
-            this.currentPage = currentPage;
+            UserModels = userModel;
+            PageCount = pageCount;
+            CurrentPage = currentPage;
         }
-
+        
         public List<UserModel> UserModels { get; set; }
-
-        public int pageCount { get; set; }
-
-        public int currentPage { get; set; }
+        
+        public int PageCount { get; set; }
+        
+        public int CurrentPage { get; set; }
+        
+        public Dictionary<string, string> Sort {get; set; }
+        
+        public string Search { get; set; }
     }
 }

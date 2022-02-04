@@ -1,35 +1,30 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using TestTask.Services.Models;
 using TestTask.Services.Services;
 
 namespace TestTask.Web.Controllers
 {
+    [Authorize]
     public class UsersController : Controller
     {
         private readonly IUserService _userService;
-        private readonly ICountryService _countryService;
-        private readonly ITitleService _titleService;
         private readonly ICityService _cityService;
         
-        public UsersController(IUserService userService, ITitleService titleService, ICountryService countryService, ICityService cityService)
+        public UsersController(IUserService userService, ICityService cityService)
         {
             _userService = userService;
-            _countryService = countryService;
             _cityService = cityService;
-            _titleService = titleService;
         }
-
-        public async Task<IActionResult> Index(int page = 1, string search = null)
+        
+        public async Task<IActionResult> Index(UserPageModel model)
         {
-            var userPageModel = _userService.GetUserPageModel(page, search);
-            ViewData["page"] = userPageModel.currentPage;
-            ViewData["pcount"] = userPageModel.pageCount;
-            ViewData["search"] = search;
-            return View(await _userService.GetAllUserFields(userPageModel.UserModels));
+            var userPageModel = await _userService.GetUserPageModel(model);
+            return View(userPageModel);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id) 
         {
             var user = await _userService.GetById(id);
@@ -38,6 +33,7 @@ namespace TestTask.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(UserModel user)
         {
             if (ModelState.IsValid)
@@ -48,18 +44,21 @@ namespace TestTask.Web.Controllers
             return View(user);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id, int page) 
         {
             await _userService.RemoveUser(id);
             return RedirectToAction("Index", new { page = page });
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(UserModel userModel)
         {
             if (ModelState.IsValid)
@@ -68,11 +67,6 @@ namespace TestTask.Web.Controllers
                 return RedirectToAction("Index");
             }
             return View(userModel);
-        }
-
-        public IActionResult Search(int page, string search)
-        {
-            return RedirectToAction("Index", new {page=page, search = search});
         }
     }
 }

@@ -1,91 +1,207 @@
 ﻿@using TestTask.Services.Models
-@model List<UserModel>
+@model UserPageModel
 
 @{
-    int pcount = (int)ViewData["pcount"];
-    int currentpage = (int)ViewData["page"];
-    string search = (string)ViewData["search"];
-    string url;
+    var pcount = @Model.PageCount;
+    var currentpage = @Model.CurrentPage;
+    var search = @Model.Search ?? "";
+    var sort = @Model.Sort;
+    string firstPartUrl;
+    string fullUrl = "";
+    string sortedClass = "" ;
+    string secondPartUrl = "";
+    if (sort!=null)
+    {
+        foreach (var item in sort)
+        {
+            secondPartUrl += $"&Sort[{item.Key}]={item.Value}";
+        }   
+    }
 }
 
 
-<link rel="stylesheet" href="~/css/User.css">
+<link rel="stylesheet" href="~/css/table.css">
 <link rel="stylesheet" href="~/css/popup.css">
 
 <header>
-    <a href="@Url.Action("index","Home")">Home</a> &#10148; <h7>Users</h7>
+    <div class="menu">
+        <a href="@Url.Action("index", "Home")">Home</a>
+        <div>&#10148;</div>
+        <h7>Users</h7>
+        @if (User.IsInRole("Admin"))
+        {
+            <div>&#10148;</div>
+            <a href="@Url.Action("index", "Countries")">Countries</a>
+            <div>&#10148;</div>
+            <a href="@Url.Action("index", "Cities")">Cities</a>   
+        }
+    </div>
+    <div class="login">
+            <div>
+                <b>@User.Identity?.Name</b>
+            </div>
+            <div class="login-button">
+                <a href="/Account/Logout">@if (User.Identity?.Name == null)
+                                          {
+                                              <i>login</i>
+                                          }
+                                          else
+                                          {
+                                              <i>logout</i>
+                                          }
+                    </a>
+            </div>
+        </div>
 </header>
+
 <div class="row">
-    <a href="@Url.Action("Create","Users")"><button>Create</button></a>
-    <input id="search" class="search" placeholder="&#128269; search" type="text" />
+    @if (User.IsInRole("Admin"))
+    {
+        <a href="@Url.Action("Create", "Users")"><button>Create</button></a>
+    }
+    else
+    {
+        <div></div>
+    }
+    <input id="search" class="search" placeholder="&#128269; search" type="text"/>
 </div>
 <div style="min-height: 150px;">
     <table class="table" style="text-align: center;">
         <thead>
-            <tr>
-                <th>
-                    Name
-                </th>
-                <th>
-                    Title
-                </th>
-                <th>
-                    Country
-                </th>
-                <th>
-                    City
-                </th>
-                <th>
-                    Phone
-                </th>
-                <th>
-                    Email
-                </th>
+        <tr>
+            @if (sort != null)
+            {
+                if (sort.ContainsKey("Lastname"))
+                {
+                    if (sort?["Lastname"] == "asc") sortedClass = "sorted-asc";
+                    else if (sort?["Lastname"] == "desc") sortedClass = "sorted-desc";
+                    else sortedClass = "";
+                }else
+                {
+                    sortedClass = "";
+                }
+            }
+            <th>
+                <a id="Lastname" class="sort @sortedClass" href="#">Name</a>
+            </th>
+            @if (sort != null)
+            {
+                @if (sort.ContainsKey("TitleId"))
+
+                {
+                    if (sort?["TitleId"] == "asc") sortedClass = "sorted-asc";
+                    else if (sort?["TitleId"] == "desc") sortedClass = "sorted-desc";
+                    else sortedClass = "";
+                }
+                else
+                {
+                    sortedClass = "";
+                }
+            }
+            <th>
+                <a id="TitleId" class="sort @sortedClass" href="#">Title</a>
+            </th>
+            <th>
+                <a id="Country" class="" href="#">Country</a>
+            </th>
+            <th>
+                <a id="City" class="" href="#">City</a>
+            </th>
+            @if (sort != null)
+            {
+                @if (sort.ContainsKey("Phone"))
+                {
+                    if (sort?["Phone"] == "asc") sortedClass = "sorted-asc";
+                    else if (sort?["Phone"] == "desc") sortedClass = "sorted-desc";
+                    else sortedClass = "";
+                }
+                else
+                {
+                    sortedClass = "";
+                }
+            }
+            <th>
+                <a id="Phone" class="sort @sortedClass" href="#">Phone</a>
+            </th>
+            @if (sort != null)
+            {
+                @if (sort.ContainsKey("Email"))
+                {
+                    if (sort?["Email"] == "asc") sortedClass = "sorted-asc";
+                    else if (sort?["Email"] == "desc") sortedClass = "sorted-desc";
+                    else sortedClass = "";
+                }
+                else
+                {
+                    sortedClass = "";
+                }
+            }                                           
+            <th>
+                <a id="Email" class="sort @sortedClass" href="#">Email</a>
+            </th>
+            @if (User.IsInRole("Admin"))
+            {
                 <th>
                     Actions
                 </th>
-            </tr>
+            }
+        </tr>
         </thead>
         <tbody>
-            @for (int i = 0; i < Model.Count; i++)
+            @for (int i = 0; i < Model.UserModels.Count; i++)
             {
+                int j = i % 2 == 0 ? 0 : 1;
                 <tr class="" id="@i">
-                    <td class="cell_@i open-popup" id="@i">
-                        <div>@Model[i].Firstname @Model[i].Lastname</div>
+                    <td class="cell_@j open-popup" id="@i">
+                        <div>@Model.UserModels[i].Firstname @Model.UserModels[i].Lastname</div>
                     </td>
-                    <td class="cell_@i open-popup" id="@i"> 
-                        @Model[i].Title.Name
+                    <td class="cell_@j open-popup" id="@i"> 
+                        @Model.UserModels[i].Title.Name
                     </td>
-                    <td class="cell_@i open-popup" id="@i">
-                        @Model[i].City.Country.Name
+                    <td class="cell_@j open-popup" id="@i">
+                        @Model.UserModels[i].City.Country.Name
                     </td>
-                    <td class="cell_@i open-popup" id="@i"> 
-                        @Model[i].City.Name
+                    <td class="cell_@j open-popup" id="@i"> 
+                        @Model.UserModels[i].City.Name
                     </td>
-                    <td class="cell_@i open-popup" id="@i">
-                        @Model[i].Phone
+                    <td class="cell_@j open-popup" id="@i">
+                        @Model.UserModels[i].Phone
                     </td>
-                    <td class="cell_@i open-popup" id="@i">
-                        @Model[i].Email
+                    <td class="cell_@j open-popup" id="@i">
+                        @Model.UserModels[i].Email
                     </td>
-                    <td class="cell_@i">
-                         <a href="@Url.Action("Edit","Users",new {id = Model[i].UserId})">
-                             Edit
-                         </a>
-                         <a href="@Url.Action("Delete","Users",new {id = Model[i].UserId,page = currentpage})" onclick="return confirm('Are you sure?')">
-                             Delete
-                         </a>
-                    </td>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <td class="cell_@j">
+                            <a href="@Url.Action("Edit","Users",new {id = Model.UserModels[i].UserId})">
+                                Edit
+                            </a>
+                            <a href="@Url.Action("Delete","Users",new {id = Model.UserModels[i].UserId,page = currentpage})" onclick="return confirm('Are you sure?')">
+                                Delete
+                            </a>
+                        </td>
+                    }
                 </tr>
             }
         </tbody>
     </table>
     <div class="paging">
+        <a style="margin-top:1%;" href="/Users/Index"><button>Reset</button></a>
         <div class="pages">
-        @{url=search==null?Url.Action("Index",new {page=currentpage-1}):Url.Action("Search",new {page=currentpage-1,search=search});}
-            @if (currentpage!=1)
+            @{
+                firstPartUrl = $"/Users/Index?CurrentPage={currentpage - 1}&Search={search}";
+                if (sort != null)
+                {
+                    fullUrl = firstPartUrl + secondPartUrl;
+                }
+                else
+                {
+                    fullUrl = firstPartUrl;
+                }
+            }
+            @if (currentpage != 1)
             {
-                <a href="@url">&lt;</a>
+                <a href='@fullUrl'>&lt;</a>
             }
             @{
                 int cp = currentpage;
@@ -94,37 +210,62 @@
                 {
                     currentpage--;
                 }
-                else if (currentpage == pcount&&currentpage>1)
+                else if (currentpage == pcount && currentpage > 1)
                 {
                     currentpage -= 2;
                 }
-            @for(int i = currentpage; i<=pcount&&k<3;i++,k++)
-            {
-                if (i > 0)
+                @for (int i = currentpage; i <= pcount && k < 3; i++,k++)
                 {
+                    if (i > 0)
+                    {
                         <div>|</div>
-                        url = search == null ? Url.Action("Index", new { page = i }) : Url.Action("Search", new { page = i, search = search });
-                        <a href="@url">
-                        @if(i==cp){
-                            <b>@i</b>
-                        }else
-                            @i
-                    </a>
-                }
+                        firstPartUrl = $"/Users/Index?CurrentPage={i}&Search={search}";
+                        if (sort != null)
+                        {
+                            fullUrl = firstPartUrl + secondPartUrl;
+                            Console.WriteLine(fullUrl);
+                        }
+                        else
+                        {
+                            fullUrl = firstPartUrl;
+                        }
+                        <a href='@fullUrl'>
+                            @if (i == cp)
+                            {
+                                <b>@i</b>
+                            }
+                            else
+                            {
+                                @i
+                            }
+                        </a>
+                    }
 
-            } 
-            }        
-            |@{url=search==null?Url.Action("Index",new {page=cp+1}):Url.Action("Search",new {page=cp+1,search=search});}
-            @if(cp != pcount){
-                <a href="@url">&gt;</a>    
+                }
+            }
+            |
+            @{
+                firstPartUrl = $"/Users/Index?CurrentPage={cp + 1}&Search={search}";
+                if (sort != null)
+                {
+                    fullUrl = firstPartUrl + secondPartUrl;
+                    Console.WriteLine(fullUrl);
+                }
+                else
+                {
+                    fullUrl = firstPartUrl;
+                }
+            }
+            @if (cp != pcount)
+            {
+                <a href='@fullUrl'>&gt;</a>
             }
         </div>
     </div>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+
 <div class="popup-bg">
     <div class="popup">
         <div class="popup-head">
@@ -136,8 +277,21 @@
     </div>
 </div>
 
-<script src="~/js/users.js"></script>
+<script src="~/js/sort.js"></script>
+<script src="~/js/table.js"></script>
+<script src="~/js/popup.js"></script>
+
 <script>
-    let searchUrl = "@Html.Raw(Url.Action("Search",new {page=1,search="__s__"}))";
+    let lastSearch = @Html.Raw(Json.Serialize(search));
+    let searchSortUrl = "/Users/Index?";
     let model = @Html.Raw(Json.Serialize(Model));
+    let sort = [];
+    let sortModel = @Html.Raw(Json.Serialize(sort))
+    for(var key in sortModel){
+        if (sortModel.hasOwnProperty(key))
+        {
+            console.log(key+" = "+sortModel[key]);
+            sort.push('#'+key);
+        }
+    }
 </script>

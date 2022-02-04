@@ -25,5 +25,9 @@ namespace TestTask.Repository.Items
         public string Comments { get; set; }
 
         public int CityId { get; set; }
+        
+        public string Password { get; set; }
+        
+        public int RoleId { get; set; }
     }
 }

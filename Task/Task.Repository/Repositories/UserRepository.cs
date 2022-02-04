@@ -1,36 +1,61 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 using TestTask.Repository.Data;
 using TestTask.Repository.Items;
 using TestTask.Repository.Models;
+using System.Linq.Dynamic.Core;
 
 namespace TestTask.Repository.Repositories
 {
     public class UserRepository : BaseRepository<UserItem>, IUserRepository
     {
-        
         public UserRepository(ApplicationDbContext context) : base(context){ }
 
-        public UsersSearchResultModel GetUsersToPage(int skip, int take)
+        public UsersSearchResultModel GetUsersToPage(ModelForSearch modelForSearch)
         {
-            var allUsers = GetAll();
-            var totalUsers = allUsers.Count();
-            var userItems = allUsers.Skip(skip).Take(take).ToList();
-            return new UsersSearchResultModel(userItems, totalUsers); ;
+            var searchResult = GetSearchResult(modelForSearch);
+            var totalUsers = searchResult.Count();
+            searchResult = SortItems(modelForSearch.Sort, searchResult);
+            var userItems = searchResult.Skip(modelForSearch.Skip).Take(modelForSearch.Take).ToList();
+            return new UsersSearchResultModel(userItems, totalUsers);
         }
 
-        public UsersSearchResultModel Search(string search, int skip, int take)
+        private IQueryable<UserItem> GetSearchResult(ModelForSearch modelForSearch)
         {
-            var searchResult = GetAll().Where(i => i.Firstname.ToUpper().Contains(search.ToUpper()) || i.Lastname.ToUpper().Contains(search.ToUpper())
-            || i.Email.ToUpper().Contains(search.ToUpper()) || i.Phone.ToUpper().Contains(search.ToUpper()));
-            var totalUsers = searchResult.Count();
-            var userItems = searchResult.Skip(skip).Take(take).ToList();
-            return new UsersSearchResultModel(userItems, totalUsers);
+            IQueryable<UserItem> searchResult;
+            if (modelForSearch.Search == null)
+                searchResult = GetAll();
+            else
+                searchResult = GetAll().Where(i => i.Firstname.ToUpper().Contains(modelForSearch.Search.ToUpper())
+                                                   || i.Lastname.ToUpper().Contains(modelForSearch.Search.ToUpper())
+                                                   || i.Email.ToUpper().Contains(modelForSearch.Search.ToUpper())
+                                                   || i.Phone.ToUpper().Contains(modelForSearch.Search.ToUpper()));
+            return searchResult;
+        }
+
+        public async Task<UserItem> GetUserByEmail(string email)
+        {
+            return await GetAll().FirstOrDefaultAsync(x => x.Email.ToLower() == email.ToLower());
+        }
+        
+        private static IQueryable<UserItem> SortItems(Dictionary<string, string> sort, IQueryable<UserItem> allUsers)
+        {
+            if (sort?.Count > 0)
+            {
+                string s = "";
+                for (var i = 0;i<sort.Count;i++)
+                {
+                    s += $"{sort.ElementAt(i).Key} {(sort.ElementAt(i).Value == "desc" ? "desc" : "")}";
+                    if (i<sort.Count-1)
+                    {
+                        s += ',';
+                    }
+                }
+                allUsers = allUsers.OrderBy(s);
+            }
+            return allUsers;
         }
     }
 }

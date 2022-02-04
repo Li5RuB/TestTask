@@ -43,5 +43,11 @@ namespace TestTask.Services.Models
         public int CityId { get; set; }
 
         public CityModel City { get; set; }
+        
+        public int RoleId { get; set; }
+        
+        public RoleModel Role { get; set; }
+        
+        public string Password { get; set; }
     }
 }

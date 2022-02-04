@@ -1,0 +1,134 @@
+﻿@using TestTask.Services.Models
+@model List<CountryModel>
+
+@{
+    int pcount = (int)ViewData["pcount"];
+    int currentpage = (int)ViewData["page"];
+    string search = (string)ViewData["search"];
+    string url;
+}
+
+
+<link rel="stylesheet" href="~/css/table.css">
+<link rel="stylesheet" href="~/css/popup.css">
+
+<header>
+    <div class="menu">
+        <a href="@Url.Action("index", "Home")">Home</a>
+        <div>&#10148;</div>
+        <a href="@Url.Action("index", "Users")">Users</a>
+        <div>&#10148;</div>
+        <h7>Countries</h7>
+        <div>&#10148;</div>
+        <a href="@Url.Action("index", "Cities")">Cities</a>
+    </div>
+    <div class="login">
+            <div>
+                <b>@User.Identity?.Name</b>
+            </div>
+            <div class="login-button">
+                <a href="/Account/Logout">@if (User.Identity?.Name == null)
+                                          {
+                                              <i>login</i>
+                                          }
+                                          else
+                                          {
+                                              <i>logout</i>
+                                          }
+                    </a>
+            </div>
+        </div>
+</header>
+<div class="row">
+    <a href="@Url.Action("Create","Countries")"><button>Create</button></a>
+    <input id="search" class="search" placeholder="&#128269; search" type="text" />
+</div>
+<div style="min-height: 150px;">
+    <table class="table" style="text-align: center;">
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Actions
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                int j = i % 2 == 0 ? 0 : 1;
+                <tr class="" id="@i">
+                    <td class="cell_@j  open-popup" id="@i">
+                        <div>@Model[i].Name</div>
+                    </td>
+                    <td class="cell_@j open-popup" id="@i"> 
+                        @Model[i].Description
+                    </td>
+                    <td class="cell_@j">
+                         <a href="@Url.Action("Edit","Countries",new {id = Model[i].CountryId})">
+                             Edit
+                         </a>
+                         <a href="@Url.Action("Delete","Countries",new {id = Model[i].CountryId,page = currentpage})" onclick="return confirm('Are you sure?')">
+                             Delete
+                         </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="paging">
+        <div class="pages">
+        @{url=search==null?Url.Action("Index",new {page=currentpage-1}):Url.Action("Search",new {page=currentpage-1,search=search});}
+            @if (currentpage!=1)
+            {
+                <a href="@url">&lt;</a>
+            }
+            @{
+                int cp = currentpage;
+                int k = 0;
+                if (currentpage > 1 && currentpage < pcount)
+                {
+                    currentpage--;
+                }
+                else if (currentpage == pcount&&currentpage>1)
+                {
+                    currentpage -= 2;
+                }
+            @for(int i = currentpage; i<=pcount&&k<3;i++,k++)
+            {
+                if (i > 0)
+                {
+                        <div>|</div>
+                        url = search == null ? Url.Action("Index", new { page = i }) : Url.Action("Search", new { page = i, search = search });
+                        <a href="@url">
+                        @if(i==cp){
+                            <b>@i</b>
+                        }
+                        else
+                        {
+                            @i
+                        }
+                            
+                    </a>
+                }
+
+            } 
+            }        
+            |@{url=search==null?Url.Action("Index",new {page=cp+1}):Url.Action("Search",new {page=cp+1,search=search});}
+            @if(cp != pcount){
+                <a href="@url">&gt;</a>    
+            }
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="~/js/table.js"></script>
+<script>
+    let searchUrl = "@Html.Raw(Url.Action("Search",new {page=1,search="__s__"}))";
+    let model = @Html.Raw(Json.Serialize(Model));
+</script>

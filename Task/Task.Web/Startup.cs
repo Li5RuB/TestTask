@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
+
 
 namespace TestTask.Web
 {
@@ -25,10 +27,14 @@ namespace TestTask.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDatabase(this.Configuration.GetConnectionString("DefaultConnection"));
-
-            services.AddControllersWithViews();
             services.AddDependencies();            
             services.AddMvc();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options => 
+                {
+                    options.LoginPath = new PathString("/Account/Login");
+                });
+            services.AddControllersWithViews();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,12 +43,13 @@ namespace TestTask.Web
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-            }            
-
+            }
             app.UseStaticFiles();
-
             app.UseRouting();
-
+            
+            app.UseAuthentication();
+            app.UseAuthorization();
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

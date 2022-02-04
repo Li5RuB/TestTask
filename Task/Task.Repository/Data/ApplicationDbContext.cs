@@ -17,7 +17,9 @@ namespace TestTask.Repository.Data
         public DbSet<CityItem> Cities { get; set; }
 
         public DbSet<TitleItem> Titles { get; set; }
-
+        
+        public DbSet<RoleItem> Roles { get; set; }
+        
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
       : base(options)
         {

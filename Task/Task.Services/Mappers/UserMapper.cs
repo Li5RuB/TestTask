@@ -12,17 +12,23 @@ namespace TestTask.Services.Mappers
     {
         public static UserModel MapItemToModel(UserItem item)
         {
-            return new UserModel()
+            if (item != null)
             {
-                UserId = item.UserId,
-                Firstname = item.Firstname,
-                Lastname = item.Lastname,
-                CityId = item.CityId,
-                Comments = item.Comments,
-                TitleId = item.TitleId,
-                Email = item.Email,
-                Phone = item.Phone
-            };
+                return new UserModel()
+                {
+                    UserId = item.UserId,
+                    Firstname = item.Firstname,
+                    Lastname = item.Lastname,
+                    CityId = item.CityId,
+                    Comments = item.Comments,
+                    TitleId = item.TitleId,
+                    Email = item.Email,
+                    Phone = item.Phone,
+                    Password = item.Password,
+                    RoleId = item.RoleId
+                };   
+            }
+            return null;
         }
 
         public static UserItem MapModelToItem(UserModel model)
@@ -36,7 +42,26 @@ namespace TestTask.Services.Mappers
                 Comments = model.Comments,
                 TitleId = model.TitleId,
                 Email = model.Email,
-                Phone = model.Phone
+                Phone = model.Phone,
+                Password = model.Password,
+                RoleId = model.RoleId
+            };
+        }
+
+        public static UserModel MapRegisterModelToModel(RegisterModel model)
+        {
+            return new UserModel()
+            {
+                UserId = model.UserId,
+                Firstname = model.Firstname,
+                Lastname = model.Lastname,
+                CityId = model.CityId,
+                Comments = model.Comments,
+                TitleId = model.TitleId,
+                Email = model.Email,
+                Phone = model.Phone,
+                Password = model.Password,
+                RoleId = model.RoleId
             };
         }
     }

@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TestTask.Services.Services;
 
 namespace TestTask.Web.Controllers
 {
+    [Authorize]
     public class TitlesController : Controller
     {
         private readonly ITitleService _titleService;
@@ -13,6 +15,7 @@ namespace TestTask.Web.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public JsonResult GetTitles()
         {
             return Json(_titleService.GetAll());

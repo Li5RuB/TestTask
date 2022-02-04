@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using TestTask.Repository.Data;
 using TestTask.Repository.Repositories;
+using TestTask.Services.Hasher;
 using TestTask.Services.Mappers;
 using TestTask.Services.Services;
 
@@ -15,11 +16,16 @@ namespace TestTask.Web
             services.AddTransient<ICountryRepository, CountryRepository>();
             services.AddTransient<ITitleRepository, TitleRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
-
+            services.AddTransient<IRoleRepository, RoleRepository>();
+            
+            services.AddTransient<IPasswordHasher, PasswordHasher>();
+            
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ICountryService, CountryService>();
             services.AddTransient<ITitleService, TitleService>();
             services.AddTransient<ICityService, CityService>();
+            services.AddTransient<IRoleService, RoleService>();
+            services.AddTransient<IAuthorizationService, AuthorizationService>();
         }
 
         public static void AddDatabase(this IServiceCollection services, string connectionString)

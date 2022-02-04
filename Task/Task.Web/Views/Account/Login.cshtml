@@ -1,0 +1,27 @@
+﻿@using TestTask.Services.Models
+@model LoginModel
+
+
+<link rel="stylesheet" href="~/css/form.css">
+
+<div>
+    <form method="post" action="/Account/Login">
+        <div class="column">
+            <div>
+                <div class="form-element form-lable">@Html.LabelFor(m=>m.Email)</div>
+                <div class="form-element form-input">@Html.TextBoxFor(m=>m.Email)</div>
+                <div class="form-element form-error">@Html.ValidationMessageFor(m=>m.Email)</div>
+            </div>
+            <div>
+                <div class="form-element form-lable">@Html.LabelFor(m=>m.Password)</div>
+                <div class="form-element form-input">@Html.PasswordFor(m=>m.Password)</div>
+                <div class="form-element form-error">@Html.ValidationMessageFor(m=>m.Password)</div>
+            </div>
+            <div><button type="submit">Login</button></div>
+            <div class="row">
+                <a href="/Home/Index">Home</a>
+                <a href="/Account/Register">Register</a>
+            </div>
+        </div>
+    </form>
+</div>

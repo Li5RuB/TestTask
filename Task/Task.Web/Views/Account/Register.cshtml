@@ -1,0 +1,78 @@
+﻿@using TestTask.Services.Models
+@model RegisterModel
+
+<link rel="stylesheet" href="~/css/form.css">
+
+<div>
+    <form method="post" action="/Account/Register">
+        <div class="column">
+            <div>
+                <div class="form-element form-lable">@Html.LabelFor(m=>m.Firstname)</div>
+                <div class="form-element form-input">@Html.TextBoxFor(m=>m.Firstname)</div>
+                <div class="form-element form-error">@Html.ValidationMessageFor(m=>m.Firstname)</div>
+            </div>
+            <div>
+                <div class="form-element form-lable">@Html.LabelFor(m=>m.Lastname)</div>
+                <div class="form-element form-input">@Html.TextBoxFor(m=>m.Lastname)</div>
+                <div class="form-element form-error">@Html.ValidationMessageFor(m=>m.Lastname)</div>
+            </div>
+            <div>
+                <div class="form-element form-lable">@Html.LabelFor(m=>m.Email)</div>
+                <div class="form-element form-input">@Html.TextBoxFor(m=>m.Email)</div>
+                <div class="form-element form-error">@Html.ValidationMessageFor(m=>m.Email)</div>
+            </div>
+            <div>
+                <div class="form-element form-lable">@Html.LabelFor(m=>m.Phone)</div>
+                <div class="form-element form-input">@Html.TextBoxFor(m=>m.Phone)</div>
+                <div class="form-element form-error">@Html.ValidationMessageFor(m=>m.Phone)</div>
+            </div>
+            <div>
+                <div class="form-element form-lable">@Html.LabelFor(m=>m.Password)</div>
+                <div class="form-element form-input">@Html.PasswordFor(m=>m.Password)</div>
+                <div class="form-element form-error">@Html.ValidationMessageFor(m=>m.Password)</div>
+            </div>
+            <div>
+                <div class="form-element form-lable">@Html.LabelFor(m => m.ConfirmPassword)</div>
+                <div class="form-element form-input">@Html.PasswordFor(m => m.ConfirmPassword)</div>
+                <div class="form-element form-error">@Html.ValidationMessageFor(m => m.ConfirmPassword)</div>
+            </div>
+            <div>
+                <div class="form-element form-lable">Title</div>
+                <div class="form-element form-input">
+                    <select id="TitleId" name="TitleId">
+                        <option value=""></option>
+                    </select>
+                </div>
+                <div class="form-element form-error">@Html.ValidationMessageFor(m=>m.TitleId)</div>
+            </div >
+            <div>
+                <div class="form-element form-lable">Country</div>
+                <div class="form-element form-input">
+                    <select id="Countries">
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+            <div >
+                <div class="form-element form-lable">City</div>
+                <div class="form-element form-input">
+                    <select id="CityId" name="CityId"><option value=""></option>
+                    </select>
+                </div>
+                <div class="form-element form-error">@Html.ValidationMessageFor(m => m.CityId)</div>
+            </div>
+            <div>
+                <div class="form-element form-lable">@Html.LabelFor(m => m.Comments)</div>
+                <div class="form-element form-input">@Html.TextAreaFor(m => m.Comments)</div>
+            </div>
+            <div><button type="submit">Register</button></div>
+            <div class="row">
+                <a href="/Home/Index">Home</a>
+                <a href="/Account/Login">Login</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="~/js/createUsers.js"></script>
