@@ -11,15 +11,15 @@ namespace TestTask.Services.Models
     {
         public UserPageModel(List<UserModel> userModel, int pageCount, int currentPage)
         {
-            UserModels = userModel;
-            PageCount = pageCount;
-            CurrentPage = currentPage;
+            this.UserModels = userModel;
+            this.pageCount = pageCount;
+            this.currentPage = currentPage;
         }
 
         public List<UserModel> UserModels { get; set; }
 
-        public int PageCount { get; set; }
+        public int pageCount { get; set; }
 
-        public int CurrentPage { get; set; }
+        public int currentPage { get; set; }
     }
 }

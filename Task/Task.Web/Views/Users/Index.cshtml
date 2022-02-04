@@ -9,17 +9,11 @@
 }
 
 
-<link rel="stylesheet" href="~/css/table.css">
+<link rel="stylesheet" href="~/css/User.css">
 <link rel="stylesheet" href="~/css/popup.css">
 
 <header>
-    <a href="@Url.Action("index","Home")">Home</a> 
-    &#10148; 
-    <h7>Users</h7>
-    &#10148;
-    <a href="@Url.Action("index","Countries")">Countries</a>
-    &#10148;
-    <a href="@Url.Action("index","Cities")">Cities</a> 
+    <a href="@Url.Action("index","Home")">Home</a> &#10148; <h7>Users</h7>
 </header>
 <div class="row">
     <a href="@Url.Action("Create","Users")"><button>Create</button></a>
@@ -55,27 +49,26 @@
         <tbody>
             @for (int i = 0; i < Model.Count; i++)
             {
-                int j = i % 2 == 0 ? 0 : 1;
                 <tr class="" id="@i">
-                    <td class="cell_@j open-popup" id="@i">
+                    <td class="cell_@i open-popup" id="@i">
                         <div>@Model[i].Firstname @Model[i].Lastname</div>
                     </td>
-                    <td class="cell_@j open-popup" id="@i"> 
+                    <td class="cell_@i open-popup" id="@i"> 
                         @Model[i].Title.Name
                     </td>
-                    <td class="cell_@j open-popup" id="@i">
+                    <td class="cell_@i open-popup" id="@i">
                         @Model[i].City.Country.Name
                     </td>
-                    <td class="cell_@j open-popup" id="@i"> 
+                    <td class="cell_@i open-popup" id="@i"> 
                         @Model[i].City.Name
                     </td>
-                    <td class="cell_@j open-popup" id="@i">
+                    <td class="cell_@i open-popup" id="@i">
                         @Model[i].Phone
                     </td>
-                    <td class="cell_@j open-popup" id="@i">
+                    <td class="cell_@i open-popup" id="@i">
                         @Model[i].Email
                     </td>
-                    <td class="cell_@j">
+                    <td class="cell_@i">
                          <a href="@Url.Action("Edit","Users",new {id = Model[i].UserId})">
                              Edit
                          </a>
@@ -143,8 +136,7 @@
     </div>
 </div>
 
-<script src="~/js/table.js"></script>
-<script src="~/js/popup.js"></script>
+<script src="~/js/users.js"></script>
 <script>
     let searchUrl = "@Html.Raw(Url.Action("Search",new {page=1,search="__s__"}))";
     let model = @Html.Raw(Json.Serialize(Model));
