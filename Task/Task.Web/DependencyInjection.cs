@@ -1,16 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TestTask.Repository.Data;
 using TestTask.Repository.Repositories;
 using TestTask.Services.Hasher;
 using TestTask.Services.Mappers;
+using TestTask.Services.Models;
 using TestTask.Services.Services;
 
 namespace TestTask.Web
 {
     public static class DependencyInjection
     {
-        public static void AddDependencies(this IServiceCollection services)
+        public static void AddDependencies(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddTransient<ICityRepository, CityRepository>();
             services.AddTransient<ICountryRepository, CountryRepository>();
@@ -18,7 +20,7 @@ namespace TestTask.Web
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IRoleRepository, RoleRepository>();
             
-            services.AddTransient<IPasswordHasher, PasswordHasher>();
+            services.AddTransient<IPasswordHasher>(x => new PasswordHasher(configuration.GetSection("HashSettings").Get<HashSettings>()));
             
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ICountryService, CountryService>();
