@@ -29,5 +29,7 @@ namespace TestTask.Repository.Items
         public string Password { get; set; }
         
         public int RoleId { get; set; }
+      
+        public DateTime? LastLogin { get; set; }
     }
 }

@@ -49,5 +49,7 @@ namespace TestTask.Services.Models
         public RoleModel Role { get; set; }
         
         public string Password { get; set; }
+
+        public DateTime? LastLogin { get; set; }
     }
 }

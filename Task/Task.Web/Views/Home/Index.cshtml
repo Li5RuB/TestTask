@@ -1,5 +1,5 @@
-﻿@using TestTask.Services.Models
-@model UserModel
+﻿@using TestTask.Web.Models
+@model StatisticsModel
 
 <link rel="stylesheet" href="~/css/table.css">
 
@@ -33,6 +33,79 @@
         </div>
     </div>
 </header>
+<div class="row">
+    <b>Count statistics</b>
+</div>
+<div style="min-height: 150px;">
+    <table class="table" style="text-align: center;">
+        <thead>
+        <tr>     
+            <th>
+                <a id="" class="">Users count</a>
+            </th>
+            
+            <th>
+                <a id="" class="">Country count</a>
+            </th>
+            <th>
+                <a id="" class="">Sities count</a>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr class="">
+                <td class="cell_1" id="1">
+                    <div>@Model.CountStatistics.UsersCount</div>
+                </td>
+                <td class="cell_1" id="1"> 
+                    @Model.CountStatistics.CountriesCount
+                </td>
+                <td class="cell_1" id="1">
+                    @Model.CountStatistics.CitiesCount
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br />
+    <br />
+    <br />
+    <div class="row">
+    <b>Last login statistics</b>
+    </div>
+        <table class="table" style="text-align: center;">
+        <thead>
+        <tr>     
+            <th>
+                <a id="" class="">Country</a>
+            </th>
+            
+            <th>
+                <a id="" class="">Users count</a>
+            </th>
+            <th>
+                <a id="" class="">Last login from country</a>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+            @for (var i = 0;i<@Model.LastLoginStatistics.Count;i++)
+            {
+                int j = i % 2 == 0 ? 0 : 1;
+            <tr class="">
+                <td class="cell_@j" id="@i">
+                    <div>@Model.LastLoginStatistics[i].CountryName</div>
+                </td>
+                <td class="cell_@j" id="@i"> 
+                    @Model.LastLoginStatistics[i].UsersCount
+                </td>
+                <td class="cell_@j" id="@i">
+                    @Model.LastLoginStatistics[i].LastLoginFromCountry
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
 <script>
     let model = @Html.Raw(Json.Serialize(@Model));
 </script>

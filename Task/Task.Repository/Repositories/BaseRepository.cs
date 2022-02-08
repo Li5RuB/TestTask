@@ -50,5 +50,10 @@ namespace TestTask.Repository.Repositories
         {
             return _context.Set<T>();
         }
+
+        public List<T> CallProcedure(string nameProcedure)
+        {
+            return _context.Set<T>().FromSqlRaw(nameProcedure).AsEnumerable().ToList();
+        }
     }
 }

@@ -12,6 +12,10 @@ namespace TestTask.Repository.Data
     {
         public DbSet<UserItem> Users { get; set; }
 
+        public DbSet<CountStatisticsItem> countStatistics { get; set; }
+
+        public DbSet<LastLoginStatisticsItem> lastLoginStatistics { get; set; }
+
         public DbSet<CountryItem> Countries { get; set; }
 
         public DbSet<CityItem> Cities { get; set; }

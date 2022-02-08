@@ -37,7 +37,7 @@ namespace TestTask.Repository.Repositories
 
         public async Task<UserItem> GetUserByEmail(string email)
         {
-            return await GetAll().FirstOrDefaultAsync(x => x.Email.ToLower() == email.ToLower());
+            return await GetAll().AsNoTracking().FirstOrDefaultAsync(x => x.Email.ToLower() == email.ToLower());
         }
         
         private static IQueryable<UserItem> SortItems(Dictionary<string, string> sort, IQueryable<UserItem> allUsers)
