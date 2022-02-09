@@ -9,7 +9,7 @@ namespace TestTask.Services.Hasher
         private readonly int SaltSize;
         private readonly int HashSize;
         private readonly int Iterations;
-        public PasswordHasher(HashSettings settings)
+        public PasswordHasher(IHashSettings settings)
         {
             SaltSize = settings.SaltSize;
             HashSize = settings.HashSize;

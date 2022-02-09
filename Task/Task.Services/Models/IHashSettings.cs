@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace TestTask.Services.Models
 {
-    public class HashSettings : IHashSettings
+    public interface IHashSettings
     {
         public int SaltSize { get; set; }
-        
+
         public int HashSize { get; set; }
         
         public int Iterations { get; set; }
