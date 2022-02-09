@@ -59,7 +59,7 @@ namespace TestTask.Services.Hasher
             byte[] dst = new byte[SaltSize];
             Buffer.BlockCopy(src, 1, dst, 0, SaltSize);
             byte[] buffer3 = new byte[HashSize];
-            Buffer.BlockCopy(src, SaltSize+0x01, buffer3, 0, HashSize);
+            Buffer.BlockCopy(src, SaltSize + 0x01, buffer3, 0, HashSize);
             using (Rfc2898DeriveBytes bytes = new Rfc2898DeriveBytes(password, dst, Iterations))
             {
                 buffer4 = bytes.GetBytes(HashSize);
@@ -73,7 +73,7 @@ namespace TestTask.Services.Hasher
             if (b1 == b2) return true;
             if (b1 == null || b2 == null) return false;
             if (b1.Length != b2.Length) return false;
-            for (int i=0; i < b1.Length; i++)
+            for (int i = 0; i < b1.Length; i++)
             {
                 if (b1[i] != b2[i]) return false;
             }

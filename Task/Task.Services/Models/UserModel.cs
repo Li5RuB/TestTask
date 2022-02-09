@@ -20,7 +20,7 @@ namespace TestTask.Services.Models
         [Required]
         [StringLength(255)]
         [Display(Name = "Last name")]
-        public string Lastname { get; set;}
+        public string Lastname { get; set; }
 
         [Required]
         [EmailAddress]
@@ -33,7 +33,7 @@ namespace TestTask.Services.Models
         public string Comments { get; set; }
 
         [Required]
-        [Range(1,int.MaxValue)]
+        [Range(1, int.MaxValue)]
         public int TitleId { get; set; }
 
         public TitleModel Title { get; set; }
@@ -49,5 +49,7 @@ namespace TestTask.Services.Models
         public RoleModel Role { get; set; }
         
         public string Password { get; set; }
+
+        public DateTime? LastLogin { get; set; }
     }
 }

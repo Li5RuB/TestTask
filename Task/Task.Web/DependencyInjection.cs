@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TestTask.Repository.Data;
+using TestTask.Repository.Items;
 using TestTask.Repository.Repositories;
 using TestTask.Services.Hasher;
 using TestTask.Services.Mappers;
@@ -19,6 +20,8 @@ namespace TestTask.Web
             services.AddTransient<ITitleRepository, TitleRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IRoleRepository, RoleRepository>();
+            services.AddTransient<IStatisticsRepository<CountStatisticsItem>, CountStatisticsRepository>();
+            services.AddTransient<IStatisticsRepository<LastLoginStatisticsItem>, LastLoginStatisticsRepository>();
             
             services.AddTransient<IPasswordHasher>(x => new PasswordHasher(configuration.GetSection("HashSettings").Get<HashSettings>()));
             
@@ -28,6 +31,7 @@ namespace TestTask.Web
             services.AddTransient<ICityService, CityService>();
             services.AddTransient<IRoleService, RoleService>();
             services.AddTransient<IAuthorizationService, AuthorizationService>();
+            services.AddTransient<IStatisticsService, StatisticsService>();
         }
 
         public static void AddDatabase(this IServiceCollection services, string connectionString)

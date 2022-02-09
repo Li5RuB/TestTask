@@ -18,7 +18,8 @@ namespace TestTask.Services.Services
         private readonly ICountryRepository _countryRepository;
         private readonly ITitleRepository _titleRepository;
         
-        public UserService(IUserRepository userRepository, 
+        public UserService(
+            IUserRepository userRepository, 
             ICityRepository cityRepository, 
             ICountryRepository countryRepository, 
             ITitleRepository titleRepository)
@@ -71,6 +72,12 @@ namespace TestTask.Services.Services
             return userPageModel;
         }
 
+        public async Task<UserModel> GetUserByEmail(string email)
+        {
+            var user = await _userRepository.GetUserByEmail(email);
+            return UserMapper.MapItemToModel(user);
+        }
+
         private async Task CreateUserPageModel(UserPageModel model, UserPageModel userPageModel)
         {
             userPageModel.UserModels = await GetAllUserFields(userPageModel.UserModels);
@@ -78,12 +85,6 @@ namespace TestTask.Services.Services
             userPageModel.Sort = model.Sort;
         }
 
-        public async Task<UserModel> GetUserByEmail(string email)
-        {
-            var user = await _userRepository.GetUserByEmail(email);
-            return UserMapper.MapItemToModel(user);
-        }
-        
         private UserPageModel GetByPage(UserPageModel model)
         {
             if (!(model.CurrentPage > DefaultUserPage))

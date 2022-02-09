@@ -14,7 +14,7 @@ namespace TestTask.Services.Mappers
         {
             if (item != null)
             {
-                return new UserModel()
+                var model = new UserModel()
                 {
                     UserId = item.UserId,
                     Firstname = item.Firstname,
@@ -25,8 +25,10 @@ namespace TestTask.Services.Mappers
                     Email = item.Email,
                     Phone = item.Phone,
                     Password = item.Password,
-                    RoleId = item.RoleId
+                    RoleId = item.RoleId,
+                    LastLogin = item.LastLogin,
                 };   
+                return model;
             }
             return null;
         }
@@ -44,7 +46,8 @@ namespace TestTask.Services.Mappers
                 Email = model.Email,
                 Phone = model.Phone,
                 Password = model.Password,
-                RoleId = model.RoleId
+                RoleId = model.RoleId,
+                LastLogin = model.LastLogin,
             };
         }
 

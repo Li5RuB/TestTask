@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -14,7 +15,8 @@ namespace TestTask.Services.Services
         private readonly IRoleService _roleService;
         private readonly IPasswordHasher _passwordHasher;
 
-        public AuthorizationService(IPasswordHasher passwordHasher, 
+        public AuthorizationService(
+            IPasswordHasher passwordHasher, 
             IUserService userService, 
             IRoleService roleService)
         {
@@ -27,7 +29,11 @@ namespace TestTask.Services.Services
         {
             var user = await _userService.GetUserByEmail(model.Email);
             if (user != null && _passwordHasher.VerifyHashedPassword(user.Password, model.Password))
+            {
+                user.LastLogin = DateTime.Now;
+                await _userService.UpdateUser(user);
                 return user;
+            }
             return null;
         }
         

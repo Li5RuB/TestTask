@@ -9,10 +9,10 @@ namespace TestTask.Services.Services
 {
     public class CityService : ICityService
     {
-        private readonly ICityRepository _cityRepository;
-        private readonly ICountryRepository _countryRepository;
         private const int DefaultCityPage = 1;
         private const int NumberOfCityPerPage = 8;
+        private readonly ICityRepository _cityRepository;
+        private readonly ICountryRepository _countryRepository;
 
         public CityService(ICityRepository cityRepository, ICountryRepository countryRepository)
         {
@@ -44,7 +44,7 @@ namespace TestTask.Services.Services
             {
                 page = DefaultCityPage;
             }
-            var cities = _cityRepository.GetCitiesToPage(search,page * NumberOfCityPerPage - NumberOfCityPerPage, NumberOfCityPerPage);
+            var cities = _cityRepository.GetCitiesToPage(search, page * NumberOfCityPerPage - NumberOfCityPerPage, NumberOfCityPerPage);
             CityPageModel result = new CityPageModel(cities.CityItems.Select(CityMapper.MapItemToModel).ToList(), GetCountPage(cities.TotalCities), page);
             return result;
         }

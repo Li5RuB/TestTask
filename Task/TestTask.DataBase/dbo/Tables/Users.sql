@@ -9,6 +9,7 @@
     [UserId]    INT           IDENTITY (1, 1) NOT NULL,
     [Password]  VARCHAR (255) NOT NULL,
     [RoleId]    INT           NOT NULL,
+    [LastLogin] DATETIME NULL, 
     PRIMARY KEY CLUSTERED ([UserId] ASC),
     FOREIGN KEY ([CItyId]) REFERENCES [dbo].[Cities] ([CityId]),
     FOREIGN KEY ([TitleId]) REFERENCES [dbo].[Titles] ([TitleId]),

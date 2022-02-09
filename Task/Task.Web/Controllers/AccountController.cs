@@ -14,7 +14,8 @@ namespace TestTask.Web.Controllers
         private readonly IUserService _userService;
         private readonly IAuthorizationService _authorizationService;
 
-        public AccountController(IUserService userService, 
+        public AccountController(
+            IUserService userService, 
             IAuthorizationService authorizationService)
         {
             _userService = userService;
@@ -24,7 +25,7 @@ namespace TestTask.Web.Controllers
         [HttpGet]
         public IActionResult AccessDenied(string returnUrl)
         {
-            return Redirect(returnUrl.Substring(0,returnUrl.LastIndexOf('/')));
+            return Redirect(returnUrl.Substring(0, returnUrl.LastIndexOf('/')));
         }
         
         public IActionResult Login()
@@ -38,11 +39,12 @@ namespace TestTask.Web.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _authorizationService.LoginUser(model);
-                if (user !=null){
+                if (user != null)
+                {
                     await Authenticate(await _authorizationService.GetClaimsIdentity(user));
                     return RedirectToAction("Index", "Home");
                 }
-                ModelState.AddModelError("Password","invalid login or password");
+                ModelState.AddModelError("Password", "invalid login or password");
             }
             return View(model);
         }
@@ -57,12 +59,12 @@ namespace TestTask.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user= await _userService.GetUserByEmail(model.Email);
+                var user = await _userService.GetUserByEmail(model.Email);
                 if (user == null)
                 {
                     await _authorizationService.RegisterUser(model);
                     await Authenticate(await _authorizationService.GetClaimsIdentity(UserMapper.MapRegisterModelToModel(model)));
-                    return RedirectToAction("Index","Home");
+                    return RedirectToAction("Index", "Home");
                 }
             }
             return View(model);

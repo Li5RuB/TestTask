@@ -12,6 +12,6 @@ namespace TestTask.Repository.Items
         [Key]
         public int TitleId { get; set; }
 
-        public string Name{ get; set; }
+        public string Name { get; set; }
     }
 }
