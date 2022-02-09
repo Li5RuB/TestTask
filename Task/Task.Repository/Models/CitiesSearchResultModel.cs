@@ -11,8 +11,8 @@ namespace TestTask.Repository.Models
     {
         public CitiesSearchResultModel(List<CityItem> cities, int totalCities)
         {
-            CityItems = cities;
-            TotalCities = totalCities;
+            this.CityItems = cities;
+            this.TotalCities = totalCities;
         }
 
         public List<CityItem> CityItems { get; set; }

@@ -9,9 +9,10 @@ namespace TestTask.Services.Services
 {
     public class CountryService : ICountryService
     {
-        private readonly ICountryRepository _countryRepository;
         private const int NumberOfCountriesPerPage = 4;
         private const int DefaultCountryPage = 1;
+        private readonly ICountryRepository _countryRepository;
+        
         public CountryService(ICountryRepository countryRepository)
         {
             _countryRepository = countryRepository;
@@ -41,18 +42,9 @@ namespace TestTask.Services.Services
             {
                 page = DefaultCountryPage;
             }
-            var countries = _countryRepository.GetCountriesToPage(search,page * NumberOfCountriesPerPage - NumberOfCountriesPerPage, NumberOfCountriesPerPage);
+            var countries = _countryRepository.GetCountriesToPage(search, page * NumberOfCountriesPerPage - NumberOfCountriesPerPage, NumberOfCountriesPerPage);
             CountryPageModel result = new CountryPageModel(countries.CountryItems.Select(CountryMapper.MapItemToModel).ToList(), GetCountPage(countries.TotalCountries), page);
             return result;
-        }
-        
-        private int GetCountPage(int total)
-        {
-            if (total % NumberOfCountriesPerPage == 0)
-            {
-                return total / NumberOfCountriesPerPage;
-            }
-            return total / NumberOfCountriesPerPage + DefaultCountryPage;
         }
         
         public async Task RemoveCountry(int id)
@@ -65,6 +57,15 @@ namespace TestTask.Services.Services
         {
             _countryRepository.Update(CountryMapper.MapModelToItem(user));
             await _countryRepository.Save();
+        }
+        
+        private int GetCountPage(int total)
+        {
+            if (total % NumberOfCountriesPerPage == 0)
+            {
+                return total / NumberOfCountriesPerPage;
+            }
+            return total / NumberOfCountriesPerPage + DefaultCountryPage;
         }
     }
 }

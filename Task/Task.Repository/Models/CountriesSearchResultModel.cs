@@ -11,8 +11,8 @@ namespace TestTask.Repository.Models
     {
         public CountriesSearchResultModel(List<CountryItem> countries, int totalCountries)
         {
-            CountryItems = countries;
-            TotalCountries = totalCountries;
+            this.CountryItems = countries;
+            this.TotalCountries = totalCountries;
         }
 
         public List<CountryItem> CountryItems { get; set; }

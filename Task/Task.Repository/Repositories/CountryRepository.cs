@@ -22,7 +22,7 @@ namespace TestTask.Repository.Repositories
         public CountriesSearchResultModel GetCountriesToPage(string search, int skip, int take)
         {
             IQueryable<CountryItem> countries;
-            countries = search!=null ? GetAll().Where(i => 
+            countries = search != null ? GetAll().Where(i => 
                 i.Description.ToUpper().Contains(search.ToUpper()) 
                 || i.Name.ToUpper().Contains(search.ToUpper())) : GetAll();
             var totalCountries = countries.Count();

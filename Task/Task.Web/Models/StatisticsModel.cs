@@ -7,8 +7,8 @@ namespace TestTask.Web.Models
     {
         public StatisticsModel(CountStatisticsModel countStatistics, List<LastLoginStatisticsModel> lastLoginStatistics)
         {
-            CountStatistics = countStatistics;
-            LastLoginStatistics = lastLoginStatistics;
+            this.CountStatistics = countStatistics;
+            this.LastLoginStatistics = lastLoginStatistics;
         }
 
         public CountStatisticsModel CountStatistics { get; set; }

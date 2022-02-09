@@ -27,7 +27,7 @@ namespace TestTask.Services.Models
         
         public int CurrentPage { get; set; }
         
-        public Dictionary<string, string> Sort {get; set; }
+        public Dictionary<string, string> Sort { get; set; }
         
         public string Search { get; set; }
     }

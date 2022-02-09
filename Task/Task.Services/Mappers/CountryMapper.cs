@@ -26,7 +26,7 @@ namespace TestTask.Services.Mappers
             {
                 CountryId = model.CountryId,
                 Name = model.Name,
-                Description=model.Description,
+                Description = model.Description,
             };
         }
     }

@@ -11,8 +11,8 @@ namespace TestTask.Repository.Models
     {
         public UsersSearchResultModel(List<UserItem> userItems, int totalUsers)
         {
-            UserItems = userItems;
-            TotalUsers = totalUsers;
+            this.UserItems = userItems;
+            this.TotalUsers = totalUsers;
         }
 
         public List<UserItem> UserItems { get; set; }

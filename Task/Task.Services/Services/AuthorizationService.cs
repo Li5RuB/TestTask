@@ -15,7 +15,8 @@ namespace TestTask.Services.Services
         private readonly IRoleService _roleService;
         private readonly IPasswordHasher _passwordHasher;
 
-        public AuthorizationService(IPasswordHasher passwordHasher, 
+        public AuthorizationService(
+            IPasswordHasher passwordHasher, 
             IUserService userService, 
             IRoleService roleService)
         {

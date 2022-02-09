@@ -21,11 +21,6 @@ namespace TestTask.Repository.Repositories
             return await GetContext().FindAsync(id);
         }
 
-        protected virtual IQueryable<T> GetAll()
-        {
-            return GetContext();
-        }
-
         public virtual void Create(T item)
         {
             GetContext().Add(item);
@@ -46,14 +41,19 @@ namespace TestTask.Repository.Repositories
             await _context.SaveChangesAsync();
         }
 
-        private DbSet<T> GetContext()
-        {
-            return _context.Set<T>();
-        }
-
         public List<T> CallProcedure(string nameProcedure)
         {
             return _context.Set<T>().FromSqlRaw(nameProcedure).AsEnumerable().ToList();
+        }
+
+        protected virtual IQueryable<T> GetAll()
+        {
+            return GetContext();
+        }
+
+        private DbSet<T> GetContext()
+        {
+            return _context.Set<T>();
         }
     }
 }

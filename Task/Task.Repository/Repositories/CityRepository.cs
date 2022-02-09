@@ -22,7 +22,7 @@ namespace TestTask.Repository.Repositories
         public CitiesSearchResultModel GetCitiesToPage(string search, int skip, int take)
         {
             IQueryable<CityItem> cities;
-            cities = search!=null ? GetAll().Where(i => i.Name.ToUpper().Contains(search.ToUpper())) : GetAll();
+            cities = search != null ? GetAll().Where(i => i.Name.ToUpper().Contains(search.ToUpper())) : GetAll();
             var totalCities = cities.Count();
             var citiesPerPage = cities.Skip(skip).Take(take).ToList();
             return new CitiesSearchResultModel(citiesPerPage, totalCities);
