@@ -1,13 +1,20 @@
 ﻿using System;
 using System.Security.Cryptography;
+using TestTask.Services.Models;
 
 namespace TestTask.Services.Hasher
 {
     public sealed class PasswordHasher : IPasswordHasher
     {
-        private const int SaltSize = 0x10;
-        private const int HashSize = 0x20;
-        private const int Iterations = 0x3e8;
+        private readonly int SaltSize;
+        private readonly int HashSize;
+        private readonly int Iterations;
+        public PasswordHasher(IHashSettings settings)
+        {
+            SaltSize = settings.SaltSize;
+            HashSize = settings.HashSize;
+            Iterations = settings.Iterations;
+        }
 
         public string Hash(string password)
         {

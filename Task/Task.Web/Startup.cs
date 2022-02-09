@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
-
+using TestTask.Services.Models;
 
 namespace TestTask.Web
 {
@@ -27,7 +27,7 @@ namespace TestTask.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDatabase(this.Configuration.GetConnectionString("DefaultConnection"));
-            services.AddDependencies();            
+            services.AddDependencies(this.Configuration);            
             services.AddMvc();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => 
