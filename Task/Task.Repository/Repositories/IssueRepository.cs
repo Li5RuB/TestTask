@@ -8,9 +8,10 @@ using TestTask.Repository.Items;
 
 namespace TestTask.Repository.Repositories
 {
-    public class CountStatisticsRepository : BaseRepository<CountStatisticsItem>, IStatisticsRepository<CountStatisticsItem>
+    public class IssueRepository : BaseRepository<IssueItem>, IIssueRepository
     {
-        public CountStatisticsRepository(ApplicationDbContext context) : base(context)
+        public IssueRepository(ApplicationDbContext context) 
+            : base(context)
         {
         }
     }

@@ -8,9 +8,9 @@ using TestTask.Repository.Items;
 
 namespace TestTask.Repository.Repositories
 {
-    public class CountStatisticsRepository : BaseRepository<CountStatisticsItem>, IStatisticsRepository<CountStatisticsItem>
+    public class TimeLogRepository : BaseRepository<TimeLogItem>, ITimeLogRepository
     {
-        public CountStatisticsRepository(ApplicationDbContext context) : base(context)
+        public TimeLogRepository(ApplicationDbContext context) : base(context)
         {
         }
     }
