@@ -3,5 +3,5 @@
 	[TimeLogId] INT NOT NULL PRIMARY KEY, 
     [IssueId] INT NOT NULL,
     [DateLog] DATETIME NULL, 
-    [Time] DATETIME NULL
+    [Time] TIME NULL
 )

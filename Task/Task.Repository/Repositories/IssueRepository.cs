@@ -10,9 +10,9 @@ namespace TestTask.Repository.Repositories
 {
     public class IssueRepository : BaseRepository<IssueItem>, IIssueRepository
     {
-        public IssueRepository(ApplicationDbContext context) 
-            : base(context)
+        public IssueRepository(ApplicationDbContext context) : base(context)
         {
         }
+
     }
 }
