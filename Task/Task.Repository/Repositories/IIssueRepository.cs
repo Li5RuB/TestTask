@@ -13,11 +13,11 @@ namespace TestTask.Repository.Repositories
 
         public List<IssueItem> GetIssuesByUserId(int id);
 
-        public void Create(IssueItem user);
+        public void Create(IssueItem issue);
 
-        public void Remove(IssueItem user);
+        public void Remove(IssueItem issue);
 
-        public void Update(IssueItem user);
+        public void Update(IssueItem issue);
 
         public Task Save();
     }

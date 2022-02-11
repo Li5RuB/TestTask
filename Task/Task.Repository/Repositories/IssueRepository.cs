@@ -14,5 +14,9 @@ namespace TestTask.Repository.Repositories
         {
         }
 
+        public List<IssueItem> GetIssuesByUserId(int id)
+        {
+            return GetAll().Where(x => x.UserId == id).ToList();
+        }
     }
 }
