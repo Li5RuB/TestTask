@@ -10,6 +10,8 @@ namespace TestTask.Services.Models
 {
     public class TimeLogModel
     {
+        private static readonly string[] Formats = { "h'h 'm'm'", "h'h'", "m'm'", };
+
         public int TimeLogId { get; set; }
 
         [Required]
@@ -29,16 +31,10 @@ namespace TestTask.Services.Models
             }
             set
             {
-                var formats = new string[]
+                var time = new TimeSpan(0, 0, 0);
+                foreach (var format in Formats)
                 {
-                    "h'h 'm'm'",
-                    "h'h'",
-                    "m'm'",
-                };
-                var time = new TimeSpan(0,0,0);
-                foreach (var format in formats)
-                {
-                    if(TimeSpan.TryParseExact(value, format, new CultureInfo("en-US"),out time))
+                    if (TimeSpan.TryParseExact(value, format, new CultureInfo("en-US"), out time))
                     {
 
                         Time = time;

@@ -32,7 +32,7 @@ namespace TestTask.Web.Controllers
             return View(result);
         }
 
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View(new IssueModel());
@@ -61,9 +61,8 @@ namespace TestTask.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> LogTime(TimeLogModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                
                 await _timeLogService.CreateLog(model);
             }
             return RedirectToAction("Details", new { issueId = model.IssueId });

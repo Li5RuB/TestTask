@@ -26,7 +26,7 @@ namespace TestTask.Services.Models
 
         public List<TimeLogModel> TimeLogModels { get; set; }
 
-        public List<DateTime> DateForPage { get; set;}
+        public List<DateTime> DateForPage { get; set; }
 
         public int Week { get; set; }
 

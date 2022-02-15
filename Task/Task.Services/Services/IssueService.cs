@@ -46,7 +46,9 @@ namespace TestTask.Services.Services
             var issuePageModel = new IssuePageModel(
                 issueModels.IssueItems.Select(IssueMapper.MapItemToModel).ToList(),
                 issueModels.TimeLogItems.Select(TimeLogMapper.MapItemToModel).ToList(),
-                dateForPage, week, year);
+                dateForPage, 
+                week, 
+                year);
             return issuePageModel;
         }
 

@@ -25,7 +25,7 @@ namespace TestTask.Repository.Repositories
             return GetAll().Where(x => x.UserId == id).ToList();
         }
 
-        public IssueSearchResultModel GetIssueToPage(List<DateTime> dateForPage,int userId, int week, int year)
+        public IssueSearchResultModel GetIssueToPage(List<DateTime> dateForPage, int userId, int week, int year)
         {
             var issueItems = GetAll().Where(x => x.UserId == userId).ToList();
             var timeLogItems = _timeLogRepository.GetLogsToPage(dateForPage, issueItems);
