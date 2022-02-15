@@ -16,6 +16,6 @@ namespace TestTask.Repository.Items
 
         public DateTime DateLog { get; set; }
 
-        public DateTime Time { get; set; }
+        public TimeSpan Time { get; set; }
     }
 }

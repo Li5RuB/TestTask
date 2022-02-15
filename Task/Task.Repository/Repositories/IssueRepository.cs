@@ -5,18 +5,31 @@ using System.Text;
 using System.Threading.Tasks;
 using TestTask.Repository.Data;
 using TestTask.Repository.Items;
+using TestTask.Repository.Models;
 
 namespace TestTask.Repository.Repositories
 {
     public class IssueRepository : BaseRepository<IssueItem>, IIssueRepository
     {
-        public IssueRepository(ApplicationDbContext context) : base(context)
+        private readonly ITimeLogRepository _timeLogRepository;
+
+        public IssueRepository(
+            ApplicationDbContext context, 
+            ITimeLogRepository timeLogRepository) : base(context)
         {
+            _timeLogRepository = timeLogRepository;
         }
 
         public List<IssueItem> GetIssuesByUserId(int id)
         {
             return GetAll().Where(x => x.UserId == id).ToList();
+        }
+
+        public IssueSearchResultModel GetIssueToPage(List<DateTime> dateForPage,int userId, int week, int year)
+        {
+            var issueItems = GetAll().Where(x => x.UserId == userId).ToList();
+            var timeLogItems = _timeLogRepository.GetLogsToPage(dateForPage, issueItems);
+            return new IssueSearchResultModel(issueItems, timeLogItems);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace TestTask.Repository.Repositories
 
         public List<TimeLogItem> GetLogsByIsueeId(int id);
 
-        public List<TimeLogItem> GetLogsToPage(DateTime date);
+        public List<TimeLogItem> GetLogsToPage(List<DateTime> date, List<IssueItem> issueItems);
 
         public void Create(TimeLogItem log);
 

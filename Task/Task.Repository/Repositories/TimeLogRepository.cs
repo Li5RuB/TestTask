@@ -19,9 +19,11 @@ namespace TestTask.Repository.Repositories
             return GetAll().Where(x => x.IssueId == id).ToList();
         }
 
-        public List<TimeLogItem> GetLogsToPage(DateTime date)
+        public List<TimeLogItem> GetLogsToPage(List<DateTime> date, List<IssueItem> issueItems)
         {
-            throw new NotImplementedException();
+            var issueIds = issueItems.Select(x => x.IssueId).ToArray();
+            var timeLogItems = GetAll().Where(x => x.DateLog >= date[0] && x.DateLog <= date[6] && issueIds.Contains(x.IssueId)).ToList();
+            return timeLogItems;
         }
     }
 }

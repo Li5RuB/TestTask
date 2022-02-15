@@ -1,0 +1,72 @@
+﻿@using System.Globalization
+@using TestTask.Web.Models
+@model IssueDetailsModel
+
+@{
+    var loggedTime = new TimeSpan(Model.TimeLogModels.Sum(x=>x.Time.Ticks));
+}
+<link rel="stylesheet" href="~/css/table.css" />
+<link rel="stylesheet" href="~/css/IssueDetails.css"; />
+
+<header>
+    <div class="menu">
+        <a href="@Url.Action("Index","Home")">Home </a>
+        <div>&#10148; </div>
+        <a href="@Url.Action("Index", "Users")">Users </a>
+        <div>&#10148; </div>
+        <a href="@Url.Action("Index", "Issues")">Issues</a>
+        @if (User.IsInRole("Admin"))
+        {
+            <div>&#10148; </div>
+            <a href="@Url.Action("Index", "Countries")">Countries </a>
+            <div>&#10148; </div>
+            <a href="@Url.Action("Index", "Cities")">Cities </a>   
+        }
+    </div>
+    <div class="login">
+        <div>
+            <b>@User.Identity?.Name</b>
+        </div>
+        <div class="login-button">
+            <a href="/Account/Logout">@if (User.Identity?.Name == null)
+                                      {
+                                          <i>login</i>
+                                      }
+                                      else
+                                      {
+                                          <i>logout</i>
+                                      }
+                </a>
+        </div>
+    </div>
+</header>
+<div class="container">
+        <div>
+            <p style="font:bold">
+            Issue`s name: @Model.IssueModel.Name
+            </p>
+        </div>
+        <hr>
+        <div class="">
+            <p style="font:bold">
+                Description:
+                @Model.IssueModel.Description
+            </p>
+            <hr>
+            <p style="font:bold">
+                logged time: @loggedTime.ToString("d'd 'h'h 'm'm'",new CultureInfo("en-US"))
+            </p>
+            <hr>
+            <form action="LogTime" method="post">
+                <div class="column">
+                    <input type="hidden" value="@Model.IssueModel.IssueId" name="IssueId" id="IssueId" />
+                    <div class="">Time in format (0h 0m)</div>
+                    <input class="" type="text" name="TimeParse" id="TimeParse"/>
+                    <div class="">date of work</div>
+                    <input class="" type="date" name="DateLog" id="DateLog" />
+                    <button type="submit">LogWork</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
