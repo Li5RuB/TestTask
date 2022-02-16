@@ -3,6 +3,8 @@
 @{
     int week = Model.Week;
     const int countWeekOfYear = 52;
+    int year = Model.Year;
+    string url;
 }
 
 <link rel="stylesheet" href="~/css/table.css">
@@ -84,11 +86,14 @@
     <div class="paging">
         <a style="margin-top:1%;" href="/Issues/Index"><button>Reset</button></a>
         <div class="pages">
-            @if (week != 1)
+            @if (week > 1)
             {
-                var url = $"/Issues/Index?week={week - 1}";
-                <a href='@url'>&lt;</a>
+                url = $"/Issues/Index?week={week - 1}&year={year}";
+                
+            }else{
+                url = $"/Issues/Index?week={countWeekOfYear}&year={year - 1}";
             }
+            <a href='@url'>&lt;</a>
             @{
                 int cp = week;
                 int k = 0;
@@ -105,7 +110,7 @@
                     if (i > 0)
                     {
                         <div>|</div>
-                        var url = $"/Issues/Index?week={i}";
+                        url = $"/Issues/Index?week={i}&year={year}";
                         <a href='@url'>
                             @if (i == cp)
                             {
@@ -121,11 +126,14 @@
                 }
             }
             |
-            @if (cp != countWeekOfYear)
+            @if (cp < countWeekOfYear)
             {
-                var url = $"/Issues/Index?week={cp+1}";
-                <a href='@url'>&gt;</a>
+                url = $"/Issues/Index?week={cp+1}&year={year}";
+                
+            }else{
+                url = $"/Issues/Index?week={1}&year={year + 1}";
             }
+            <a href='@url'>&gt;</a>
         </div>
     </div>
 </div>

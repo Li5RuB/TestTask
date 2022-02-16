@@ -18,6 +18,7 @@ namespace TestTask.Services.Mappers
                 UserId = issueItem.UserId,
                 Name = issueItem.Name,
                 Description = issueItem.Description,
+                IsClosed = issueItem.IsClosed,
             };
         } 
 
@@ -29,6 +30,7 @@ namespace TestTask.Services.Mappers
                 UserId = issueModel.UserId,
                 Name = issueModel.Name,
                 Description = issueModel.Description,
+                IsClosed = issueModel.IsClosed,
             };
         }
     }

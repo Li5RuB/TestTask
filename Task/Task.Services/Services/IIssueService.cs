@@ -21,5 +21,7 @@ namespace TestTask.Services.Services
         public Task RemoveIssue(int id);
 
         public Task UpdateIssue(IssueModel issue);
+
+        public Task CloseIssue(int id);
     }
 }

@@ -54,19 +54,37 @@
             </p>
             <hr>
             <p style="font:bold">
+            Status: 
+            @if (Model.IssueModel.IsClosed)
+            {
+                <t>Closed</t>
+            }
+            else
+            {
+                <t>Open</t>
+            }
+                    </p>
+                    <hr>
+            <p style="font:bold">
                 logged time: @loggedTime.ToString("d'd 'h'h 'm'm'",new CultureInfo("en-US"))
             </p>
-            <hr>
-            <form action="LogTime" method="post">
-                <div class="column">
-                    <input type="hidden" value="@Model.IssueModel.IssueId" name="IssueId" id="IssueId" />
-                    <div class="">Time in format (0h 0m)</div>
-                    <input class="" type="text" name="TimeParse" id="TimeParse"/>
-                    <div class="">date of work</div>
-                    <input class="" type="date" name="DateLog" id="DateLog" />
-                    <button type="submit">LogWork</button>
-                </div>
-            </form>
+            @if(Model.IssueModel.IsClosed){}
+            else
+            {
+                <hr />
+                <button type="button" onclick="location.href='/Issues/CloseIssue?issueId=@Model.IssueModel.IssueId'">Close issue</button>
+                <hr>
+                <form action="LogTime" method="post">
+                    <div class="column">
+                        <input type="hidden" value="@Model.IssueModel.IssueId" name="IssueId" id="IssueId" />
+                        <div class="">Time in format (0h 0m)</div>
+                        <input class="" type="text" name="TimeParse" id="TimeParse"/>
+                        <div class="">date of work</div>
+                        <input class="" type="date" name="DateLog" id="DateLog" />
+                        <button type="submit">LogWork</button>
+                    </div>
+                </form>
+            }
         </div>
     </div>
 </div>

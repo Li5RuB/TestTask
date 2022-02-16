@@ -17,5 +17,7 @@ namespace TestTask.Repository.Items
         public string Description { get; set; }
 
         public int UserId { get; set; }
+
+        public bool IsClosed { get; set; }
     }
 }

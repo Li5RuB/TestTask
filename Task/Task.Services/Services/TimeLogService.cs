@@ -11,16 +11,23 @@ namespace TestTask.Services.Services
     public class TimeLogService : ITimeLogService
     {
         private readonly ITimeLogRepository _timeLogRepository;
+        private readonly IIssueRepository _issueRepository;
 
-        public TimeLogService(ITimeLogRepository timeLogRepository)
+        public TimeLogService(ITimeLogRepository timeLogRepository, IIssueRepository issueRepository)
         {
             _timeLogRepository = timeLogRepository;
+            _issueRepository = issueRepository;
         }
 
         public async Task CreateLog(TimeLogModel log)
         {
-            _timeLogRepository.Create(TimeLogMapper.MapModelToItem(log));
-            await _timeLogRepository.Save();
+            var loggedTime = _timeLogRepository.GetLogsByIsueeId(log.IssueId).Where(x=>x.DateLog==log.DateLog).Sum(x=>x.Time.Ticks);
+            var issueStatus = (await _issueRepository.GetById(log.IssueId)).IsClosed;
+            if ((loggedTime+log.Time.Ticks)<=new TimeSpan(10,0,0).Ticks && !issueStatus)
+            {
+                _timeLogRepository.Create(TimeLogMapper.MapModelToItem(log));
+                await _timeLogRepository.Save();
+            }
         }
 
         public async Task<TimeLogModel> GetById(int id)

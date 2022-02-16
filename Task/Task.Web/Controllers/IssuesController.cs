@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using TestTask.Services.Models;
@@ -66,6 +67,12 @@ namespace TestTask.Web.Controllers
                 await _timeLogService.CreateLog(model);
             }
             return RedirectToAction("Details", new { issueId = model.IssueId });
+        }
+
+        public async Task<IActionResult> CloseIssue(int issueId)
+        {
+            await _issueService.CloseIssue(issueId);
+            return RedirectToAction("Details", new { issueId = issueId });
         }
     }
 }

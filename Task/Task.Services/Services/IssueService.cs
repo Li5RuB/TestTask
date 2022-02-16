@@ -98,5 +98,15 @@ namespace TestTask.Services.Services
             }
             return week;
         }
+
+        public async Task CloseIssue(int id)
+        {
+            var issue = await _issueRepository.GetById(id);
+            if (!issue.IsClosed)
+            {
+                issue.IsClosed = true;
+                await _issueRepository.Save();
+            }
+        }
     }
 }

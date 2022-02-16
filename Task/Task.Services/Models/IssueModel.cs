@@ -22,5 +22,7 @@ namespace TestTask.Services.Models
         
         [Required]
         public string UserEmail { get; set; }
+
+        public bool IsClosed { get; set; }
     }
 }
