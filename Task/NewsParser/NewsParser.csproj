@@ -31,4 +31,10 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\NewsParser.Common\NewsParser.Common.csproj" />
+    <ProjectReference Include="..\NewsParser.Repository\NewsParser.Repositories.csproj" />
+    <ProjectReference Include="..\NewsParser.Services\NewsParser.Services.csproj" />
+  </ItemGroup>
+
 </Project>

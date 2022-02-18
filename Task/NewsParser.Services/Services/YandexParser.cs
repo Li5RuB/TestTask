@@ -1,16 +1,17 @@
-﻿using System;
+﻿using NewsParser.Services.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NewsParser.Services
+namespace NewsParser.Services.Services
 {
     public class YandexParser : IParser
     {
-        public string Parse()
+        public NewsModel Parse()
         {
-            return "Yandex";
+            return null;
         }
     }
 }

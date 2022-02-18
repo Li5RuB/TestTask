@@ -1,10 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using NewsParser.Services;
-using NewsParser.Settings;
+using NewsParser.Services.Services;
+using NewsParser.Repositories.Repositories;
+using NewsParser.Common.Settings;
 
 namespace NewsParser
 {
@@ -18,19 +17,21 @@ namespace NewsParser
                 .Build();
             #if DEBUG
                 args = new[] { "parse" };
-#endif
+            #endif
             var settings = new AppSettings();
             configuration.Bind("AppSettings", settings);
-            var services = ConfigureServices();
+            var services = ConfigureServices(configuration.GetConnectionString("DefaultConnection"));
             var serviceProvider = services
                 .AddSingleton<IAppSettings,AppSettings>(x=>settings)
                 .BuildServiceProvider();
             serviceProvider.GetService<ProgramProcess>().Run(args[0]);
         }
 
-        private static IServiceCollection ConfigureServices()
+        private static IServiceCollection ConfigureServices(string connection)
         {
             IServiceCollection services = new ServiceCollection();
+            services.AddTransient<IUserRepository, UserRepository>(x=>new UserRepository(connection));
+            services.AddTransient<INewsRepository, NewsRepository>(x=>new NewsRepository(connection));
             services.AddTransient<IParser, OnlinerParser>();
             services.AddTransient<IParser, LentaParser>();
             services.AddTransient<IParser, YandexParser>();

@@ -1,11 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
-using NewsParser.Services;
-using NewsParser.Settings;
-using System;
+using NewsParser.Common.Settings;
+using NewsParser.Services.Services;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NewsParser
 {
@@ -26,7 +23,10 @@ namespace NewsParser
         {
             if (arg == "parse")
             {
-
+                foreach (var item in _parsers)
+                {
+                    item.Parse();
+                }
             }
             else if (arg == "send")
             {

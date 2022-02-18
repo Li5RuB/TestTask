@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NewsParser.Services
+namespace NewsParser.Repositories.Repositories
 {
-    public interface IParser
+    public interface IUserRepository
     {
-        public string Parse();
     }
 }
