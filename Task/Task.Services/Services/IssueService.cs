@@ -13,12 +13,14 @@ namespace TestTask.Services.Services
     public class IssueService : IIssueService
     {
         private readonly IIssueRepository _issueRepository;
+        private readonly ITimeLogRepository _timeLogRepository;
         private readonly ITimeLogService _timeLogService;
 
-        public IssueService(IIssueRepository issueRepository, ITimeLogService timeLogService)
+        public IssueService(IIssueRepository issueRepository, ITimeLogService timeLogService, ITimeLogRepository timeLogRepository)
         {
             _issueRepository = issueRepository;
             _timeLogService = timeLogService;
+            _timeLogRepository = timeLogRepository;
         }
 
         public async Task CreateIssue(IssueModel issue)
@@ -39,13 +41,18 @@ namespace TestTask.Services.Services
 
         public IssuePageModel GetIssuesToPage(int week, int year, int userId)
         {
-            week = CheckWeek(week);
+            if(week == 0)
+                week = GetDefaultWeek();
+            if (year == 0)
+                year = GetDefaultYear();
             var dateForPage = new List<DateTime>();
             GetDaysOfWeek(week, year).ForEach(i => dateForPage.Add(i));
-            var issueModels = _issueRepository.GetIssueToPage(dateForPage, userId, week, year);
+            var issueSearchResultModel = _issueRepository.GetIssueToPage(dateForPage, userId, week, year);
+            var issueIds = issueSearchResultModel.IssueItems.Select(i => i.IssueId).ToList();
+            issueSearchResultModel.TimeLogItems = _timeLogRepository.GetLogsToPage(dateForPage.First(), dateForPage.Last(), issueIds);
             var issuePageModel = new IssuePageModel(
-                issueModels.IssueItems.Select(IssueMapper.MapItemToModel).ToList(),
-                issueModels.TimeLogItems.Select(TimeLogMapper.MapItemToModel).ToList(),
+                issueSearchResultModel.IssueItems.Select(IssueMapper.MapItemToModel).ToList(),
+                issueSearchResultModel.TimeLogItems.Select(TimeLogMapper.MapItemToModel).ToList(),
                 dateForPage, 
                 week, 
                 year);
@@ -88,15 +95,17 @@ namespace TestTask.Services.Services
             return mondayOfTheGivenWeek;
         }
 
-        private static int CheckWeek(int week)
+        private static int GetDefaultWeek()
         {
-            if (week == 0)
-            {
-                var currentDay = DateTime.Now;
-                var cal = new GregorianCalendar();
-                week = cal.GetWeekOfYear(currentDay, CalendarWeekRule.FirstFullWeek, DayOfWeek.Monday);
-            }
+            var currentDay = DateTime.Now;
+            var cal = new GregorianCalendar();
+            var week = cal.GetWeekOfYear(currentDay, CalendarWeekRule.FirstFullWeek, DayOfWeek.Monday);
             return week;
+        }
+
+        private static int GetDefaultYear()
+        {
+            return DateTime.Now.Year;
         }
 
         public async Task CloseIssue(int id)

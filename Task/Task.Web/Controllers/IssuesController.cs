@@ -26,7 +26,7 @@ namespace TestTask.Web.Controllers
             _userService = userService;
         }
 
-        public IActionResult Index(int week = 0, int year = 2022)
+        public IActionResult Index(int week, int year)
         {
             var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             var result = _issueService.GetIssuesToPage(week, year, userId);

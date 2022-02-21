@@ -3,7 +3,9 @@
 @{
     int week = Model.Week;
     const int countWeekOfYear = 52;
+    int defaultYear = DateTime.Now.Year;
     int year = Model.Year;
+    const int numberOfPagesInPagination = 3;
     string url;
 }
 
@@ -95,8 +97,8 @@
             }
             <a href='@url'>&lt;</a>
             @{
-                int cp = week;
-                int k = 0;
+                int changeableCurrentPage = week;
+                int counter = 0;
                 if (week > 1 && week < countWeekOfYear)
                 {
                     week--;
@@ -105,14 +107,14 @@
                 {
                     week -= 2;
                 }
-                @for (int i = week; i <= countWeekOfYear && k < 3; i++,k++)
+                @for (int i = week; i <= countWeekOfYear && counter < numberOfPagesInPagination; i++,counter++)
                 {
                     if (i > 0)
                     {
                         <div>|</div>
                         url = $"/Issues/Index?week={i}&year={year}";
                         <a href='@url'>
-                            @if (i == cp)
+                            @if (i == changeableCurrentPage)
                             {
                                 <b>@i</b>
                             }
@@ -126,9 +128,9 @@
                 }
             }
             |
-            @if (cp < countWeekOfYear)
+            @if (changeableCurrentPage < countWeekOfYear)
             {
-                url = $"/Issues/Index?week={cp+1}&year={year}";
+                url = $"/Issues/Index?week={changeableCurrentPage+1}&year={year}";
                 
             }else{
                 url = $"/Issues/Index?week={1}&year={year + 1}";

@@ -12,6 +12,7 @@ namespace TestTask.Services.Services
     {
         private readonly ITimeLogRepository _timeLogRepository;
         private readonly IIssueRepository _issueRepository;
+        private readonly long tenHours = new TimeSpan(10, 0, 0).Ticks;
 
         public TimeLogService(ITimeLogRepository timeLogRepository, IIssueRepository issueRepository)
         {
@@ -23,7 +24,7 @@ namespace TestTask.Services.Services
         {
             var loggedTime = _timeLogRepository.GetLogsByIsueeId(log.IssueId).Where(x=>x.DateLog==log.DateLog).Sum(x=>x.Time.Ticks);
             var issueStatus = (await _issueRepository.GetById(log.IssueId)).IsClosed;
-            if ((loggedTime+log.Time.Ticks)<=new TimeSpan(10,0,0).Ticks && !issueStatus)
+            if ((loggedTime+log.Time.Ticks)<= tenHours)
             {
                 _timeLogRepository.Create(TimeLogMapper.MapModelToItem(log));
                 await _timeLogRepository.Save();
