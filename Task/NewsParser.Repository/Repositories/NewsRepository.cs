@@ -9,37 +9,28 @@ using System.Threading.Tasks;
 
 namespace NewsParser.Repositories.Repositories
 {
-    public class NewsRepository : INewsRepository
+    public class NewsRepository : BaseRepository<NewsItem>, INewsRepository
     {
-        private readonly string _connectionString;
-        public NewsRepository(string connectionString)
+        public NewsRepository(string connectionString) : base(connectionString)
         {
-            _connectionString = connectionString;
         }
 
         public void Create(NewsItem news)
         {
-            using (var db = new SqlConnection(_connectionString))
-            {
-                var sqlQuery = "INSERT INTO News (Title, BriefContext, Url, Date, Type) VALUES(@Title, @BriefContext, @Url, @Date, @Type)";
-                db.Execute(sqlQuery, news);
-            }
+            var sqlQuery = "INSERT INTO News (Title, BriefContext, Url, Date, Type) VALUES(@Title, @BriefContext, @Url, @Date, @Type)";
+            ExecuteSetProcedure(sqlQuery, news);
         }
 
         public NewsItem GetLastNews()
         {
-            using (var db = new SqlConnection(_connectionString))
-            {
-                return db.Query<NewsItem>("SELECT TOP(1) * FROM News WHERE (SELECT MAX(Date) from News) = Date;").FirstOrDefault();
-            }
+            var sqlQuery = "SELECT TOP(1) * FROM News WHERE (SELECT MAX(Date) from News) = Date;";
+            return ExecuteGetProcedure(sqlQuery).FirstOrDefault();
         }
 
         public NewsItem GetLastNewsByType(string type)
         {
-            using (var db = new SqlConnection(_connectionString))
-            {
-                return db.Query<NewsItem>("SELECT TOP(1) * FROM News WHERE (SELECT MAX(Date) from News where Type = @type) = Date;", new { type}).FirstOrDefault();
-            }
+            var sqlQuery = $"SELECT TOP(1) * FROM News WHERE (SELECT MAX(Date) from News where Type = {type}) = Date;";
+            return ExecuteGetProcedure(sqlQuery).FirstOrDefault();
         }
     }
 }

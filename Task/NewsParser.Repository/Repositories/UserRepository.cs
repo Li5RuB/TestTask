@@ -9,20 +9,18 @@ using System.Threading.Tasks;
 
 namespace NewsParser.Repositories.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : BaseRepository<UserItem>, IUserRepository
     {
-        private readonly string _connectionString;
-        public UserRepository(string connectionString)
+        public UserRepository(string connectionString) : base(connectionString)
         {
-            _connectionString = connectionString;
         }
 
         public List<UserItem> GetUsers()
         {
-            using (var db = new SqlConnection(_connectionString))
-            {
-                return db.Query<UserItem>("SELECT * FROM Users").ToList();
-            }
+            var sqlQuery = "select UserId, Firstname+' '+Lastname as Name" +
+                ",Email, Roles.Name as RoleName from Users inner join Roles " +
+                "on Users.RoleId = Roles.RoleId;";
+            return ExecuteGetProcedure(sqlQuery).ToList();
         }
     }
 }
