@@ -14,12 +14,10 @@ namespace TestTask.Services.Services
     {
         private readonly IIssueRepository _issueRepository;
         private readonly ITimeLogRepository _timeLogRepository;
-        private readonly ITimeLogService _timeLogService;
 
-        public IssueService(IIssueRepository issueRepository, ITimeLogService timeLogService, ITimeLogRepository timeLogRepository)
+        public IssueService(IIssueRepository issueRepository, ITimeLogRepository timeLogRepository)
         {
             _issueRepository = issueRepository;
-            _timeLogService = timeLogService;
             _timeLogRepository = timeLogRepository;
         }
 
