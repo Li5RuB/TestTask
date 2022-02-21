@@ -4,7 +4,7 @@
     {
         public string OnlinerLink { get; set; }
 
-        public string YandexLink { get; set; }
+        public string BobrLink { get; set; }
 
         public string LentaLink { get; set; }
 

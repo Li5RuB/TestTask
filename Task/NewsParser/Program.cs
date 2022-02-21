@@ -34,7 +34,7 @@ namespace NewsParser
             services.AddTransient<INewsRepository, NewsRepository>(x=>new NewsRepository(connection));
             services.AddTransient<IParser, OnlinerParser>();
             services.AddTransient<IParser, LentaParser>();
-            services.AddTransient<IParser, YandexParser>();
+            services.AddTransient<IParser, BobrParser>();
             services.AddTransient<ProgramProcess>();
             return services;
         }

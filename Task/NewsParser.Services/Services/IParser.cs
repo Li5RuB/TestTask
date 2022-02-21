@@ -9,6 +9,6 @@ namespace NewsParser.Services.Services
 {
     public interface IParser
     {
-        public NewsModel Parse();
+        public List<NewsModel> Parse();
     }
 }
