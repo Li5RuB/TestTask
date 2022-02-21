@@ -11,13 +11,9 @@ namespace TestTask.Repository.Repositories
 {
     public class IssueRepository : BaseRepository<IssueItem>, IIssueRepository
     {
-        private readonly ITimeLogRepository _timeLogRepository;
-
         public IssueRepository(
-            ApplicationDbContext context, 
-            ITimeLogRepository timeLogRepository) : base(context)
+            ApplicationDbContext context ) : base(context)
         {
-            _timeLogRepository = timeLogRepository;
         }
 
         public List<IssueItem> GetIssuesByUserId(int id)
