@@ -59,7 +59,7 @@ namespace NewsParser.Services.Services
             var titleNews = GetTitleNews(newdoc);
             var textNews = GetTextNews(newdoc);
             var dateNews = GetDateNews(newdoc);
-            return new NewsModel(titleNews, textNews, newsUrl, dateNews, "Onliner");
+            return new NewsModel(titleNews, textNews, newsUrl, dateNews, "onliner");
         }
 
         private static DateTime GetDateNews(IEnumerable<HtmlNode> newdoc)

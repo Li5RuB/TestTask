@@ -1,6 +1,7 @@
 ﻿using HtmlAgilityPack;
 using NewsParser.Common.Consts;
 using NewsParser.Common.Settings;
+using NewsParser.Repositories.Repositories;
 using NewsParser.Services.Models;
 using System;
 using System.Collections.Generic;
@@ -48,7 +49,7 @@ namespace NewsParser.Services.Services
             var titleNews = GetTitleNews(newdoc);
             var textNews = GetTextNews(newdoc);
             var dateNews = GetDateNews(newdoc);
-            return new NewsModel(titleNews, textNews, newsUrl, dateNews, "Onliner");
+            return new NewsModel(titleNews, textNews, newsUrl, dateNews, "bobr");
         }
 
         private static DateTime GetDateNews(IEnumerable<HtmlNode> newdoc)

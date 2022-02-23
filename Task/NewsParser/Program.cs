@@ -16,7 +16,7 @@ namespace NewsParser
                 .AddJsonFile($"appsettings.json", optional: false)
                 .Build();
             #if DEBUG
-                args = new[] { "parse" };
+                args = new[] { "send" };
             #endif
             var settings = new AppSettings();
             configuration.Bind("AppSettings", settings);
@@ -32,6 +32,10 @@ namespace NewsParser
             IServiceCollection services = new ServiceCollection();
             services.AddTransient<IUserRepository, UserRepository>(x=>new UserRepository(connection));
             services.AddTransient<INewsRepository, NewsRepository>(x=>new NewsRepository(connection));
+            services.AddTransient<INewsService, NewsService>();
+            services.AddTransient<ISendService, SendService>();
+            services.AddTransient<IGeneratorService, GeneratorService>();
+            services.AddScoped<IGeneratorFactory, GeneratorFactory>();
             services.AddTransient<IParser, OnlinerParser>();
             services.AddTransient<IParser, LentaParser>();
             services.AddTransient<IParser, BobrParser>();

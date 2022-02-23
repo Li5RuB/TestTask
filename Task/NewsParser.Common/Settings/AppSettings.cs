@@ -9,5 +9,7 @@
         public string LentaLink { get; set; }
 
         public int NumberOfThreads { get; set; }
+
+        public string[] SitesForPars { get; set; }
     }
 }

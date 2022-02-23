@@ -36,7 +36,11 @@ namespace NewsParser.Services.Services
                 {
                     href = hotNews[i].Descendants("a").FirstOrDefault().GetAttributeValue("href", "def");
                 }
-                var newsUrl = Url + href;
+                string newsUrl;
+                if(!href.Contains("https"))
+                    newsUrl = Url + href;
+                else
+                    newsUrl = href;
                 var newsModel = GetNewsModel(web, newsUrl);
                 parsedNews.Add(newsModel);
             }
@@ -53,13 +57,13 @@ namespace NewsParser.Services.Services
         private static NewsModel GetNewsModel(HtmlWeb web, string newsUrl)
         {
             var newdoc = web.Load(newsUrl).DocumentNode.Descendants();
-            var titleNews = GetTitleNews(newdoc);
-            var textNews = GetTextNews(newdoc);
-            var dateNews = GetDateNews(newdoc);
-            return new NewsModel(titleNews, textNews, newsUrl, dateNews, "Onliner");
+            var titleNews = GetTitleNews(newdoc,newsUrl);
+            var textNews = GetTextNews(newdoc,newsUrl);
+            var dateNews = GetDateNews(newdoc, newsUrl);
+            return new NewsModel(titleNews, textNews, newsUrl, dateNews, "lenta");
         }
 
-        private static DateTime GetDateNews(IEnumerable<HtmlNode> newdoc)
+        private static DateTime GetDateNews(IEnumerable<HtmlNode> newdoc, string url)
         {
             var dateNewsText = newdoc
                             .FirstOrDefault(n => n.HasClass("topic-header__time"))
@@ -69,7 +73,7 @@ namespace NewsParser.Services.Services
             return DateTime.Parse($"{dateNewsText[1]} {dateNewsText[2]} {dateNewsText[3]} {dateNewsText[0]}");
         }
 
-        private static string GetTextNews(IEnumerable<HtmlNode> newdoc)
+        private static string GetTextNews(IEnumerable<HtmlNode> newdoc, string url)
         {
             var textNewsNodes = newdoc
                             .FirstOrDefault(n => n.HasClass("topic-body__content")).ChildNodes
@@ -80,7 +84,7 @@ namespace NewsParser.Services.Services
                 .Select(n => n.InnerText + "\n")).Split(' ').Take(30));
         }
 
-        private static string GetTitleNews(IEnumerable<HtmlNode> newdoc)
+        private static string GetTitleNews(IEnumerable<HtmlNode> newdoc, string url)
         {
             return newdoc
                 .FirstOrDefault(n => n.HasClass("topic-header__title"))

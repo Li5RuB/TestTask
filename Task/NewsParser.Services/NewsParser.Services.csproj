@@ -5,15 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Mappers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="HtmlAgilityPack" Version="1.11.42" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\NewsParser.Common\NewsParser.Common.csproj" />
+    <ProjectReference Include="..\NewsParser.Repository\NewsParser.Repositories.csproj" />
   </ItemGroup>
 
 </Project>

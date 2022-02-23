@@ -9,12 +9,14 @@ namespace NewsParser
     public class ProgramProcess
     {
         private readonly List<IParser> _parsers;
-        private readonly IAppSettings _settings;
+        private readonly INewsService _newsService;
+        private readonly ISendService _sendService;
 
-        public ProgramProcess(IEnumerable<IParser> parsers, IAppSettings settings)
+        public ProgramProcess(IEnumerable<IParser> parsers, INewsService newsService, ISendService sendService)
         {
             _parsers = parsers.ToList();
-            _settings = settings;
+            _newsService = newsService;
+            _sendService = sendService;
         }
 
         public IConfiguration Configuration { get; }
@@ -25,12 +27,12 @@ namespace NewsParser
             {
                 foreach (var item in _parsers)
                 {
-                    item.Parse();
+                    _newsService.AddRange(item.Parse());
                 }
             }
             else if (arg == "send")
             {
-
+                _sendService.SendMessages();
             }
             else
                 return;

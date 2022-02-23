@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NewsParser.Repositories.Items;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,10 @@ namespace NewsParser.Repositories.Repositories
 {
     public interface INewsRepository
     {
+        public void Create(NewsItem news);
+
+        public NewsItem GetLastNews();
+
+        public NewsItem GetLastNewsByType(string type);
     }
 }

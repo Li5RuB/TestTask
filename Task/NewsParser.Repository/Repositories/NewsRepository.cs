@@ -29,7 +29,7 @@ namespace NewsParser.Repositories.Repositories
 
         public NewsItem GetLastNewsByType(string type)
         {
-            var sqlQuery = $"SELECT TOP(1) * FROM News WHERE (SELECT MAX(Date) from News where Type = {type}) = Date;";
+            var sqlQuery = $"SELECT TOP(1) * FROM News WHERE (SELECT MAX(Date) from News where Type = '{type}') = Date;";
             return ExecuteGetProcedure(sqlQuery).FirstOrDefault();
         }
     }
