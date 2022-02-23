@@ -73,7 +73,9 @@
             {
                 <hr />
                 <button type="button" onclick="location.href='/Issues/CloseIssue?issueId=@Model.IssueModel.IssueId'">Close issue</button>
-                <hr>
+                
+            }
+            <hr>
                 <form action="LogTime" method="post">
                     <div class="column">
                         <input type="hidden" value="@Model.IssueModel.IssueId" name="IssueId" id="IssueId" />
@@ -84,7 +86,6 @@
                         <button type="submit">LogWork</button>
                     </div>
                 </form>
-            }
         </div>
     </div>
 </div>
