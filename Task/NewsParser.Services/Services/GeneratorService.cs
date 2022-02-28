@@ -56,8 +56,8 @@ namespace NewsParser.Services.Services
                 {
                     foreach (var user in users)
                     {
-                        var generator = _generatorFactory.CreateMessageGenerator(user, news);
-                        var mess = generator.CreateMessage();
+                        var generator = _generatorFactory.CreateMessageGenerator(user.RoleName);
+                        var mess = generator.CreateMessage(news, user);
                         messages.Push(mess);
                     }
                 }));

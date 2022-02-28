@@ -9,6 +9,6 @@ namespace NewsParser.Services.Services
 {
     public interface ISendService
     {
-        public void SendMessages();
+        public void SendMessages(List<Message> messages);
     }
 }

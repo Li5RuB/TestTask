@@ -21,9 +21,8 @@ namespace NewsParser.Services.Services
             _generatorService = generatorService;
         }
 
-        public void SendMessages()
+        public void SendMessages(List<Message> messages)
         {
-            var messages = _generatorService.GenerateMessages();
             foreach (var item in messages)
             {
                 if (!File.Exists(FilesPath))

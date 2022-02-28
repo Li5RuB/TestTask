@@ -1,4 +1,5 @@
-﻿using NewsParser.Services.Models;
+﻿using Microsoft.Extensions.DependencyInjection;
+using NewsParser.Services.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +10,18 @@ namespace NewsParser.Services.Services
 {
     public class GeneratorFactory : IGeneratorFactory
     {
-        public IGenerator CreateMessageGenerator(UserModel userModel, List<NewsModel> newsModels)
+        private readonly IServiceProvider _serviceProvider;
+        public GeneratorFactory(IServiceProvider serviceProvider)
         {
-            switch (userModel.RoleName)
+            _serviceProvider = serviceProvider;
+        }
+
+        public IGenerator CreateMessageGenerator(string roleName)
+        {
+            switch (roleName)
             {
-                case "Admin": return new AdminMessageGenerator(newsModels, userModel);
-                default: return new UserMessageGenerator(newsModels, userModel); 
+                case "Admin": return _serviceProvider.GetServices<IGenerator>().First(s=> s is AdminMessageGenerator);
+                default: return _serviceProvider.GetServices<IGenerator>().First(s=>s is UserMessageGenerator); 
             }
         }
     }

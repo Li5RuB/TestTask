@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using NewsParser.Common.Settings;
 using NewsParser.Repositories.Items;
 using System;
 using System.Collections.Generic;
@@ -9,21 +10,21 @@ using System.Threading.Tasks;
 
 namespace NewsParser.Repositories.Repositories
 {
-    public class BaseRepository<T> where T : class 
+    public class BaseRepository
     {
         private readonly string _connectionString;
 
-        public BaseRepository(string connectionString)
+        public BaseRepository(IRepositorySettings settings)
         {
-            _connectionString = connectionString;
+            _connectionString = settings.TestTaskConnectionString;
         }
 
-        protected List<T> ExecuteGetProcedure(string sqlQuery)
+        protected List<T> ExecuteGetProcedure<T>(string sqlQuery)
         {
             return GetDbContext().Query<T>(sqlQuery).ToList();
         }
 
-        protected void ExecuteSetProcedure(string sqlQuery, T news)
+        protected void ExecuteSetProcedure<T>(string sqlQuery, T news)
         {
             GetDbContext().Execute(sqlQuery, news);
         }

@@ -40,7 +40,7 @@ namespace NewsParser.Services.Services
             var newsHref = new List<HtmlNode>();
             var news = doc.DocumentNode.Descendants().Where(x => x.HasClass("news-tidings__item")).ToList();
             int counter = 0 ;
-            while (newsHref.Count < 3)
+            while (newsHref.Count < ParserConsts.NumberOfNewsForPars)
             {
                 var newsItem = news[counter].Descendants("a").FirstOrDefault();
                 if (newsItem != null)

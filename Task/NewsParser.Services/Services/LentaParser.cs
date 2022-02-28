@@ -50,7 +50,6 @@ namespace NewsParser.Services.Services
         private static List<HtmlNode> GetNews(HtmlDocument doc)
         {
             var news = doc.DocumentNode.Descendants("div").FirstOrDefault(x => x.HasClass("topnews"));
-            var a = news.Descendants().Where(x=>x.HasClass("topnews__column")).FirstOrDefault();
             return news.ChildNodes.ToList();
         }
 

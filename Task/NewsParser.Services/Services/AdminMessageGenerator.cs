@@ -6,25 +6,16 @@ namespace NewsParser.Services.Services
 {
     public class AdminMessageGenerator : IGenerator
     {
-        private List<NewsModel> _newsModels;
-        private readonly UserModel _userModel;
-
-        public AdminMessageGenerator(List<NewsModel> newsModels, UserModel userModel)
+        public Message CreateMessage(List<NewsModel> newsModels, UserModel userModel)
         {
-            _newsModels = newsModels;
-            _userModel = userModel;
+            return new Message(userModel.Email, GenerateText(newsModels, userModel));
         }
 
-        public Message CreateMessage()
-        {
-            return new Message(_userModel.Email, GenerateText());
-        }
-
-        private string GenerateText()
+        private string GenerateText(List<NewsModel> newsModels, UserModel userModel)
         {
             var message = new StringBuilder();
-            message.AppendLine($"Привет admin {_userModel.Name}\n");
-            foreach (var newsModel in _newsModels)
+            message.AppendLine($"Привет admin {userModel.Name}\n");
+            foreach (var newsModel in newsModels)
             {
                 message.AppendLine($"{newsModel.Title}\n");
                 message.AppendLine($"{newsModel.BriefContext}");

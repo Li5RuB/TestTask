@@ -39,8 +39,8 @@ namespace NewsParser.Services.Services
         private static List<HtmlNode> GetNews(HtmlDocument doc)
         {
             var news = doc.DocumentNode.Descendants("div").FirstOrDefault(x => x.HasClass("content-wrap__top_news"));
-            var a = news.Descendants("a").ToList();
-            return a;
+            var UrlElement = news.Descendants("a").ToList();
+            return UrlElement;
         }
 
         private static NewsModel GetNewsModel(HtmlWeb web, string newsUrl)

@@ -19,19 +19,22 @@ namespace NewsParser
                 args = new[] { "send" };
             #endif
             var settings = new AppSettings();
-            configuration.Bind("AppSettings", settings);
-            var services = ConfigureServices(configuration.GetConnectionString("DefaultConnection"));
+            settings.Initialize(configuration);
+            var services = ConfigureServices();
             var serviceProvider = services
                 .AddSingleton<IAppSettings,AppSettings>(x=>settings)
+                .AddSingleton<IRepositorySettings, RepositorySettings>(x=> (RepositorySettings)settings.RepositorySettings)
                 .BuildServiceProvider();
             serviceProvider.GetService<ProgramProcess>().Run(args[0]);
         }
 
-        private static IServiceCollection ConfigureServices(string connection)
+        private static IServiceCollection ConfigureServices()
         {
             IServiceCollection services = new ServiceCollection();
-            services.AddTransient<IUserRepository, UserRepository>(x=>new UserRepository(connection));
-            services.AddTransient<INewsRepository, NewsRepository>(x=>new NewsRepository(connection));
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<INewsRepository, NewsRepository>();
+            services.AddTransient<IGenerator, AdminMessageGenerator>();
+            services.AddTransient<IGenerator, UserMessageGenerator>();
             services.AddTransient<INewsService, NewsService>();
             services.AddTransient<ISendService, SendService>();
             services.AddTransient<IGeneratorService, GeneratorService>();

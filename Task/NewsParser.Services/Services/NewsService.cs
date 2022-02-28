@@ -21,7 +21,7 @@ namespace NewsParser.Services.Services
             _appSettings = appSettings;
         }
 
-        public void AddRange(List<NewsModel> newsModels)
+        public void CreateNewsModels(List<NewsModel> newsModels)
         {
             foreach (var item in newsModels)
             {

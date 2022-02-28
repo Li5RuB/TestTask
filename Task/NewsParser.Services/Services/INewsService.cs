@@ -9,7 +9,7 @@ namespace NewsParser.Services.Services
 {
     public interface INewsService
     {
-        public void AddRange(List<NewsModel> newsModels);
+        public void CreateNewsModels(List<NewsModel> newsModels);
 
         public List<NewsModel> GetModelsForSending();
     }

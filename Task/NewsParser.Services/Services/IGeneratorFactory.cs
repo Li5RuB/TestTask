@@ -9,6 +9,6 @@ namespace NewsParser.Services.Services
 {
     public interface IGeneratorFactory
     {
-        public IGenerator CreateMessageGenerator(UserModel userModel, List<NewsModel> newsModels);
+        public IGenerator CreateMessageGenerator(string roleName);
     }
 }
