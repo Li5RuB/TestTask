@@ -31,7 +31,7 @@ namespace Excel.Services.Services
             }
             if (!(excelData.First().ToString() != null || excelData.First().ToString() != string.Empty))
             {
-                throw new ArgumentException();
+                throw new ArgumentException("Source file is invalid");
             }
             return excelData;
         }
