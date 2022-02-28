@@ -22,9 +22,9 @@ namespace Excel.Services.Services
         {
             List<ExcelData> excelData;
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-            using (var p = new ExcelPackage(new FileInfo(_protocolPath)))
+            using (var package = new ExcelPackage(new FileInfo(_protocolPath)))
             {
-                ExcelWorksheet worksheet = p.Workbook.Worksheets[0];
+                var worksheet = package.Workbook.Worksheets[0];
                 worksheet.Tables.Add(new ExcelAddressBase(2, 1, worksheet.Dimension.End.Row, worksheet.Dimension.End.Column), "table");
                 worksheet.SetValue("X2", "пол");
                 excelData = ConvertTableToObjects<ExcelData>(worksheet.Tables.First()).ToList();

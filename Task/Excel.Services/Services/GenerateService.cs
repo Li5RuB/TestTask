@@ -22,22 +22,22 @@ namespace Excel.Services.Services
 
         public void GenerateForms(List<ExcelData> excelData)
         {
-            using (var p = new ExcelPackage(new FileInfo(_formPath)))
+            using (var packege = new ExcelPackage(new FileInfo(_formPath)))
             {
-                p.Workbook.Worksheets[0].Drawings.Remove(0);
+                packege.Workbook.Worksheets[0].Drawings.Remove(0);
                 foreach (var item in excelData)
                 {
                     string name = CinfigureName(item);
-                    var ws = p.Workbook.Worksheets.Copy(p.Workbook.Worksheets[0].Name, name);
-                    FillCells(item, ws);
-                    FixeChart(name, ws);
+                    var worksheets = packege.Workbook.Worksheets.Copy(packege.Workbook.Worksheets[0].Name, name);
+                    FillCells(item, worksheets);
+                    FixeChart(name, worksheets);
                 }
-                p.Workbook.Worksheets.Delete(0);
+                packege.Workbook.Worksheets.Delete(0);
                 if (!Directory.Exists(_resultPath))
                 {
                     Directory.CreateDirectory(_resultPath.Replace("Forms",""));
                 }
-                p.SaveAs(_resultPath + DateTime.Now.ToString("dd.MM.yyyy.HH.mm") + ".xlsx");
+                packege.SaveAs(_resultPath + DateTime.Now.ToString("dd.MM.yyyy.HH.mm") + ".xlsx");
             }
         }
 
@@ -48,57 +48,57 @@ namespace Excel.Services.Services
             return name;
         }
 
-        private static void FixeChart(string name, ExcelWorksheet ws)
+        private static void FixeChart(string name, ExcelWorksheet worksheets)
         {
-            ((ExcelChart)ws.Drawings[3]).ChartXml.InnerXml = ((ExcelChart)ws.Drawings[3]).ChartXml.InnerXml.Replace("Лист1", name);
-            ((ExcelChart)ws.Drawings[1]).ChartXml.InnerXml = ((ExcelChart)ws.Drawings[1]).ChartXml.InnerXml.Replace("Лист1", name);
+            ((ExcelChart)worksheets.Drawings[3]).ChartXml.InnerXml = ((ExcelChart)worksheets.Drawings[3]).ChartXml.InnerXml.Replace("Лист1", name);
+            ((ExcelChart)worksheets.Drawings[1]).ChartXml.InnerXml = ((ExcelChart)worksheets.Drawings[1]).ChartXml.InnerXml.Replace("Лист1", name);
         }
 
-        private static void FillCells(ExcelData item, ExcelWorksheet ws)
+        private static void FillCells(ExcelData item, ExcelWorksheet worksheets)
         {
-            FillHeaders(item, ws);
-            FillTablesBody(item, ws);
-            SetUpFormulas(ws);
+            FillHeaders(item, worksheets);
+            FillTablesBody(item, worksheets);
+            SetUpFormulas(worksheets);
         }
 
-        private static void FillTablesBody(ExcelData item, ExcelWorksheet ws)
+        private static void FillTablesBody(ExcelData item, ExcelWorksheet worksheets)
         {
-            ws.Cells["D9"].Value = item.Squatting;
-            ws.Cells["D10"].Value = item.SteppingOverL;
-            ws.Cells["D11"].Value = item.SteppingOverPR;
-            ws.Cells["D12"].Value = item.LungeL;
-            ws.Cells["D13"].Value = item.LungePR;
-            ws.Cells["D14"].Value = item.ShoulderMobilityL;
-            ws.Cells["D15"].Value = item.ShoulderMobilityPR;
-            ws.Cells["D16"].Value = item.StraightLegRaiseL;
-            ws.Cells["D17"].Value = item.StraightLegRaisePR;
-            ws.Cells["D18"].Value = item.PushUps;
-            ws.Cells["D19"].Value = item.RotationalStabilityL;
-            ws.Cells["D20"].Value = item.RotationalStabilityPR;
+            worksheets.Cells["D9"].Value = item.Squatting;
+            worksheets.Cells["D10"].Value = item.SteppingOverL;
+            worksheets.Cells["D11"].Value = item.SteppingOverPR;
+            worksheets.Cells["D12"].Value = item.LungeL;
+            worksheets.Cells["D13"].Value = item.LungePR;
+            worksheets.Cells["D14"].Value = item.ShoulderMobilityL;
+            worksheets.Cells["D15"].Value = item.ShoulderMobilityPR;
+            worksheets.Cells["D16"].Value = item.StraightLegRaiseL;
+            worksheets.Cells["D17"].Value = item.StraightLegRaisePR;
+            worksheets.Cells["D18"].Value = item.PushUps;
+            worksheets.Cells["D19"].Value = item.RotationalStabilityL;
+            worksheets.Cells["D20"].Value = item.RotationalStabilityPR;
         }
 
-        private static void FillHeaders(ExcelData item, ExcelWorksheet ws)
+        private static void FillHeaders(ExcelData item, ExcelWorksheet worksheets)
         {
-            ws.Cells["C3"].Value = item.Name;
-            ws.Cells["H3"].Value = item.Growth;
-            ws.Cells["H4"].Value = item.Weight;
-            ws.Cells["H5:H6"].Merge = true;
-            ws.Cells["H5"].Value = item.Sex;
-            ws.Cells["L5"].Value = item.Date;
+            worksheets.Cells["C3"].Value = item.Name;
+            worksheets.Cells["H3"].Value = item.Growth;
+            worksheets.Cells["H4"].Value = item.Weight;
+            worksheets.Cells["H5:H6"].Merge = true;
+            worksheets.Cells["H5"].Value = item.Sex;
+            worksheets.Cells["L5"].Value = item.Date;
         }
 
-        private static void SetUpFormulas(ExcelWorksheet ws)
+        private static void SetUpFormulas(ExcelWorksheet worksheets)
         {
-            ws.Cells["G21"].ClearFormulas();
-            ws.Cells["G21"].Formula = "SUM(F9:F20)/7";
-            ws.Cells["F9:F19"].ClearFormulas();
-            ws.Cells["F9"].Formula = "D9";
-            ws.Cells["F10"].Formula = "MIN(D10:E11)";
-            ws.Cells["F12"].Formula = "MIN(D12:E13)";
-            ws.Cells["F14"].Formula = "MIN(D14:E15)";
-            ws.Cells["F16"].Formula = "MIN(D16:E17)";
-            ws.Cells["F18"].Formula = "D18";
-            ws.Cells["F19"].Formula = "MIN(D19:E20)";
+            worksheets.Cells["G21"].ClearFormulas();
+            worksheets.Cells["G21"].Formula = "SUM(F9:F20)/7";
+            worksheets.Cells["F9:F19"].ClearFormulas();
+            worksheets.Cells["F9"].Formula = "D9";
+            worksheets.Cells["F10"].Formula = "MIN(D10:E11)";
+            worksheets.Cells["F12"].Formula = "MIN(D12:E13)";
+            worksheets.Cells["F14"].Formula = "MIN(D14:E15)";
+            worksheets.Cells["F16"].Formula = "MIN(D16:E17)";
+            worksheets.Cells["F18"].Formula = "D18";
+            worksheets.Cells["F19"].Formula = "MIN(D19:E20)";
         }
     }
 }
