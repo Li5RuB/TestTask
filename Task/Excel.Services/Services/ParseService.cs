@@ -12,7 +12,7 @@ namespace Excel.Services.Services
     public class ParseService : IParseService
     {
         private readonly string _protocolPath;
-
+        private readonly DateTime dateOfReference = new DateTime(1900, 1, 1);
         public ParseService(IAppSettings appSettings)
         {
             _protocolPath = appSettings.protocolPath;
@@ -42,9 +42,6 @@ namespace Excel.Services.Services
             {
                 if (excelDate < 1)
                     throw new ArgumentException("Excel dates cannot be smaller than 0.");
-
-                var dateOfReference = new DateTime(1900, 1, 1);
-
                 if (excelDate > 60d)
                     excelDate = excelDate - 2;
                 else
