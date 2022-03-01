@@ -1,6 +1,6 @@
 ﻿CREATE PROCEDURE [dbo].[LastLoginStatistics]
 AS
-	SELECT Countries.Name AS 'CountryName', COUNT (Users.UserId) AS 'UsersCount', Max(Users.LastLogin) AS 'LastLoginFromCountry' FROM Countries, Cities, Users
-	WHERE Users.CItyId = Cities.CityId AND Cities.CountryId = Countries.CountryId
-	GROUP BY Countries.Name;
+    SELECT c.Name AS 'CountryName', Count(u.UserId) AS 'UsersCount', Max(u.LastLogin) AS 'LastLoginFromCountry'
+    FROM Users u inner join Cities s on u.CityId = s.CityId inner join Countries c on s.CountryId = c.CountryId
+    Group by c.Name
 RETURN 0
