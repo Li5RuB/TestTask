@@ -47,6 +47,7 @@ namespace TestTask.Services.Services
         {
             var claims = new List<Claim>
             {
+                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
                 new Claim(ClaimTypes.Name, user.Email),
                 new Claim(ClaimTypes.Role, (await _roleService.GetById(user.RoleId)).Name), 
             };

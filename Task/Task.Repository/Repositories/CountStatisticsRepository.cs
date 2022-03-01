@@ -13,7 +13,5 @@ namespace TestTask.Repository.Repositories
         public CountStatisticsRepository(ApplicationDbContext context) : base(context)
         {
         }
-
     }
-
 }
