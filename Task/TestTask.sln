@@ -30,6 +30,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NewsParserApp", "NewsParser
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewsParser.Common", "NewsParser.Common\NewsParser.Common.csproj", "{5AF821E9-D22F-4817-B9AC-883F3F5279EC}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Excel", "Excel\Excel.csproj", "{AC951320-7839-4159-909A-FC58B8246837}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Excel.Services", "Excel.Services\Excel.Services.csproj", "{37F10FF7-7BB1-4308-9500-85B482F2A534}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -70,6 +74,14 @@ Global
 		{5AF821E9-D22F-4817-B9AC-883F3F5279EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5AF821E9-D22F-4817-B9AC-883F3F5279EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5AF821E9-D22F-4817-B9AC-883F3F5279EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC951320-7839-4159-909A-FC58B8246837}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC951320-7839-4159-909A-FC58B8246837}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC951320-7839-4159-909A-FC58B8246837}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC951320-7839-4159-909A-FC58B8246837}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37F10FF7-7BB1-4308-9500-85B482F2A534}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37F10FF7-7BB1-4308-9500-85B482F2A534}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37F10FF7-7BB1-4308-9500-85B482F2A534}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37F10FF7-7BB1-4308-9500-85B482F2A534}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
