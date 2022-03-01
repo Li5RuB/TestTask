@@ -1,0 +1,31 @@
+﻿@using TestTask.Services.Models
+@model IssueModel
+
+
+<link rel="stylesheet" href="~/css/form.css">
+
+<form method="post" action="/Issues/Create">
+    <div class="column">
+    <div>
+        <div class="form-element form-lable">@Html.LabelFor(m=>m.Name)</div>
+        <div class="form-element form-input">@Html.TextBoxFor(m=>m.Name)</div>
+        <div class="form-element form-error">@Html.ValidationMessageFor(m=>m.Name)</div> 
+    </div>
+    <div>
+        <div class="form-element form-lable">@Html.LabelFor(m=>m.Description)</div>
+        <div class="form-element form-input">@Html.TextAreaFor(m=>m.Description)</div>
+        <div class="form-element form-error">@Html.ValidationMessageFor(m=>m.Description)</div> 
+    </div>
+    <div>
+        <div class="form-element form-lable">User email</div>
+        <div class="form-element form-input">
+            <input id="UserEmail" name="UserEmail" type="email"/>        
+        </div>
+        <div class="form-element form-error">@Html.ValidationMessageFor(m=>m.UserEmail)</div>
+    </div>
+    <div><button type="submit">Save</button></div>
+    </div>
+</form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="~/js/createIssue.js"></script>

@@ -6,14 +6,14 @@ namespace TestTask.Services.Hasher
 {
     public sealed class PasswordHasher : IPasswordHasher
     {
-        private readonly int SaltSize;
-        private readonly int HashSize;
-        private readonly int Iterations;
+        private readonly int saltSize;
+        private readonly int hashSize;
+        private readonly int iterations;
         public PasswordHasher(IHashSettings settings)
         {
-            SaltSize = settings.SaltSize;
-            HashSize = settings.HashSize;
-            Iterations = settings.Iterations;
+            saltSize = settings.SaltSize;
+            hashSize = settings.HashSize;
+            iterations = settings.Iterations;
         }
 
         public string Hash(string password)
@@ -25,15 +25,15 @@ namespace TestTask.Services.Hasher
                 throw new ArgumentNullException(nameof(password));
             }
 
-            using (Rfc2898DeriveBytes bytes = new Rfc2898DeriveBytes(password, SaltSize, Iterations))
+            using (Rfc2898DeriveBytes bytes = new Rfc2898DeriveBytes(password, saltSize, iterations))
             {
                 salt = bytes.Salt;
-                buffer2 = bytes.GetBytes(HashSize);
+                buffer2 = bytes.GetBytes(hashSize);
             }
 
-            byte[] dst = new byte[SaltSize + HashSize + 0x01];
-            Buffer.BlockCopy(salt, 0, dst, 1, SaltSize);
-            Buffer.BlockCopy(buffer2, 0, dst, SaltSize + 0x01, HashSize);
+            byte[] dst = new byte[saltSize + hashSize + 0x01];
+            Buffer.BlockCopy(salt, 0, dst, 1, saltSize);
+            Buffer.BlockCopy(buffer2, 0, dst, saltSize + 0x01, hashSize);
             return Convert.ToBase64String(dst);
         }
 
@@ -51,18 +51,18 @@ namespace TestTask.Services.Hasher
             }
 
             byte[] src = Convert.FromBase64String(hashedPassword);
-            if ((src.Length != (SaltSize + HashSize + 0x01)) || (src[0] != 0))
+            if ((src.Length != (saltSize + hashSize + 0x01)) || (src[0] != 0))
             {
                 return false;
             }
 
-            byte[] dst = new byte[SaltSize];
-            Buffer.BlockCopy(src, 1, dst, 0, SaltSize);
-            byte[] buffer3 = new byte[HashSize];
-            Buffer.BlockCopy(src, SaltSize + 0x01, buffer3, 0, HashSize);
-            using (Rfc2898DeriveBytes bytes = new Rfc2898DeriveBytes(password, dst, Iterations))
+            byte[] dst = new byte[saltSize];
+            Buffer.BlockCopy(src, 1, dst, 0, saltSize);
+            byte[] buffer3 = new byte[hashSize];
+            Buffer.BlockCopy(src, saltSize + 0x01, buffer3, 0, hashSize);
+            using (Rfc2898DeriveBytes bytes = new Rfc2898DeriveBytes(password, dst, iterations))
             {
-                buffer4 = bytes.GetBytes(HashSize);
+                buffer4 = bytes.GetBytes(hashSize);
             }
 
             return ByteArraysEqual(buffer3, buffer4);

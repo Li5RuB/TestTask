@@ -13,10 +13,12 @@ namespace TestTask.Web.Controllers
     public class HomeController : Controller
     {
         private readonly IStatisticsService _statisticsService;
+        private readonly IIssueService _issueService;
 
-        public HomeController(IStatisticsService statisticsService)
+        public HomeController(IStatisticsService statisticsService, IIssueService issueService)
         {
             _statisticsService = statisticsService;
+            _issueService = issueService;
         }
 
         public IActionResult Index()

@@ -1,0 +1,37 @@
+﻿.container {
+    width: 350px;
+    padding: 20px;
+    background: #e3e3e3;
+    border-radius: 10px;
+}
+
+input {
+    padding: 10px;
+    margin: 10px 0;
+    box-shadow: 0 0 15px 5px rgba(0,0,0,0.06);
+    border: none;
+    border-radius: 10px;
+}
+
+hr {
+    height: 1px;
+    border: none;
+    color: rgb(170, 170, 170);
+    background-color: rgb(170, 170, 170);
+}
+
+button {
+    appearance: none;
+    padding: 10px;
+    border: none;
+    background-color: #616161;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 5px;
+    width: 100%;
+    cursor: pointer;
+}
+
+    button:hover {
+        background-color: #a9a9a9;
+    }

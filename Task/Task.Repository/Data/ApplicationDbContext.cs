@@ -24,6 +24,10 @@ namespace TestTask.Repository.Data
         
         public DbSet<RoleItem> Roles { get; set; }
 
+        public DbSet<IssueItem> Issues { get; set; }
+
+        public DbSet<TimeLogItem> TimeLogs { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
