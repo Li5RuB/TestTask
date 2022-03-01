@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NewsParser.Enums
+namespace NewsParser.Common.Enums
 {
     public enum ConsoleArgs
     {
-        parse,
-        send
+        Parse = 0,
+        Send = 1
     }
 }

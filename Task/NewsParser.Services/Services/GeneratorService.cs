@@ -30,50 +30,16 @@ namespace NewsParser.Services.Services
             _generatorFactory = generatorFactory;
         }
 
-        public List<Message> GenerateMessages()
+        public List<Message> GenerateMessages(List<UserModel> userModels,ConcurrentStack<Message> messages)
         {
-            Console.WriteLine("Start");
-            var usersModels = _userRepository.GetUsers().Select(UserMapper.Map).ToList();
             var news = _newsService.GetModelsForSending();
-            var messages = new ConcurrentStack<Message>();
-            var numberOfThreads = _appSettings.NumberOfThreads;
-            var threads = new List<Thread>();
-
-            CreateThreads(usersModels, news, messages, numberOfThreads, threads);
-            var a = Stopwatch.StartNew();
-            threads.ForEach(thread => thread.Start());
-            threads.ForEach(thread => thread.Join());
-            a.Stop();
-            Console.WriteLine(a.ElapsedTicks);
+            foreach (var user in userModels)
+            {
+                var generator = _generatorFactory.CreateMessageGenerator(user.RoleName);
+                var mess = generator.CreateMessage(news, user);
+                messages.Push(mess);
+            }
             return messages.ToList();
         }
-
-        private void CreateThreads(List<UserModel> usersModels, List<NewsModel> news, ConcurrentStack<Message> messages, int numberOfThreads, List<Thread> threads)
-        {
-            foreach (var users in GetPartsOfUsers(usersModels, numberOfThreads))
-            {
-                threads.Add(new Thread(t =>
-                {
-                    foreach (var user in users)
-                    {
-                        var generator = _generatorFactory.CreateMessageGenerator(user.RoleName);
-                        var mess = generator.CreateMessage(news, user);
-                        messages.Push(mess);
-                    }
-                }));
-            }
-        }
-
-        private static List<List<UserModel>> GetPartsOfUsers(List<UserModel> users, int numberOfThreads)
-        {
-            var partLength = (int)Math.Ceiling(users.Count / (double)numberOfThreads);
-            var partsOfUsers = Enumerable.Range(0, numberOfThreads).AsParallel()
-                      .Select(i => users.Skip(i * partLength)
-                                         .Take(partLength)
-                                         .ToList())
-                      .ToList();
-            return partsOfUsers;
-        }
-
     }
 }

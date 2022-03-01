@@ -1,5 +1,6 @@
 ﻿using NewsParser.Services.Models;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,6 @@ namespace NewsParser.Services.Services
 {
     public interface IGeneratorService
     {
-        public List<Message> GenerateMessages();
+        public List<Message> GenerateMessages(List<UserModel> userModels,ConcurrentStack<Message> messages);
     }
 }

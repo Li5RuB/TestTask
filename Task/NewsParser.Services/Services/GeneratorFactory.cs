@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NewsParser.Common.Enums;
 
 namespace NewsParser.Services.Services
 {
@@ -18,9 +19,9 @@ namespace NewsParser.Services.Services
 
         public IGenerator CreateMessageGenerator(string roleName)
         {
-            switch (roleName)
+            switch (Enum.Parse<Roles>(roleName))
             {
-                case "Admin": return _serviceProvider.GetServices<IGenerator>().First(s=> s is AdminMessageGenerator);
+                case Roles.Admin: return _serviceProvider.GetServices<IGenerator>().First(s=> s is AdminMessageGenerator);
                 default: return _serviceProvider.GetServices<IGenerator>().First(s=>s is UserMessageGenerator); 
             }
         }

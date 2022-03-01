@@ -15,9 +15,6 @@ namespace NewsParser
                 .SetBasePath(AppContext.BaseDirectory)
                 .AddJsonFile($"appsettings.json", optional: false)
                 .Build();
-            #if DEBUG
-                args = new[] { "send" };
-            #endif
             var settings = new AppSettings();
             settings.Initialize(configuration);
             var services = ConfigureServices();

@@ -14,9 +14,9 @@ namespace NewsParser.Repositories.Repositories
     {
         private readonly string _connectionString;
 
-        public BaseRepository(IRepositorySettings settings)
+        public BaseRepository(string connectionString)
         {
-            _connectionString = settings.TestTaskConnectionString;
+            _connectionString = connectionString;
         }
 
         protected List<T> ExecuteGetProcedure<T>(string sqlQuery)

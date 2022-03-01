@@ -12,7 +12,7 @@ namespace NewsParser.Repositories.Repositories
 {
     public class UserRepository : BaseRepository, IUserRepository
     {
-        public UserRepository(IRepositorySettings settings) : base(settings)
+        public UserRepository(IRepositorySettings settings) : base(settings.TestTaskConnectionString)
         {
         }
 
