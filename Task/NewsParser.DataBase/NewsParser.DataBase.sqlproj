@@ -3,17 +3,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <Name>TestTask.DataBase</Name>
+    <Name>NewsParser.DataBase</Name>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
-    <ProjectGuid>{9555fd4b-a1fa-4b81-a106-93725d61dd9d}</ProjectGuid>
+    <ProjectGuid>{d6cc01ea-89d8-4f84-9aae-a553a68338b0}</ProjectGuid>
     <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
-    <RootNamespace>TestTask.DataBase</RootNamespace>
-    <AssemblyName>TestTask.DataBase</AssemblyName>
-    <ModelCollation>1049,CI</ModelCollation>
+    <RootNamespace>NewsParser.DataBase</RootNamespace>
+    <AssemblyName>NewsParser.DataBase</AssemblyName>
+    <ModelCollation>1033, CI</ModelCollation>
     <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
     <DeployToDatabase>True</DeployToDatabase>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
@@ -22,8 +22,6 @@
     <SqlServerVerification>False</SqlServerVerification>
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
     <TargetDatabaseSet>True</TargetDatabaseSet>
-    <DefaultCollation>Cyrillic_General_CI_AS</DefaultCollation>
-    <DefaultFilegroup>PRIMARY</DefaultFilegroup>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -58,23 +56,15 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
-    <Folder Include="dbo\" />
-    <Folder Include="dbo\Tables\" />
-    <Folder Include="dbo\Stored Procedures" />
+    <Folder Include="dbo" />
+    <Folder Include="dbo\Tables" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="dbo\Tables\Countries.sql" />
-    <Build Include="dbo\Tables\Titles.sql" />
-    <Build Include="dbo\Tables\Cities.sql" />
+    <Build Include="dbo\Tables\News.sql" />
     <Build Include="dbo\Tables\Users.sql" />
     <Build Include="dbo\Tables\Roles.sql" />
-    <Build Include="dbo\Stored Procedures\CountStatistics.sql" />
-    <Build Include="dbo\Stored Procedures\LastLoginStatistics.sql" />
-    <Build Include="dbo\Tables\News.sql" />
-    <Build Include="dbo\Tables\Issues.sql" />
-    <Build Include="dbo\Tables\TimeLogs.sql" />
   </ItemGroup>
   <ItemGroup>
-    <RefactorLog Include="TestTask.DataBase.refactorlog" />
+    <RefactorLog Include="NewsParser.DataBase.refactorlog" />
   </ItemGroup>
 </Project>
