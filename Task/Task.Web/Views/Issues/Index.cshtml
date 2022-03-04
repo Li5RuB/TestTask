@@ -1,4 +1,5 @@
-﻿@using TestTask.Services.Models
+﻿@using System.Globalization
+@using TestTask.Services.Models
 @model IssuePageModel
 @{
     int week = Model.Week;
@@ -7,9 +8,11 @@
     int year = Model.Year;
     const int numberOfPagesInPagination = 3;
     string url;
+    string today = DateTime.Now.ToString("dd/MMM", CultureInfo.GetCultureInfo("en-US"));
 }
 
-<link rel="stylesheet" href="~/css/table.css">
+<link rel="stylesheet" href="~/css/JiraTable.css" />
+
 <header>
     <div class="menu">
         <a href="@Url.Action("Index", "Home")">Home</a> 
@@ -43,104 +46,140 @@
     </div>
 </header>
 
-<div class="row">
-    <b>Issues</b>
-    @if(User.IsInRole("Admin")){
-        <a href="~/Issues/Create"><button>Create</button></a>
-    }
-</div>
-<div style="min-height: 150px;">
-    <table class="table" style="text-align: center;">
-        <thead>
-        <tr>     
-            <th>
-                <a id="" class="">Issue name</a>
-            </th>
-                @foreach (var item in @Model.DateForPage)
-                {
-                    <th>
-                        <a id="" class="">@item.ToString("dd.MM.yyy")<p>@item.DayOfWeek</a>
-                    </th>
-                }
-        </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.IssueModels)
-            {
-                var groupTimeLogs = Model.TimeLogModels.Where(x=>x.IssueId==item.IssueId);
-                <tr class="">
-                    <td class="cell_1" id="1">
-                        <a href="@Url.Action("Details",new {issueId = item.IssueId})">@item.Name</a> 
-                    </td> 
-                    @foreach (var day in Model.DateForPage)
-                    {
-                        <td class="cell_1" id="1">
-                            @{
-                                var totalTime = new TimeSpan(groupTimeLogs.Where(x => x.DateLog == day).Sum(r => r.Time.Ticks));
-                            }
-                            @totalTime.ToString("h'h 'm'm'")
-                        </td>   
-                    }
-                </tr>
-            }
-        </tbody>
-    </table>
-    <div class="paging">
-        <a style="margin-top:1%;" href="/Issues/Index"><button>Reset</button></a>
-        <div class="pages">
-            @if (week > 1)
-            {
-                url = $"/Issues/Index?week={week - 1}&year={year}";
-                
-            }else{
-                url = $"/Issues/Index?week={countWeekOfYear}&year={year - 1}";
-            }
-            <a href='@url'>&lt;</a>
-            @{
-                int changeableCurrentPage = week;
-                int counter = 0;
-                if (week > 1 && week < countWeekOfYear)
-                {
-                    week--;
-                }
-                else if (week == countWeekOfYear && week > 1)
-                {
-                    week -= 2;
-                }
-                @for (int i = week; i <= countWeekOfYear && counter < numberOfPagesInPagination; i++,counter++)
-                {
-                    if (i > 0)
-                    {
-                        <div>|</div>
-                        url = $"/Issues/Index?week={i}&year={year}";
-                        <a href='@url'>
-                            @if (i == changeableCurrentPage)
-                            {
-                                <b>@i</b>
-                            }
-                            else
-                            {
-                                @i
-                            }
-                        </a>
-                    }
-
-                }
-            }
-            |
-            @if (changeableCurrentPage < countWeekOfYear)
-            {
-                url = $"/Issues/Index?week={changeableCurrentPage+1}&year={year}";
-                
-            }else{
-                url = $"/Issues/Index?week={1}&year={year + 1}";
-            }
-            <a href='@url'>&gt;</a>
-        </div>
+<div class="jira-modul" style="left: 3.34119%; top: 70px; width: 46.0517%;">
+    <div class="dashboard-item-header"><h3 id="gadget-11790-title" class="dashboard-item-title">Time Sheet</h3></div>
+    <div id="jira-container" class="jira-contaner">
+        <jira-table>
+        </jira-table>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+<script>
+
+    let model = @Html.Raw(Json.Serialize(@Model));
+    let date = model.dateForPage;
+    let today = @Html.Raw(Json.Serialize(today));
+var totalRow = Vue.component('jira-totalRow',{
+    data(){
+        return{
+            issues: model.issueModels,
+            timeLogs: model.timeLogModels,
+            items: date,
+            todayDate: today,
+        }
+    },
+    computed:{
+        count: function(){
+            return this.issues.length;
+        },
+        sumHoure: function(){
+            let result = [];
+            for(let i = 0; i< this.items.length; i++){
+                result.push(this.timeLogs.filter(n => this.items[i].date == n.dateLogParse).reduce((partialSum,a)=>partialSum + a.time.hours,0))
+            }
+            return result;
+        },
+        totHoure: function(){
+            return this.sumHoure.reduce((partialSum,a)=>partialSum+a,0);
+        }
+    },
+    template: `<tr class="rowFooter border">
+        <td colspan=""> Total ({{count}} issue): </td>
+        <td style="" nowrap="" :class="['nav', 'border',[{'nonWorkedDay': i==6||i==7},{'today': items[i-1].date==todayDate}]]" title="" v-for="i in 7"><b>{{sumHoure[i-1]}}</b></td>
+        <td nowrap="" class="border" title=" "><b>{{totHoure}}</b></td>
+    </tr>`
+})
+
+var tbody = Vue.component('jira-tbody',{
+    data() 
+    {
+        return{
+            items:date,
+            issues: model.issueModels,
+            timeLogs: model.timeLogModels,
+            todayDate: today,
+        }         
+    },
+    computed:{
+        LogedIssues: function(){
+            return this.issues.filter(x=> this.timeLogs.filter(n => n.issueId == x.issueId).length > 0)
+        }
+    },
+    methods:{
+        GetLogsTime(issueId,item){
+            return this.timeLogs.filter(n=>n.dateLogParse == item.date && n.issueId == issueId)
+            .reduce((partialSum,a)=>partialSum + a.time.hours,0);
+        },
+        sumOfTime(issueId){
+            return this.timeLogs.filter(n=>n.issueId == issueId).reduce((partialSum,a)=>partialSum + a.time.hours,0);
+        },
+    },
+    template:`        
+    <tbody>
+        <tr class="rowNormal border border-bottom" v-for="issue in LogedIssues">
+            <td class="nav" id="1">
+                <a href="">{{issue.name}} text text text text text </a> 
+            </td> 
+            <td :class="['nav', 'border',[{'nonWorkedDay': i==6||i==7},{'today': items[i-1].date==todayDate}]]" id="1" v-for="i in 7">
+                {{GetLogsTime(issue.issueId,items[i-1])}}
+            </td>
+            <td class="nav"><b>{{sumOfTime(issue.issueId)}}</b></td>
+        </tr>
+        <jira-totalRow></jira-totalRow>
+    </tbody>`,
+})
+
+var thead = Vue.component('jira-thead',{
+    data() 
+    {
+        return{
+            items: date,
+            todayDate: today,
+        }
+    },
+    computed:{
+        daysOfWeek:function(){
+            var newItems = [] 
+            this.items.forEach(element => {
+                newItems.push({day:element.day.substring(0,3),date: (element.date.split('.').splice(0,2)).join('.')});
+            }); 
+            return newItems;
+        }
+    },
+    template: `        
+    <thead>
+        <tr class="border-bottom border-top">
+        <th class="border">
+        <a id="" class="">Summary for userName</a>
+        <br>
+        <div id="slider-wrapper">
+        <div id="slider-prev"><<</div>
+        <div id="slider-today"><span id="week">123</span><span id="month">123</span></div>
+        <div id="slider-next">>></div>
+        </div>
+        </th>
+        <th :class="[{'nonWorkedDay': i==6||i==7},{'today': items[i-1].date==todayDate}]" v-for="i of 7">
+        <a id="" class="nav">{{items[i-1].dayOfWeek}}<br>{{items[i-1].date}}</a>
+        </th>
+        <th>Tot</th>
+        </tr>
+    </thead>`
+})
+
+var jiraTable = Vue.component('jira-table',{
+    template: `
+        <table id="issuetable" class="table" style="text-align: center;" border=" 0" cellpadding="3" cellspacing="0" width="100%">
+        <jira-thead></jira-thead>
+        <jira-tbody></jira-tbody>
+        </table>`,
+})
+
+var table = new Vue({
+    el:'.jira-contaner',
+})
+</script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="~/js/table.js"></script>
-<script>
-    let model = @Html.Raw(Json.Serialize(@Model));
-</script>

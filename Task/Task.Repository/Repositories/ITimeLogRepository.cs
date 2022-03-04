@@ -15,6 +15,8 @@ namespace TestTask.Repository.Repositories
 
         public List<TimeLogItem> GetLogsToPage(DateTime FirstDate, DateTime LastDate, List<int> issueIds);
 
+        public List<TimeLogItem> GetLogsByDate(DateTime date);
+
         public void Create(TimeLogItem log);
 
         public void Remove(TimeLogItem log);

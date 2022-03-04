@@ -20,7 +20,19 @@ namespace TestTask.Services.Models
         [Required]
         public DateTime DateLog { get; set; }
 
-        [Required]
+        public string DateLogParse
+        {
+            get
+            {
+                return DateLog.ToString("dd/MMM", CultureInfo.GetCultureInfo("en-US"));
+            }
+            private set
+            {
+
+            }
+        }
+
+[Required]
         [Range(typeof(TimeSpan), "00:01", "10:00")]
         public TimeSpan Time { get; set; }
 

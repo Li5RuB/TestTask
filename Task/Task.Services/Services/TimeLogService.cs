@@ -22,7 +22,7 @@ namespace TestTask.Services.Services
 
         public async Task CreateLog(TimeLogModel log)
         {
-            var loggedTime = _timeLogRepository.GetLogsByIsueeId(log.IssueId).Where(x=>x.DateLog==log.DateLog).Sum(x=>x.Time.Ticks);
+            var loggedTime = _timeLogRepository.GetLogsByDate(log.DateLog).Sum(x=>x.Time.Ticks);
             var issueStatus = (await _issueRepository.GetById(log.IssueId)).IsClosed;
             if ((loggedTime+log.Time.Ticks)<= tenHours)
             {

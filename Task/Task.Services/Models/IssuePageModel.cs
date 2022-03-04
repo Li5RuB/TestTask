@@ -11,7 +11,7 @@ namespace TestTask.Services.Models
         public IssuePageModel(
             List<IssueModel> issueModels,
             List<TimeLogModel> timeLogModels,
-            List<DateTime> dateTimes,
+            List<DatePageModel> dateTimes,
             int week,
             int year)
         {
@@ -26,7 +26,7 @@ namespace TestTask.Services.Models
 
         public List<TimeLogModel> TimeLogModels { get; set; }
 
-        public List<DateTime> DateForPage { get; set; }
+        public List<DatePageModel> DateForPage { get; set; }
 
         public int Week { get; set; }
 

@@ -48,10 +48,16 @@ namespace TestTask.Services.Services
             var issueSearchResultModel = _issueRepository.GetIssueToPage(dateForPage, userId, week, year);
             var issueIds = issueSearchResultModel.IssueItems.Select(i => i.IssueId).ToList();
             issueSearchResultModel.TimeLogItems = _timeLogRepository.GetLogsToPage(dateForPage.First(), dateForPage.Last(), issueIds);
+            var datePageModels = (from item in dateForPage
+                                  select new DatePageModel()
+                                  {
+                                      Date = item.ToString("dd/MMM", CultureInfo.GetCultureInfo("en-US")),
+                                      DayOfWeek = item.ToString("ddd", CultureInfo.GetCultureInfo("en-US"))
+                                  }).ToList();
             var issuePageModel = new IssuePageModel(
                 issueSearchResultModel.IssueItems.Select(IssueMapper.MapItemToModel).ToList(),
                 issueSearchResultModel.TimeLogItems.Select(TimeLogMapper.MapItemToModel).ToList(),
-                dateForPage, 
+                datePageModels, 
                 week, 
                 year);
             return issuePageModel;
