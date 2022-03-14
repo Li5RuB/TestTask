@@ -31,6 +31,11 @@ namespace TestTask.Repository.Repositories
             GetContext().Remove(item);
         }
 
+        public async virtual Task RemoveRange(List<T> items)
+        {
+            await GetContext().DeleteRangeByKeyAsync(items);
+        }
+
         public virtual void Update(T item)
         {
             GetContext().Update(item);

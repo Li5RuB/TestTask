@@ -37,13 +37,18 @@ namespace TestTask.Services.Services
             return _issueRepository.GetIssuesByUserId(id).Select(IssueMapper.MapItemToModel).ToList();
         }
 
-        public IssuePageModel GetIssuesToPage(int week, int year, int userId)
+        public IssuePageModel GetIssuesToPage(int week,int mouth, int year, int userId)
         {
             if(week == 0)
                 week = GetDefaultWeek();
             if (year == 0)
                 year = GetDefaultYear();
             var dateForPage = new List<DateTime>();
+            if(mouth != 0)
+            {
+                int allDay = DateTime.DaysInMonth(year, mouth);
+                dateForPage = GetDateOfMouth(year, mouth, allDay);
+            }else
             GetDaysOfWeek(week, year).ForEach(i => dateForPage.Add(i));
             var issueSearchResultModel = _issueRepository.GetIssueToPage(dateForPage, userId, week, year);
             var issueIds = issueSearchResultModel.IssueItems.Select(i => i.IssueId).ToList();
@@ -52,13 +57,15 @@ namespace TestTask.Services.Services
                                   select new DatePageModel()
                                   {
                                       Date = item.ToString("dd/MMM", CultureInfo.GetCultureInfo("en-US")),
-                                      DayOfWeek = item.ToString("ddd", CultureInfo.GetCultureInfo("en-US"))
+                                      DayOfWeek = item.ToString("ddd", CultureInfo.GetCultureInfo("en-US")),
+                                      FullDate = item,
                                   }).ToList();
             var issuePageModel = new IssuePageModel(
                 issueSearchResultModel.IssueItems.Select(IssueMapper.MapItemToModel).ToList(),
                 issueSearchResultModel.TimeLogItems.Select(TimeLogMapper.MapItemToModel).ToList(),
                 datePageModels, 
-                week, 
+                week,
+                mouth,
                 year);
             return issuePageModel;
         }
@@ -73,6 +80,13 @@ namespace TestTask.Services.Services
         {
             _issueRepository.Update(IssueMapper.MapModelToItem(issue));
             await _issueRepository.Save();
+        }
+
+        private static List<DateTime> GetDateOfMouth (int year, int mouth, int allDay)
+        {
+            var startDate = new DateTime(year, mouth, 1);
+            var list = Enumerable.Range(0, allDay).Select(i => startDate.AddDays(i)).ToList();
+            return list;
         }
 
         private static List<DateTime> GetDaysOfWeek(int numberOfWeek, int year)

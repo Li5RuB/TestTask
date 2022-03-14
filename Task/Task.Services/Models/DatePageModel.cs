@@ -11,5 +11,7 @@ namespace TestTask.Services.Models
         public string DayOfWeek { get; set; }
 
         public string Date { get; set; }
+
+        public DateTime FullDate { get; set; }
     }
 }

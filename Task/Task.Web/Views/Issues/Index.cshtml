@@ -1,14 +1,18 @@
 ﻿@using System.Globalization
 @using TestTask.Services.Models
 @model IssuePageModel
+
 @{
     int week = Model.Week;
+    int month = Model.Month;
     const int countWeekOfYear = 52;
     int defaultYear = DateTime.Now.Year;
     int year = Model.Year;
     const int numberOfPagesInPagination = 3;
     string url;
     string today = DateTime.Now.ToString("dd/MMM", CultureInfo.GetCultureInfo("en-US"));
+    var cal = new GregorianCalendar();
+    int weekNow = cal.GetWeekOfYear(DateTime.Now, CalendarWeekRule.FirstFullWeek, DayOfWeek.Monday);
 }
 
 <link rel="stylesheet" href="~/css/JiraTable.css" />
@@ -47,33 +51,222 @@
 </header>
 
 <div class="jira-modul" style="left: 3.34119%; top: 70px; width: 46.0517%;">
-    <div class="dashboard-item-header"><h3 id="gadget-11790-title" class="dashboard-item-title">Time Sheet</h3></div>
+    <div class="dashboard-item-header">
+        <h3 id="gadget-11790-title" class="dashboard-item-title">
+            Time Sheet
+        </h3>
+    </div>
     <div id="jira-container" class="jira-contaner">
         <jira-table>
         </jira-table>
+        <modal v-bind:issue-id="issueId" v-bind:date="dateLog" v-bind:style="styleObject" v-if="showModal" @@close="showModal = false"><h3 slot="header">custom header</h3></modal>
+        <change-modal v-bind:issue-id="issueId" v-bind:date="dateLog" v-bind:time="loggedTime" v-bind:style="styleObject" v-if="showModalChange" @@close="showModalChange = false"><h3 slot="header">custom header</h3></change-modal>
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
-<script>
 
+<script type="text/x-template" id="modal-template">
+      <transition name="modal">
+        <div class="popup-container"> 
+            <div class="row">
+                <span>Log Work for {{date.split('-').reverse().join('/')}}</span> 
+                <button style="vertical-align:top" @@click="$emit('close')">&#215;</button>
+            </div>             
+            <div>
+                Spent:
+                <div>
+                    <input v-on:keyup.enter="SetLog(time)" v-model="time"></input> 
+                    <button>✔</button>
+                </div>
+            </div>
+        </div>
+      </transition>
+</script>
+<script type="text/x-template" id="modal-change-template">
+      <transition name="modal">
+        <div class="popup-container" @@mouseleave="$emit('close')"> 
+        <div class="buttons">
+        <div>{{time}}</div> 
+        <div>
+        [<button class="green" v-on:click="showPopUp($event)">+</button>]
+        [<button class="red" v-on:click="removeTime()">x</button>]
+        </div>
+        </div>
+        </div>
+      </transition>
+</script>
+<script type="text/x-template" id="jira-tbody-template">
+    <tbody>
+            <tr class="rowNormal border border-bottom" v-for="issue in LogedIssues">
+                <td class="nav hover" id="1">
+                    <a v-bind:href="'/issues/Details?issueId='+issue.issueId">{{issue.name}}</a> 
+                </td> 
+                <td :class="['nav','hover', 'border',[{'nonWorkedDay': items[i-1].dayOfWeek=='Sat'||items[i-1].dayOfWeek=='Sun'},{'today': items[i-1].date==todayDate},]]"  
+                @@mouseover="
+                    currentShows = issue.name + i;
+                    showChangeModal(issue.issueId, items[i-1],$event);" 
+                @@mouseleave="currentShows = 0" v-for="i in countOfDate">
+                    <template v-if="GetLogsTime(issue.issueId,items[i-1])">{{GetLogsTime(issue.issueId,items[i-1])}}</template>
+                    <template v-else>
+                    <span style="font-size: 20px;line-height: 15px;" v-show="visible[issue.name+i]" v-bind:style="{cursor: selectedCursor}" id="" 
+                    @@click="log(issue.issueId);
+                    $root.$data.issueId = issue.issueId;
+                    $root.$data.dateLog = getFullDate(items[i-1]);
+                    $root.$data.showModal=true;
+                    $root.$data.styleObject.left=$event.pageX;
+                    $root.$data.styleObject.top=$event.pageY">
+                    <b>+</b>
+                    </span>
+                    </template>
+                </td>
+                <td class="nav hover"><b>{{sumOfTime(issue.issueId)}}</b></td>
+            </tr>
+            <jira-totalRow v-bind:time-logs="timeLogs"></jira-totalRow>
+        </tbody>
+</script>
+<script type="text/x-template" id="jira-totalRow-template">
+    <tr class="rowFooter border">
+        <template v-if="totHoure>0">
+        <td colspan=""> Total ({{count}} issue): </td>
+        <td class="hover" style="" nowrap="" :class="['nav', 'border',[{'nonWorkedDay': items[i-1].dayOfWeek=='Sat'||items[i-1].dayOfWeek=='Sun'},{'today': items[i-1].date==todayDate}]]" title="" v-for="i in countOfDate"><b>{{sumHoure[i-1]}}</b></td>
+        <td nowrap="" class="border" title=" "><b>{{totHoure}}</b></td>
+        </template>
+        <template v-else>
+        <td colspan="8" class="nothover" style="background-color: #fff;">There are no time tracking records for the period.</td>
+        </template>
+    </tr>
+</script>
+<script type="text/x-template" id="jira-thead-template">
+    <thead>
+    <tr class="border-bottom border-top">
+        <th class="border headerBG">
+            <a id="" class="">Summary for {{userName}}</a>
+            <br>
+            <div id="slider-wrapper">
+                <div id="slider-prev">
+                    <div v-bind:style="{cursor: selectedCursor}" v-on:click="Redirect('-')" target="_parent" ><<</div>
+                    <div v-if="getChanger()" v-bind:style="{cursor: selectedCursor}" target="_parent"  v-on:click="Redirect('t')">{{'-'+getModuleOfChange()}}</div>
+                </div>
+                <div id="slider-today">
+                    <span id="week" v-if="viewMode=='w'"><b>wk</b></span>
+                    <span id="week" v-on:click="Redirect('w')" v-else-if="viewMode=='m'"><b>wk</b></span>
+                    <span id="month" v-if="viewMode=='m'"><b>mo</b></span>
+                    <span id="month" v-on:click="Redirect('m')" v-else-if="viewMode=='w'"><b>mo</b></span>
+                </div>
+                <div id="slider-next">
+                    <div id="today" v-bind:style="{cursor: selectedCursor}" v-if="getChanger()"  v-on:click="Redirect('t')" target="_parent">{{'+'+getModuleOfChange()}}</div>
+                    <div id="next" v-bind:style="{cursor: selectedCursor}" v-on:click="Redirect('+')" target="_parent">>></div>
+                </div>
+            </div>
+        </th>
+        <th :class="['hover',{'nonWorkedDay': items[i-1].dayOfWeek=='Sat'||items[i-1].dayOfWeek=='Sun'},{'today': items[i-1].date==todayDate}]" v-for="i of countOfDate">
+            <a id="" class="nav">{{items[i-1].dayOfWeek}}<br>{{items[i-1].date}}</a>
+        </th>
+        <th>Tot</th>
+    </tr>
+    </thead>
+</script>
+<script type="text/x-template" id="jira-table-template">
+    <table id="issuetable" class="table" style="text-align: center;" border=" 0" cellpadding="3" cellspacing="0" width="100%">
+        <jira-thead></jira-thead>
+        <jira-tbody></jira-tbody>
+    </table>
+</script>
+
+<script>
+    Vue.prototype.$http = axios;
     let model = @Html.Raw(Json.Serialize(@Model));
     let date = model.dateForPage;
-    let today = @Html.Raw(Json.Serialize(today));
+    let today = @Html.Raw(Json.Serialize(today));    
+    let currentWeek = @Html.Raw(Json.Serialize(week));
+    let currentMonth = @Html.Raw(Json.Serialize(month));
+    let url = '/Issues?'
+    let urlNumber;
+    let userName = @Html.Raw(Json.Serialize(User.Identity?.Name));
+    let weekNow = @Html.Raw(Json.Serialize(weekNow));
+    let viewMode;
+    let countOfDate = @Html.Raw(Json.Serialize(Model.DateForPage.Count));
+    console.log(currentMonth)
+    if( currentMonth == 0){
+        url += 'week='
+        viewMode = 'w'
+        urlNumber = currentWeek;}
+    else{
+        url += 'mouth=';
+        viewMode = 'm';
+        urlNumber = currentMonth;}
+    mouthNow = @Html.Raw(Json.Serialize(DateTime.Now.Month));
+    var eventBus = new Vue();
+
+Vue.component("modal", {
+    template: "#modal-template",
+    props:[
+        'issueId',
+        'date',],
+    data(){
+        return{
+            time:'',
+            Id: this.issueId,
+            dateLog: this.date}
+    },
+    methods:{
+        async SetLog(v){
+            let TimeLogModel = await {issueId: this.Id,dateLog: this.dateLog, timeParse: v}
+            await this.$http.post('/issues/SetTime', 'IssueId='+this.Id+'&DateLog='+this.dateLog+'&timeParse='+v)
+            .then(d=>eventBus.$emit('logtime',d));
+            this.$emit('close');}
+    },
+});
+
+Vue.component("change-modal",{
+    template: "#modal-change-template",
+    props:[
+        'issueId',
+        'date',
+        'time',],
+    data(){
+        return{}
+    },
+    methods:{
+        showPopUp(e){
+                let data = {
+                showModal: true,
+                issueId : this.issueId,
+                dateLog : this.date,
+                loggedTime: this.time,
+                styleObject:{left: e.pageX,
+                top: e.pageY},
+                showModalChange: false,
+            }
+            eventBus.$emit('modal', data)
+        },
+        async removeTime(){
+            await this.$http.post('/issues/RemoveTime', 'issueId='+this.issueId+'&date='+this.date)
+            .then(d=>eventBus.$emit('removelog',{issueId:this.issueId,dateLog:this.date}));
+            this.$emit('close');
+        }
+    }
+})
+
 var totalRow = Vue.component('jira-totalRow',{
+    props:[
+        'timeLogs',
+    ],
     data(){
         return{
             issues: model.issueModels,
-            timeLogs: model.timeLogModels,
             items: date,
+            countOfDate: countOfDate,
+            currentMonth:currentMonth,
             todayDate: today,
         }
     },
     computed:{
         count: function(){
-            return this.issues.length;
+            return this.issues.filter(x=> this.timeLogs.filter(n => n.issueId == x.issueId).length > 0).length
         },
         sumHoure: function(){
             let result = [];
@@ -86,11 +279,7 @@ var totalRow = Vue.component('jira-totalRow',{
             return this.sumHoure.reduce((partialSum,a)=>partialSum+a,0);
         }
     },
-    template: `<tr class="rowFooter border">
-        <td colspan=""> Total ({{count}} issue): </td>
-        <td style="" nowrap="" :class="['nav', 'border',[{'nonWorkedDay': i==6||i==7},{'today': items[i-1].date==todayDate}]]" title="" v-for="i in 7"><b>{{sumHoure[i-1]}}</b></td>
-        <td nowrap="" class="border" title=" "><b>{{totHoure}}</b></td>
-    </tr>`
+    template:'#jira-totalRow-template'
 })
 
 var tbody = Vue.component('jira-tbody',{
@@ -99,8 +288,14 @@ var tbody = Vue.component('jira-tbody',{
         return{
             items:date,
             issues: model.issueModels,
+            currentMonth:currentMonth,
             timeLogs: model.timeLogModels,
             todayDate: today,
+            selectedCursor:'pointer',
+            visible: [], 
+            countOfDate:countOfDate,
+            currentShows: 0,
+            hover: [],
         }         
     },
     computed:{
@@ -110,76 +305,164 @@ var tbody = Vue.component('jira-tbody',{
     },
     methods:{
         GetLogsTime(issueId,item){
-            return this.timeLogs.filter(n=>n.dateLogParse == item.date && n.issueId == issueId)
-            .reduce((partialSum,a)=>partialSum + a.time.hours,0);
+            let h = this.timeLogs.filter(n=>n.dateLogParse == item.date && n.issueId == issueId)
+            .reduce((partialSum,a)=>partialSum + a.time.hours,0)+'h';
+            let m = this.timeLogs.filter(n=>n.dateLogParse == item.date && n.issueId == issueId)
+            .reduce((partialSum,a)=>partialSum + a.time.minutes,0)+'m';
+            if(!h.startsWith('0')&&!m.startsWith('0')){
+                return (h+' '+m)
+            }else if(!h.startsWith('0')){
+                return (h)
+            }else if(!m.startsWith('0')){
+                return (m)
+            }else return false;
+            
         },
         sumOfTime(issueId){
             return this.timeLogs.filter(n=>n.issueId == issueId).reduce((partialSum,a)=>partialSum + a.time.hours,0);
         },
-    },
-    template:`        
-    <tbody>
-        <tr class="rowNormal border border-bottom" v-for="issue in LogedIssues">
-            <td class="nav" id="1">
-                <a href="">{{issue.name}} text text text text text </a> 
-            </td> 
-            <td :class="['nav', 'border',[{'nonWorkedDay': i==6||i==7},{'today': items[i-1].date==todayDate}]]" id="1" v-for="i in 7">
-                {{GetLogsTime(issue.issueId,items[i-1])}}
-            </td>
-            <td class="nav"><b>{{sumOfTime(issue.issueId)}}</b></td>
-        </tr>
-        <jira-totalRow></jira-totalRow>
-    </tbody>`,
+        getShowModel() {
+                eventbus.$emit('logPopup', true);
+                console.log('click');
+        },
+        log(e){
+            console.log(e);
+        },
+        getFullDate(i){
+            return i.fullDate.split('T')[0];
+        },
+        checkChangeModal(issueId, item){
+            if(this.GetLogsTime(issueId, item))
+               return true;
+            return false;
+        },
+        showChangeModal(issueId, item,e){
+            let data = {
+                showModalChange: this.checkChangeModal(issueId,item),
+                issueId : issueId,
+                dateLog : this.getFullDate(item),
+                loggedTime: this.GetLogsTime(issueId,item),
+                styleObject:{left: e.pageX,
+                             top: e.pageY}
+            }
+            eventBus.$emit('modal', data)
+        }
+        },
+        watch:{
+            currentShows: function(val,old){
+                Vue.set(this.visible, old, false);
+                Vue.set(this.visible, val, true);
+            },
+        },
+        mounted(){
+                eventBus.$on('logtime', data => {
+                let logs = this.timeLogs;
+                console.log(logs);
+                logs.push(data.data);
+                Vue.set(this.timeLogs, logs);   
+            })
+                eventBus.$on('removelog', data=>{
+                    console.log(this.timeLogs);
+                    console.log(data);
+                this.timeLogs= this.timeLogs.filter(d=>d.dateLog.split('T')[0] != data.dateLog || d.issueId!=data.issueId);
+                    console.log(this.timeLogs)});
+        },
+    template:'#jira-tbody-template',
 })
 
 var thead = Vue.component('jira-thead',{
-    data() 
-    {
+    data() {
         return{
+            userName:userName,
+            viewMode:viewMode,
             items: date,
             todayDate: today,
-        }
-    },
+            weekNow: weekNow,
+            mouthNow: mouthNow,
+            currentMonth:currentMonth,
+            countOfDate:countOfDate,
+            currentWeek: currentWeek,
+            url: url,
+            urlNumber: urlNumber,
+            selectedCursor:'pointer',}},
+    methods:{
+        Redirect(symbol){
+            switch(symbol){
+                case '-': 
+                    location.href=this.url+(this.urlNumber-1);
+                    break;
+                case '+':
+                    location.href=this.url+(this.urlNumber+1);
+                    break;
+                case 't':
+                    if(viewMode=='w')
+                    location.href='/Issues?';
+                    else
+                    location.href='/Issues?mouth='+this.mouthNow;
+                    break;
+                case 'm':
+                    location.href='/Issues?mouth='+this.mouthNow;
+                    break;
+                case 'w':
+                    location.href='/Issues?week='+this.currentWeek;
+                    break;}
+        },
+        getChanger(){
+            if(viewMode=='w'){
+                if(currentWeek!=weekNow){
+                    return true
+                }return false
+            }else{
+                if(currentMonth!=mouthNow){
+                    return true
+                }return false}
+            
+        },
+        getModuleOfChange(){
+            if(viewMode=='w'){
+                return Math.abs(weekNow-currentWeek)
+            }else{
+                return Math.abs(mouthNow-currentMonth)}
+        }},
     computed:{
         daysOfWeek:function(){
             var newItems = [] 
             this.items.forEach(element => {
                 newItems.push({day:element.day.substring(0,3),date: (element.date.split('.').splice(0,2)).join('.')});
             }); 
-            return newItems;
-        }
-    },
-    template: `        
-    <thead>
-        <tr class="border-bottom border-top">
-        <th class="border">
-        <a id="" class="">Summary for userName</a>
-        <br>
-        <div id="slider-wrapper">
-        <div id="slider-prev"><<</div>
-        <div id="slider-today"><span id="week">123</span><span id="month">123</span></div>
-        <div id="slider-next">>></div>
-        </div>
-        </th>
-        <th :class="[{'nonWorkedDay': i==6||i==7},{'today': items[i-1].date==todayDate}]" v-for="i of 7">
-        <a id="" class="nav">{{items[i-1].dayOfWeek}}<br>{{items[i-1].date}}</a>
-        </th>
-        <th>Tot</th>
-        </tr>
-    </thead>`
+            return newItems;}},
+    template: '#jira-thead-template'
 })
 
 var jiraTable = Vue.component('jira-table',{
-    template: `
-        <table id="issuetable" class="table" style="text-align: center;" border=" 0" cellpadding="3" cellspacing="0" width="100%">
-        <jira-thead></jira-thead>
-        <jira-tbody></jira-tbody>
-        </table>`,
+
+    template: '#jira-table-template',
 })
 
 var table = new Vue({
+    data: {
+        issueId: Number,
+        dateLog: String,
+        showModal:false,
+        showModalChange:false,
+        loggedTime: String,
+        styleObject:{
+        left: 0,
+        top: 0,
+        }},
     el:'.jira-contaner',
-})
+    mounted(){
+        eventBus.$on('modal', data=>{
+            if(!this.showModal){
+            this.issueId = data.issueId;
+            this.dateLog = data.dateLog;
+            this.showModal = data.showModal;
+            this.showModalChange = data.showModalChange;
+            this.loggedTime = data.loggedTime;
+            this.styleObject = data.styleObject;
+            }
+        })
+    }
+    });
+
 </script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="~/js/table.js"></script>

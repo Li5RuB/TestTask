@@ -29,5 +29,6 @@ namespace TestTask.Repository.Repositories
         {
             return GetAll().Where(x=>x.DateLog.Date == date.Date).ToList();
         }
+
     }
 }

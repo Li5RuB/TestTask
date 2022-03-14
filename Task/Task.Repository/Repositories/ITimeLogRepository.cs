@@ -23,6 +23,8 @@ namespace TestTask.Repository.Repositories
 
         public void Update(TimeLogItem log);
 
+        public Task RemoveRange(List<TimeLogItem> items);
+
         public Task Save();
     }
 }

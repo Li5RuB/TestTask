@@ -46,6 +46,13 @@ namespace TestTask.Services.Services
             throw new NotImplementedException();
         }
 
+        public async Task RemoveRangeByDate(int issueId, DateTime date)
+        {
+            var logsIds = _timeLogRepository.GetLogsByDate(date).Where(i=>i.IssueId==issueId).ToList();
+            await _timeLogRepository.RemoveRange(logsIds);
+            await _timeLogRepository.Save();
+        }
+
         public async Task RemoveLog(int id)
         {
             _timeLogRepository.Remove(await _timeLogRepository.GetById(id));
