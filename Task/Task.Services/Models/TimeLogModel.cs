@@ -26,13 +26,9 @@ namespace TestTask.Services.Models
             {
                 return DateLog.ToString("dd/MMM", CultureInfo.GetCultureInfo("en-US"));
             }
-            private set
-            {
-
-            }
         }
 
-[Required]
+        [Required]
         [Range(typeof(TimeSpan), "00:01", "10:00")]
         public TimeSpan Time { get; set; }
 
