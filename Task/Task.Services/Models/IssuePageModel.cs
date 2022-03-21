@@ -11,8 +11,9 @@ namespace TestTask.Services.Models
         public IssuePageModel(
             List<IssueModel> issueModels,
             List<TimeLogModel> timeLogModels,
-            List<DateTime> dateTimes,
+            List<DatePageModel> dateTimes,
             int week,
+            int mouth,
             int year)
         {
             this.IssueModels = issueModels;
@@ -20,15 +21,18 @@ namespace TestTask.Services.Models
             this.DateForPage = dateTimes;
             this.Week = week;
             this.Year = year;
+            this.Month = mouth;
         }
 
         public List<IssueModel> IssueModels { get; set; }
 
         public List<TimeLogModel> TimeLogModels { get; set; }
 
-        public List<DateTime> DateForPage { get; set; }
+        public List<DatePageModel> DateForPage { get; set; }
 
         public int Week { get; set; }
+
+        public int Month { get; set; }
 
         public int Year { get; set; }
     }

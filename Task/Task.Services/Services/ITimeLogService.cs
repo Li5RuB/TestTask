@@ -20,5 +20,7 @@ namespace TestTask.Services.Services
         public Task RemoveLog(int id);
 
         public Task UpdateLog(TimeLogModel log);
+
+        public Task RemoveRangeByDate(int issueId, DateTime date);
     }
 }

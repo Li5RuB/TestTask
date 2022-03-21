@@ -14,7 +14,7 @@ namespace TestTask.Services.Services
 
         public List<IssueModel> GetIssuesByUserId(int id);
 
-        public IssuePageModel GetIssuesToPage(int week, int year, int userId);
+        public IssuePageModel GetIssuesToPage(int week, int mouth, int year, int userId);
 
         public Task CreateIssue(IssueModel issue);
 

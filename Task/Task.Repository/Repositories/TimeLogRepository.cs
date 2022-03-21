@@ -24,5 +24,11 @@ namespace TestTask.Repository.Repositories
             var timeLogItems = GetAll().Where(x => x.DateLog >= FirstDate && x.DateLog <= LastDate && issueIds.Contains(x.IssueId)).ToList();
             return timeLogItems;
         }
+
+        public List<TimeLogItem> GetLogsByDate(DateTime date)
+        {
+            return GetAll().Where(x=>x.DateLog.Date == date.Date).ToList();
+        }
+
     }
 }

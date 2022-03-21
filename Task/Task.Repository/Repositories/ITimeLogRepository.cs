@@ -15,11 +15,15 @@ namespace TestTask.Repository.Repositories
 
         public List<TimeLogItem> GetLogsToPage(DateTime FirstDate, DateTime LastDate, List<int> issueIds);
 
+        public List<TimeLogItem> GetLogsByDate(DateTime date);
+
         public void Create(TimeLogItem log);
 
         public void Remove(TimeLogItem log);
 
         public void Update(TimeLogItem log);
+
+        public Task RemoveRange(List<TimeLogItem> items);
 
         public Task Save();
     }

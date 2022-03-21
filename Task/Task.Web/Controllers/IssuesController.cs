@@ -26,10 +26,10 @@ namespace TestTask.Web.Controllers
             _userService = userService;
         }
 
-        public IActionResult Index(int week, int year)
+        public IActionResult Index(int week, int mouth, int year)
         {
             var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var result = _issueService.GetIssuesToPage(week, year, userId);
+            var result = _issueService.GetIssuesToPage(week, mouth, year, userId);
             return View(result);
         }
 
@@ -67,6 +67,23 @@ namespace TestTask.Web.Controllers
                 await _timeLogService.CreateLog(model);
             }
             return RedirectToAction("Details", new { issueId = model.IssueId });
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> SetTime(TimeLogModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                await _timeLogService.CreateLog(model);
+                return Json(model);
+            }
+            return Json("Model isNotValid");
+        }
+
+        [HttpPost]
+        public async Task RemoveTime(DateTime date, int IssueId)
+        {
+            await _timeLogService.RemoveRangeByDate(IssueId, date);
         }
 
         public async Task<IActionResult> CloseIssue(int issueId)

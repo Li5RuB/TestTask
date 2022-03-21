@@ -22,7 +22,7 @@ namespace TestTask.Services.Services
 
         public async Task CreateLog(TimeLogModel log)
         {
-            var loggedTime = _timeLogRepository.GetLogsByIsueeId(log.IssueId).Where(x=>x.DateLog==log.DateLog).Sum(x=>x.Time.Ticks);
+            var loggedTime = _timeLogRepository.GetLogsByDate(log.DateLog).Sum(x=>x.Time.Ticks);
             var issueStatus = (await _issueRepository.GetById(log.IssueId)).IsClosed;
             if ((loggedTime+log.Time.Ticks)<= tenHours)
             {
@@ -44,6 +44,13 @@ namespace TestTask.Services.Services
         public List<TimeLogModel> GetLogsToPage(DateTime date)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task RemoveRangeByDate(int issueId, DateTime date)
+        {
+            var logsIds = _timeLogRepository.GetLogsByDate(date).Where(i=>i.IssueId==issueId).ToList();
+            await _timeLogRepository.RemoveRange(logsIds);
+            await _timeLogRepository.Save();
         }
 
         public async Task RemoveLog(int id)
